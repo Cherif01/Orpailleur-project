@@ -1,0 +1,118 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon
+                  class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+            <div class="col-btn">
+              <button class="mx-2 fw-bold" mat-flat-button color="accent" routerLink="/fixing/add-fixing">
+                <span class="micon dw dw-add"></span><span class="mtext mx-2"> Fix&#233; un poids </span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/fixing/list-fixing">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Liste fixing</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/fournisseur">
+                <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable start -->
+      <div class="card-box mb-30">
+        <!-- <div class="pd-20">
+          <h4 class="text-blue h4">Fix&#233; un poids</h4>
+        </div> -->
+        <div class="pb-20">
+          <div class="d-flex justify-content-between flex-wrap align-items-center">
+            <div class="col">
+              <h2 class="text-center fw-bold h5">Fixing en cours...</h2>
+              <form class="" [formGroup]="Fixing" (ngSubmit)="fixingPOST(Fixing)">
+                <div class="d-flex justify-content-between flex-wrap flex-row align-items-center mb-2">
+                  <div class="col-12">
+                    <!-- FOURNISSEUR -->
+                    <mat-form-field appearance="outline" class="w-100 mb-2">
+                      <mat-label>--- Fournisseur ---</mat-label>
+                      <mat-select formControlName="fournisseur" required (selectionChange)="infosVendor($event.value)">
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let data of ListFrs" [value]="data.id">
+                          {{data.prenom + " " + data.nom }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="Fixing.hasError('required')">Selectionnez un fournisseur</mat-error>
+                      <mat-hint>Liste des fournisseur</mat-hint>
+                    </mat-form-field>
+
+                    <!-- POIDS -->
+                    <mat-form-field appearance="outline" class="w-100 mb-2">
+                      <mat-label>Poids fixing</mat-label>
+                      <input formControlName="poids_fixe" matInput placeholder="Ex : 157.12">
+                      <mat-hint>Exemple : 500</mat-hint>
+                    </mat-form-field>
+
+                    <div class="d-flex">
+                      <!-- FIXING BOURSE -->
+                      <mat-form-field appearance="outline" class="mb-2 w-100">
+                        <mat-label>Cours de l'or</mat-label>
+                        <input formControlName="fixing_bourse" matInput placeholder="Ex : 1830">
+                        <mat-hint>Exemple : 1830.00</mat-hint>
+                      </mat-form-field>
+                      <div class="col-1"></div>
+                      <!-- DISCOUNT -->
+                      <mat-form-field appearance="outline" class="mb-2 w-100">
+                        <mat-label>DISCOUN-T</mat-label>
+                        <input formControlName="discompte" matInput placeholder="Ex : 0.6">
+                        <mat-hint>Varie entre : 0.1 a 0.9</mat-hint>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <button type="submit" mat-raised-button class="w-100 p-2" color="accent"
+                      [disabled]="!Fixing.valid"><span class="mx-2">
+                        Valider le fixing </span>
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col-12 col-lg-5" *ngIf="select">
+              <div class="m-2">
+                <div class="card mb-4 shadow-lg border-0">
+                  <div class="card-body text-center">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                      class="rounded-circle img-fluid w-25" style="width: 150px;">
+                    <div class="">
+                      <h4 class="fw-bold">{{ InfosFournisseur.prenom + ' ' + InfosFournisseur.nom }}</h4>
+                      <span>{{ InfosFournisseur.adresse +' / '+ InfosFournisseur.pays }}</span> <br>
+                      <span>{{ InfosFournisseur.email +' / '+ InfosFournisseur.ville }}</span> <br>
+                      <strong>{{ InfosFournisseur.telephone }}</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable End -->
+    </div>
+  </div>
+</div>

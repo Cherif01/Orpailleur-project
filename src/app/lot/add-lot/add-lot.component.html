@@ -1,0 +1,75 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon
+                  class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+            <div class="col-btn">
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/lot/list-lot">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Liste des lots</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="accent" routerLink="/lot/add-lot">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Cr&#233;er un lot</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/lot/attribution-lot">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2">Attribution</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
+                <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add -->
+      <div class="card-box mb-30">
+        <!-- <div class="pd-20">
+                <h4 class="text-blue h4">Ajout d'un fournisseurs</h4>
+             </div> -->
+        <div class="pb-20 d-flex justify-content-between align-items-center flex-wrap">
+          <div class="col p-3">
+            <form class="mx-1 mx-md-4" [formGroup]="Lot" (ngSubmit)="LotAddForm(Lot)">
+              <!-- LOT -->
+              <div class="col-12  col-lg-12 mb-3">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Creer un lot</mat-label>
+                  <input formControlName="designation" matInput placeholder="Ex : Lot du ...">
+                  <mat-hint>Exemple : Lot du 03/mai/2023</mat-hint>
+                  <mat-error *ngIf="Lot.controls.designation.errors">
+                    Champ obligatoire
+                  </mat-error>
+                </mat-form-field>
+                <button type="submit" mat-raised-button color="primary" class="w-100 mt-3" id="bt"
+                  [disabled]="!Lot.valid"><span id="text_contact">Enregistrer le lot ?</span>
+                </button>
+              </div>
+
+            </form>
+          </div>
+          <div class="col p-3">
+            <div class="img-responsive">
+              <img src="../../../assets/image/caisse.png" class="img-responsive" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Fin ajout -->
+    </div>
+  </div>
+</div>

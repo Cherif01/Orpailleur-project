@@ -1,0 +1,108 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="text-right">
+            <button mat-raised-button color="primary" (click)="openDialog()" class="mx-2">Nouvelle operation</button>
+            <button mat-raised-button color="warn">Autres</button>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable start -->
+      <div class="...-box">
+        <mat-card class="mat-elevation-z0 bg-transparent">
+          <mat-card-content>
+            <div class="row">
+              <div class="col">
+                <div class="card mb-4 shadow-lg border-0">
+                  <div class="card-body text-center">
+                    <h4 class="my-3 text-primary" id="text">𝐒𝐨𝐥𝐝𝐞 𝐚𝐜𝐭𝐢𝐟 (𝖆𝖈𝖙𝖎𝖋 <span
+                        class="dw dw-inbox text-success"></span> )</h4>
+                    <button mat-button color="primary" (click)="showSolde()" *ngIf="!viewSOLDE">Voir le solde !</button>
+                    <button mat-button color="warn" (click)="hideSolde()" *ngIf="viewSOLDE">cacher le solde !</button>
+                    <hr>
+                    <div class="p-2 d-flex justify-content-between align-items-center">
+                      <h2 id="text" class="text-dark" *ngIf="viewSOLDE">{{ GNFAmount | number: '2.0-2'}} GNF</h2>
+                      <h2 id="text" class="text-dark" *ngIf="!viewSOLDE">..... GNF</h2>
+                      <span> | </span>
+                      <h2 id="text" class="text-success" *ngIf="viewSOLDE">{{ USDAmount | number: '2.0-2'}} USD</h2>
+                      <h2 id="text" class="text-success" *ngIf="!viewSOLDE">..... USD</h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <hr>
+
+        <!-- History -->
+        <div class="table-responsive">
+          <mat-card class="mat-elevation-z8" id="matTable">
+            <mat-card-title>
+              <h2 class="text-blue">Historique des op&#233;rations</h2>
+            </mat-card-title>
+            <mat-card-content>
+              <mat-form-field class="w-100">
+                <input [formControl]="search" placeholder="Rechercher une oper&#233;tion..." matInput>
+                <mat-icon matSuffix>Limanaya Business</mat-icon>
+              </mat-form-field>
+              <table mat-table class="table table-responsive-md">
+                <thead>
+                  <th>#</th>
+                  <th>Date Operation</th>
+                  <th>Op&#233;ration</th>
+                  <th>Devise</th>
+                  <th>Motif</th>
+                  <th>Entrer</th>
+                  <th>Sortie</th>
+                  <th>Solde Ant</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of historique; let i = index">
+                    <td>{{ i+1 }}</td>
+                    <td>Le : {{ data.created_at | date: "dd/mm/Y" }}</td>
+                    <td>
+                      <span class="text-info" *ngIf="data.operation == 1"><span class="dw dw-down-arrow2"></span>
+                        Entrer</span>
+                      <span class="text-danger" *ngIf="data.operation == 2">Sortie <span
+                          class="dw dw-share-2"></span></span>
+                      <span class="text-success" *ngIf="data.operation == 3">Retour Fournisseur <span
+                          class="dw dw-share-2"></span></span>
+                      <span class="text-danger" *ngIf="data.operation == 4">D&#233;caissement <span
+                          class="dw dw-share-2"></span></span>
+                    </td>
+                    <td *ngIf="data.devise == 1" class="text-secondary">GNF</td>
+                    <td *ngIf="data.devise == 2" class="text-dark fw-bold">USD</td>
+                    <td>{{ data.motif }}</td>
+                    <td>
+                      <span *ngIf="data.operation == 1 || data.operation == 3">{{ data.montant | number }}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="data.operation == 2 || data.operation == 4">{{ data.montant | number }}</span>
+                    </td>
+                    <td>{{ data.montant_anterieur | number }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <mat-paginator [pageSizeOptions]="[10,15,100]" showFirstLastButtons></mat-paginator>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <!-- Export Datatable End -->
+    </div>
+  </div>
+</div>

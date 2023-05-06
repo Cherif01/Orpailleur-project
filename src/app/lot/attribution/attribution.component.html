@@ -1,0 +1,113 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon
+                  class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+            <div class="col-btn">
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/lot/list-lot">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Liste des lots</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/lot/add-lot">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Cr&#233;er un lot</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="accent" routerLink="/lot/attribution-lot">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2">Attribution</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
+                <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable start -->
+      <div class="...-box mb-10">
+        <div class="p-3 py-0">
+          <h2 class="text-dark fs-3">Gestion des Lots</h2>
+          <hr>
+          <div class="" *ngFor="let data of oneGet">
+            <div class="col-12" *ngIf="oneGet">
+              Achat deja attribuer : <br>
+              <span class="text-danger mb-1">Source :</span> {{data.arrivage.designation}}
+            </div>
+          </div>
+          <div class="col p-0" *ngIf="!test">
+            <form [formGroup]="attributionAchat" (ngSubmit)="addAttr(attributionAchat)">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="col">
+                  <mat-form-field appearance="fill">
+                    <mat-label class="text-center">-- Selectionnez un lot --</mat-label>
+                    <mat-select class="p-0" formControlName="arrivage">
+                      <mat-option>--- Aucune ---</mat-option>
+                      <mat-option *ngFor="let data of listLot" [value]="data.id">{{data.designation}}</mat-option>
+                    </mat-select>
+                    <mat-hint>Lot non attribuer...</mat-hint>
+                  </mat-form-field>
+                </div>
+                <button type="submit" mat-raised-button color="primary" class="p-1" [disabled]="!attributionAchat.valid">
+                  <span class="mx-2"> Attribuer </span>
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+            </form>
+          </div>
+          <!-- <hr> -->
+          <table id="table_shadow"
+            class="table table-light table-striped table-hover multiple-select-row data-table-export nowrap">
+            <thead class="bg-dark text-light">
+              <!-- <th>#</th> -->
+              <th>Date</th>
+              <th>No:-Docs</th>
+              <th>Fournisseur</th>
+              <th class="">Status</th>
+              <!-- <th class="text-center">Utilisateur</th> -->
+              <th class="text-center">Action</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let attr of listAchatNATTR">
+                <!-- <td>{{ lot.id }}</td> -->
+                <td><strong>{{ attr.created_at | date:'dd/MM/yyyy' }}</strong></td>
+                <td>000{{ attr.id }}</td>
+                <td>{{ attr.fournisseur.prenom + " " + attr.fournisseur.nom + " / " + attr.fournisseur.adresse + " - " +
+                  attr.fournisseur.telephone }}</td>
+                <td class="">
+                  <span class="text-warning fw-bold" *ngIf="attr.status == 1"> <i
+                      class="icon-copy dw dw-folder-78 mx-1"></i> En cours <br> <i class="small text-dark">Achat non
+                      attribuer...</i> </span>
+                  <span class="text-success fw-bold" *ngIf="attr.status == 2"> <i
+                      class="icon-copy dw dw-checked mx-1"></i> Valider</span>
+                </td>
+                <!-- <td class="text-center text-primary">{{ lot.created_by.first_name + " " + lot.created_by.last_name}}
+                </td> -->
+                <td class="text-center">
+                  <a href="/lot/attribution-lot/{{ attr.id }}" (click)="playSound()" mat-raised-button color="accent">
+                    <span class="fw-bold">Attribuer </span>
+                    <i class="icon-copy dw dw-right-arrow"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Export Datatable End -->
+      </div>
+    </div>
+  </div>

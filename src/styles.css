@@ -1,0 +1,43 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+html, body {
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  /* scrollbar-width: none; */
+}
+
+.menu-spacer {
+  flex: 1 1 auto;
+}
+
+#table_shadow{
+  /* box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px; */
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.separator-25{
+  margin: 25px;
+}
+
+
+#text{
+  /* font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; */
+  text-align: center;
+  font-size: 25px;
+  color: rgb(0, 255, 255);
+  text-shadow: rgb(123, 123, 123) 2px 2px 2px;
+}

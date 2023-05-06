@@ -1,0 +1,213 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon
+                  class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+            <div class="col-btn">
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/fournisseur/list-fournisseur">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Liste fournisseur</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/fournisseur/add-fournisseur">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Ajouter nouveau</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
+                <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable start -->
+      <div class="...-box">
+        <section>
+          <div class="container-fluid" *ngFor="let f of FournisseurGet;">
+            <!-- <div class="row" *ngIf="f.id == ID_F">
+              <div class="col">
+                <nav aria-label="breadcrumb" class="bg-light border-secondary border rounded-3 p-3 mb-4">
+                  <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="#">{{title}}</a></li>
+                    <li class="breadcrumb-item"><a href="#">Profile</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                  </ol>
+                </nav>
+              </div>
+            </div> -->
+
+            <div class="row" *ngIf="f.id == ID_F">
+              <div class="col-lg-4">
+                <div class="card mb-4 shadow-lg border-0">
+                  <div class="card-body text-center">
+                    <!-- <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                      class="rounded-circle img-fluid" style="width: 150px;"> -->
+                    <h4 class="my-3 fw-bold">{{ f.prenom }} {{ f.nom }}</h4>
+                    <p class="text-muted mb-1">{{ f.pays }} - {{ f.ville }}</p>
+                    <p class="text-muted mb-4">{{ f.email }}</p>
+                    <div class="d-flex justify-content-center mb-2">
+                      <button type="button" class="btn btn-primary">Action 1</button>
+                      <button type="button" class="btn btn-outline-primary ms-1">Action 2</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="card mb-4 mb-lg-0 shadow-lg">
+                  <div class="card-body p-0">
+                    <!-- GESTION DE STOCK -->
+                    <div class="text-center m-2">
+                      <img src="../../../assets/image/gold.png" class="img-responsive w-25" alt="">
+                      <p class="m-3 mx-0 text-primary">D&#233;tails du stock d'or...</p>
+                    </div>
+                    <!-- <hr> -->
+                    <table class="table text-center border-light">
+                      <tbody>
+                        <tr>
+                          <td class="fw-bold fs-5">
+                            <h2 class="p-0 m-0 text-secondary small">Situation du stock</h2>
+                            <h3 class="fw-bold">Disponible <br> {{ Poids_total_compte_fournisseur - Qte_fixer |
+                              number:'1.2-2'}} g</h3>
+                            <!-- <hr> -->
+                            <!-- <span class="small"><span class="text-danger">Fixing en cours...</span> : {{ Poids_total_fixe_fournisseur | number:'1.2' }} g </span> <br> <br> -->
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-8">
+                <div class="card mb-4">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <p class="mb-0">Nom complet</p>
+                      </div>
+                      <div class="col-sm-9">
+                        <p class="text-muted mb-0">{{ f.prenom }} {{ f.nom }}</p>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <p class="mb-0">Email</p>
+                      </div>
+                      <div class="col-sm-9">
+                        <p class="text-muted mb-0">{{ f.email }}</p>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <p class="mb-0">Adresse</p>
+                      </div>
+                      <div class="col-sm-9">
+                        <p class="text-muted mb-0">(+224) {{ f.telephone }} / {{ f.pays }}/{{ f.ville }}</p>
+                      </div>
+                    </div>
+                    <!-- <hr> -->
+                    <!-- <div class="row">
+                      <div class="col-sm-3">
+                        <p class="mb-0">Location</p>
+                      </div>
+                      <div class="col-sm-9">
+                        <p class="text-muted mb-0">{{ f.pays }}/{{ f.ville }}</p>
+                      </div>
+                    </div>
+                    <hr> -->
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <p class="mb-0">Address</p>
+                      </div>
+                      <div class="col-sm-9">
+                        <p class="text-muted mb-0">{{ f.adresse }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-center align-items-center flex-wrap">
+                  <div class="col-5 p-0">
+                    <div class="card mb-4 mb-md-0 shadow-lg" id="compte">
+                      <!-- GESTION DE STOCK -->
+                      <div class="text-center p-3">
+                        <!-- <img src="../../../assets/armoirie2.png" class="img-responsive w-50" alt=""> -->
+                        <p class="mb-2 mt-3"><span class="text-primary font-italic me-1">Compte </span> GNF
+                        </p>
+                        <table class="table">
+                          <tr>
+                            <td class="fw-bold fs-5">0 GNF</td>
+                          </tr>
+                        </table>
+                        <form class="mx-1 mx-md-4 mt-0" [formGroup]="accountFournisseurGNF"
+                          (ngSubmit)="accountFournisseurFormUSD(accountFournisseurGNF,1)">
+                          <button class="border-0" type="submit" mat-raised-button color="primary"
+                            [hidden]="cGNF"><span>Cr&#233;er le
+                              compte</span>
+                          </button>
+                          <button class="border-0" type="button" mat-stroked-button color="warn" [hidden]="!cGNF">
+                            <h4><strong>N<sup>o</sup> compte <br> <br> </strong><span class="p-2" id="accountNumber"> {{
+                                NumberGNF }}</span></h4>
+                          </button>
+                          <a routerLink="/" class="border-0" mat-raised-button [hidden]="!cGNF">
+                            Voir les details</a>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <button mat-button color="primary" (click)="openDialog()">Convertir</button>
+                  </div>
+                  <div class="col-5 p-0">
+                    <div class="card mb-4 mb-md-0 shadow-lg" id="compte">
+                      <!-- GESTION DE STOCK -->
+                      <div class="text-center p-3">
+                        <!-- <img src="../../../assets/us.png" class="img-responsive w-50" alt=""> -->
+                        <p class="mb-2 mt-3"><span class="text-primary font-italic me-1">Compte </span> USD
+                        </p>
+                        <table class="table">
+                          <tr>
+                            <td class="fs-5 fw-bold">0.00 USD</td>
+                          </tr>
+                        </table>
+                        <form class="mx-1 mx-md-4" [formGroup]="accountFournisseurUSD"
+                          (ngSubmit)="accountFournisseurFormUSD(accountFournisseurUSD,2)">
+
+                          <button class="border-0" type="submit" mat-raised-button color="primary"
+                            [hidden]="cUSD"><span>Cr&#233;er le
+                              compte</span>
+                          </button>
+                          <button class="border-0" type="button" mat-stroked-button color="warn" [hidden]="!cUSD">
+                            <h4><strong>N<sup>o</sup> compte <br> <br> </strong><span class="p-2" id="accountNumber"> {{
+                                NumberUSD }}</span></h4>
+                          </button>
+                          <a routerLink="/" class="border-0" mat-raised-button [hidden]="!cUSD">
+                            Voir les details
+                          </a>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- Export Datatable End -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="text-right">
+            <!-- <a class="btn btn-outline-primary btn-sm mx-2" href="#" routerLink="/bank/add-account">
+              <span class="micon dw dw-user-3"></span><span class="mtext mx-2">Cr&#233;er un compte</span>
+            </a>
+            <a class="btn btn-primary btn-sm mx-2" href="#" routerLink="/bank/list-account">
+              <span class="micon dw dw-list"></span><span class="mtext mx-2">Liste des comptes</span>
+            </a> -->
+            <a class="btn btn-outline-primary btn-sm mx-2" href="#" routerLink="/operation-bank/depot">
+              <span class="micon dw dw-mouse"></span><span class="mtext mx-2">D&#233;pôt</span>
+            </a>
+            <a class="btn btn-outline-primary btn-sm mx-2" href="#" routerLink="/operation-bank/retrait">
+              <span class="micon dw dw-mouse"></span><span class="mtext mx-2">R&#233;trait</span>
+            </a>
+            <a class="btn btn-outline-primary btn-sm mx-2" href="#" routerLink="/operation-bank/virement">
+              <span class="micon dw dw-mouse"></span><span class="mtext mx-2">Virement</span>
+            </a>
+            <a class="btn btn-outline-primary btn-sm mx-2" href="#" routerLink="/bank">
+              <span class="micon dw dw-mouse"></span><span class="mtext mx-2">Autres</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable start -->
+      <div class="...-box mb-30">
+        <div class="pb-20">
+          <div class="table-responsive p-3">
+            <h4 class="text-blue h4">Tous les comptes particulier</h4>
+            <table class="table table-seconary table-hover" id="table_shadow">
+              <thead class="bg-dark text-light">
+                <th>#</th>
+                <th>Nom</th>
+                <th>Pr&#233;nom</th>
+                <th>Pays</th>
+                <th>Ville</th>
+                <th>Adresse</th>
+                <th>T&#233;l&#33;phone</th>
+                <th>Statut</th>
+                <th class="text-center">Action</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of List; let i = index">
+                  <td>{{ i+1 }}</td>
+                  <td>{{ p.nom }}</td>
+                  <td>{{ p.prenom }}</td>
+                  <td>{{ p.pays }}</td>
+                  <td>{{ p.ville }}</td>
+                  <td>{{ p.adresse }}</td>
+                  <td>{{ p.telephone }}</td>
+                  <td class="text-success fw-bold">Actif</td>
+                  <td class="text-center"><a routerLink="/bank/detail-account/{{ p.id }}" (click)="playSound()"
+                      class="btn btn-outline-primary"><i class="icon-copy dw dw-right-arrow"></i></a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable End -->
+    </div>
+  </div>
+</div>

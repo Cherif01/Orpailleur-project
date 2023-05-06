@@ -1,0 +1,29 @@
+#facture{
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
+  padding: 20px;
+  /* background: url('../../../../assets/bg/bg1.jpg');
+  background-repeat: no-repeat;
+  background-size: cover; */
+  margin: 0 10% 0 10%;
+
+}
+
+.printTable{
+  border: 1px solid black;
+}
+
+.printTable thead th{
+  color: rgb(255, 228, 50);
+  border: 1px solid black;
+}
+
+.printTable tbody tr{
+  color: rgb(21, 21, 21);
+  border: 0.5px solid black;
+}
+.printTable tbody td{
+  color: rgb(21, 21, 21);
+  border: 0.5px solid black;
+}
+
+

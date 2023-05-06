@@ -1,0 +1,62 @@
+<p>fixing-client works!</p>
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="text-right">
+            <a class="btn btn-outline-primary mx-2" href="#" routerLink="/operation/add-fixing-client">
+              <span class="micon dw dw-add"></span>
+              <span class="mtext mx-2"> Ajouter</span>
+            </a>
+            <a class="btn btn-outline-primary mx-2" href="#" routerLink="/lot">
+              <span class="micon dw dw-mouse"></span><span class="mtext mx-2">Autres</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable start -->
+      <div class="...-box mb-30">
+        <div class="pb-20 table-responsive-sm">
+          <h4 class="text-blue h4">Liste g&#233;n&#233;rale des ventes</h4>
+          <div class=" table-responsive p-0 m-0" id="table_shadow">
+            <table class="table table-secondary table-hover p-0 m-0">
+              <thead class="bg-dark text-light">
+                <th>Date</th>
+                <th>Reference</th>
+                <th>Client</th>
+                <th>Fixing</th>
+                <th>Poids fixe</th>
+                <th>Prix Unit</th>
+                <th>Users</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let fix of TabVente; let index">
+                  <td class="fw-bold text-primary">Le : {{ fix.created_at | date: 'dd/MM/yyyy' }}</td>
+                  <td>#00{{ fix.id }}</td>
+                  <td>{{ fix.client.raison_sociale }}</td>
+                  <td>{{ fix.fixing_bourse | number }}</td>
+                  <td>{{ fix.poids_fixe | number }}</td>
+                  <td> {{ ((fix.fixing_bourse / 34) - 0.5).toString().substring(0, 5) }}</td>
+                  <td>{{ fix.created_by.first_name + " " + fix.created_by.last_name }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable End -->
+    </div>
+  </div>
+</div>

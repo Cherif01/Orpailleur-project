@@ -1,0 +1,41 @@
+
+
+/* #bgTable{
+  padding: 20px;
+  background-image: url('../../../../assets/image/fixing_client.png');
+  filter: blur;
+  opacity: 0.158;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+} */
+
+.printTable{
+  border: 1px solid black;
+}
+
+.printTable thead th{
+  color: rgb(8, 8, 8);
+  border: 1.6px solid black;
+}
+
+.printTable tbody tr{
+  color: rgb(21, 21, 21);
+  border: 1.6px solid black;
+}
+.printTable tbody td{
+  color: rgb(21, 21, 21);
+  border: 1.6px solid black;
+}
+.printTable tfoot tr{
+  color: rgb(21, 21, 21);
+  border: 1.6px solid black;
+}
+.printTable tfoot th{
+  color: rgb(21, 21, 21);
+  border: 1.6px solid black;
+}
+
+#card-fixing{
+  height: 80vh;
+}

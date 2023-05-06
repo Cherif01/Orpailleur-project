@@ -1,0 +1,69 @@
+<h1 matDialogTitle>Ajouter un nouveau client</h1>
+<hr>
+
+<mat-dialog-content>
+  <form [formGroup]="Client">
+
+    <!-- RESPONSABLE -->
+    <div class="col">
+      <mat-form-field class="w-100">
+        <mat-label class="text-uppercase">Nom complet du responsable</mat-label>
+        <input type="text" matInput placeholder="Ex : John Doe" formControlName="responsable">
+      </mat-form-field>
+    </div>
+
+    <!-- SOCIETE -->
+    <div class="col">
+      <mat-form-field class="w-100">
+        <mat-label class="text-uppercase">Raison sociale soci&#233;t&#233; (<span
+            class="text-danger">*</span>)</mat-label>
+        <input type="text" matInput placeholder="Ex : John Doe" formControlName="raison_sociale">
+      </mat-form-field>
+    </div>
+
+    <!-- Pays et Ville -->
+    <div class="d-flex justify-content-between flex-row align-items-center">
+      <div class="col">
+        <mat-form-field class="w-100">
+          <mat-label>PAYS</mat-label>
+          <input type="text" matInput placeholder="Ex : Guinea" formControlName="pays">
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field class="w-100">
+          <mat-label>VILLE</mat-label>
+          <input type="text" matInput placeholder="Ex : John Doe" formControlName="ville">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Adresse et Telephone -->
+    <div class="col">
+      <mat-form-field class="w-100">
+        <mat-label>ADRESSE SOCIETE</mat-label>
+        <input type="text" matInput placeholder="Ex : C/Kaloum, ..." formControlName="adresse">
+      </mat-form-field>
+    </div>
+
+    <div class="col">
+      <mat-form-field class="w-100">
+        <mat-label>TELEPHONE</mat-label>
+        <input type="number" matInput placeholder="Ex : 224 626 37 01 38" formControlName="telephone">
+      </mat-form-field>
+    </div>
+
+    <!-- Adresse email -->
+    <div class="col">
+      <mat-form-field class="w-100">
+        <mat-label>ADRESSE E-MAIL</mat-label>
+        <input type="text" matInput placeholder="Ex : spa-tech@gmail.com" formControlName="email">
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-stroked-button color="warn" matDialogClose>Abandonner</button>
+  <button mat-stroked-button color="primary" (click)="saveDataClient()">Enregistrer le client</button>
+</mat-dialog-actions>

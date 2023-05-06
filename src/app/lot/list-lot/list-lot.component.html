@@ -1,0 +1,86 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon
+                  class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+            <div class="col-btn">
+              <button class="mx-2 fw-bold" mat-flat-button color="accent" routerLink="/lot/list-lot">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Liste des lots</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/lot/add-lot">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Cr&#233;er un lot</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/lot/attribution-lot">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2">Attribution</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
+                <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable start -->
+      <div class="...-box mb-10">
+        <div class="p-3">
+          <h2 class="text-dark fs-3">Gestion des Lots</h2>
+          <hr>
+          <table id="table_shadow"
+            class="table table-light table-striped table-hover multiple-select-row data-table-export nowrap">
+            <thead class="bg-dark text-light">
+              <!-- <th>#</th> -->
+              <th>Date</th>
+              <th>No:-Docs</th>
+              <th>Designation</th>
+              <th class="">Status</th>
+              <!-- <th class="text-center">Utilisateur</th> -->
+              <th class="text-center">Action</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let lot of listLot">
+                <!-- <td>{{ lot.id }}</td> -->
+                <td><strong>{{ lot.created_at | date:'dd/MM/yyyy' }}</strong></td>
+                <td>000{{ lot.id }}</td>
+                <td>{{ lot.designation }}</td>
+                <td class="">
+                  <span class="text-warning fw-bold" *ngIf="lot.status == 1"> <i
+                      class="icon-copy dw dw-folder-78 mx-1"></i> Ouvert <br> <i class="small text-dark">Ce lot est encore ouvert...</i> </span>
+                  <span class="text-success fw-bold" *ngIf="lot.status == 2"> <i
+                      class="icon-copy dw dw-checked mx-1"></i> Fermer</span>
+                  <span class="text-danger fw-bold" *ngIf="lot.status == 3"><i class="icon-copy dw dw-trash mx-1"></i>
+                    Supprimer</span>
+                </td>
+                <!-- <td class="text-center text-primary">{{ lot.created_by.first_name + " " + lot.created_by.last_name}}
+                </td> -->
+                <td class="text-center">
+                  <a routerLink="/lot/detail-lot/{{ lot.id }}" (click)="playSound()" mat-raised-button color="">
+                    <span class="fw-bold">Voir le contenu </span>
+                    <i class="icon-copy dw dw-right-arrow"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Export Datatable End -->
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,116 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">{{page}}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="text-right">
+            <div class="d-flex justify-content-between flex-wrap">
+              <div class="col-2 text-start">
+                <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon class="mat-24">reply</mat-icon>
+                </button>
+              </div>
+              <div class="col">
+                <a class="btn btn-outline-primary mx-2" href="#" routerLink="/lot/list-lot">
+                  <span class="micon dw dw-user-11"></span><span class="mtext mx-2">Liste general</span>
+                </a>
+                <a class="btn btn-outline-primary mx-2" href="#" routerLink="/lot/add-lot">
+                  <span class="micon dw dw-user-11"></span><span class="mtext mx-2">Cr&#233;er un lot</span>
+                </a>
+                <a class="btn btn-outline-primary mx-2" href="#" routerLink="/lot/attribution-lot">
+                  <span class="micon dw dw-mouse"></span><span class="mtext mx-2">Attribution</span>
+                </a>
+                <a class="btn btn-primary mx-2" href="#" routerLink="/lot">
+                  <span class="micon dw dw-mouse"></span><span class="mtext mx-2">Autres</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add -->
+      <!-- Export Datatable start -->
+      <div class="...-box mb-10">
+        <div class="row">
+          <div class="col-12 col-lg-3">
+            <div class="p-2 text-center " id="shadow-lot">
+              <div class="">
+                <img src="../../../assets/image/caisse.png" class="img-responsive w-25" alt="">
+                <!-- <hr> -->
+                <h4 class="fw-bold p-0 m-0">{{ LotUnique.designation }}</h4>
+                <span class="text-secondary fs-6"><strong>Cr&#233;er le : </strong> {{ LotUnique.created_at
+                  | date: 'dd/MM/YYYY' }}</span> <br> <br>
+                <form [formGroup]="clotureInfo" (ngSubmit)="ClotureLot(clotureInfo)">
+                  <button [disabled]="!clotureInfo" type="submit" mat-flat-button color="accent" class="m-2">Clôturer le
+                    lot</button>
+                </form>
+              </div>
+              <!-- <hr> -->
+              <div class="text-start">
+                <table class="table">
+                  <tr>
+                    <th>Nb Barres</th>
+                    <th>:</th>
+                    <td>{{ nb_barre }} <span class="text-danger">Barres</span></td>
+                  </tr>
+                  <tr>
+                    <th>Poids Total</th>
+                    <th>:</th>
+                    <td>{{ PoidTotalLot | number }} g</td>
+                  </tr>
+                  <tr>
+                    <th>Vendu</th>
+                    <th>:</th>
+                    <td>{{ PoidVenduLot }} g</td>
+                  </tr>
+                  <tr>
+                    <th>Reste</th>
+                    <th>:</th>
+                    <td>{{ (PoidTotalLot - PoidVenduLot) | number }} g</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col" id="shadow-col">
+            <div class="container">
+              <div class="card" id="shadow-card" *ngFor="let data of List_Achat">
+                <div class="card-header text-center">
+                  <h4 class="text-dark fw-bold">D&#233;tail de l'achat</h4>
+                  <strong>N<sup>o</sup>Achat : 00{{ data.achat.id }}</strong>
+                </div>
+                <div class="card-body">
+                  <span class="dw dw-edit-file" id="dw_icon"></span>
+                  <h4>{{ data.achat.fournisseur.prenom + " " + data.achat.fournisseur.nom }}</h4>
+                </div>
+                <div class="bar">
+                  <div class="emptybar"></div>
+                  <div class="filledbar"></div>
+                </div>
+                <div class="card-footer">
+                  <a routerLink="/operation/facturepurchase/{{ data.achat.id }}" mat-button color="primary"> Voir la
+                    facture</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <!-- Export Datatable End -->
+      <!-- Fin ajout -->
+    </div>
+  </div>
+</div>

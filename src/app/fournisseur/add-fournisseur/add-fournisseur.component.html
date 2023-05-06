@@ -1,0 +1,154 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon
+                  class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+            <div class="col-btn">
+              <button class="mx-2 fw-bold" mat-flat-button color="accent" routerLink="/fournisseur/add-fournisseur">
+                <span class="micon dw dw-add"></span><span class="mtext mx-2"> Ajouter </span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/fournisseur/list-fournisseur">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Liste Gle</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/fournisseur">
+                <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add -->
+      <div class="card-box mb-30">
+        <!-- <div class="pd-20">
+               <h4 class="text-blue h4">Ajout d'un fournisseurs</h4>
+            </div> -->
+        <div class="pb-20">
+          <mat-card>
+            <section class="">
+              <h2 class="text-center fw-bold h4">Ajouter un fournisseur</h2>
+
+              <form class="mx-1 mx-md-4" [formGroup]="Fournisseur" (ngSubmit)="FournisseurForm(Fournisseur)">
+
+                <!-- Nom et Prenom -->
+                <div class="d-flex justify-content-between flex-row align-items-center mb-2">
+                  <div class="col mx-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Nom du
+                        fournisseur</mat-label>
+                      <input formControlName="nom" matInput placeholder="Ex : Cherif">
+                      <mat-hint>Exemple : Cherif</mat-hint>
+                      <mat-error *ngIf="Fournisseur.controls.nom.errors">
+                        Le Nom est obligatoire
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- Prenom -->
+                  <div class="col mx-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Pr&#233;om du
+                        fournisseur</mat-label>
+                      <input formControlName="prenom" matInput placeholder="Ex : Imourane">
+                      <mat-hint>Exemple : Imourane</mat-hint>
+                      <mat-error *ngIf="Fournisseur.controls.prenom.errors">
+                        Le Pr&#233;nom est obligatoire
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+
+                <!-- Pays et Ville -->
+                <div class="d-flex justify-content-between flex-row align-items-center mb-2">
+                  <div class="col mx-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Pays de residence</mat-label>
+                      <input formControlName="pays" matInput placeholder="Ex : Guinea">
+                      <mat-hint>Exemple : Guinea</mat-hint>
+                      <mat-error *ngIf="Fournisseur.controls.pays.errors">
+                        Le pays est obligatoire
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <!-- Ville de residence -->
+                  <div class="col mx-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Ville de residence</mat-label>
+                      <input formControlName="ville" matInput placeholder="Ex : Conakry">
+                      <mat-hint>Exemple : Conakry</mat-hint>
+                      <mat-error *ngIf="Fournisseur.controls.ville.errors">
+                        La ville est obligatoire
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <!-- Adresse et Ville -->
+                <div class="d-flex justify-content-between flex-row align-items-center mb-2">
+                  <div class="col mx-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Adresse ville du fournisseur</mat-label>
+                      <input formControlName="adresse" matInput placeholder="Ex : C/Matam...">
+                      <mat-hint>Exemple : C/Matam...</mat-hint>
+                      <mat-error *ngIf="Fournisseur.controls.adresse.errors">
+                        Renseigner une adresse
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- Mail et Phone -->
+                  <div class="col mx-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Adresse email du fournisseur</mat-label>
+                      <input formControlName="email" matInput placeholder="Ex : imouranach@gmail.com">
+                      <mat-hint>Exemple : imouranach@gmail.com</mat-hint>
+                      <mat-error *ngIf="Fournisseur.controls.adresse.errors">
+                        Adresse email obligatoire (<span class="small"
+                          *ngIf="Fournisseur.get('email')?.invalid && (Fournisseur.get('email')?.dirty || Fournisseur.get('email')?.touched)"
+                          class="text-danger small">Adresse mail invalid !</span>
+                        )
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <!-- Numero de telephone -->
+                <div class="col mx-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Numero de telephone</mat-label>
+                    <input formControlName="telephone" matInput placeholder="Exemple : 626 37 01 38">
+                    <mat-hint>Exemple : 626 37 01 38</mat-hint>
+                    <mat-error *ngIf="Fournisseur.controls.telephone.errors">
+                      Le numero de telephone est obligatoire
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="d-flex justify-content-center mx- mb-2 mb-lg-2">
+                  <button type="submit" mat-flat-button color="primary" [disabled]="!Fournisseur.valid"><span
+                      id="text_contact">Enregistrer</span></button>
+                </div>
+              </form>
+            </section>
+          </mat-card>
+        </div>
+      </div>
+      <!-- Fin ajout -->
+    </div>
+  </div>
+</div>

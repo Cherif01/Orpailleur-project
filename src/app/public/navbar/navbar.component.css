@@ -1,0 +1,25 @@
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.separator{
+    padding: 2.1%;
+}
+.separator-mobile{
+    padding: 5%;
+}
+.header{
+  background-color: rgb(48, 46, 46);
+}
+.active-topbar{
+  /* background-color: rgba(244, 201, 46, 0.962); */
+  color: black;
+}
+
+#societe{
+  font-family: verdana;
+  text-align: center;
+  font-size: 25px;
+  color: rgb(255, 255, 255);
+  text-shadow: rgb(123, 123, 123) 2px 2px 2px;
+}

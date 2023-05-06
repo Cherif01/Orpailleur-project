@@ -1,0 +1,286 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="text-right">
+            <a class="btn btn-outline-primary mx-2" href="#" routerLink="/operation/sales">
+              <span class="micon dw dw-list"></span><span class="mtext mx-2">Liste vente</span>
+            </a>
+            <a class="btn btn-primary mx-2" href="#" routerLink="/operation/add-sales">
+              <span class="micon dw dw-user-11"></span><span class="mtext mx-2">Ajouter une
+                vente</span>
+            </a>
+            <a class="btn btn-outline-primary mx-2" href="#" routerLink="/lot">
+              <span class="micon dw dw-mouse"></span><span class="mtext mx-2">Autres</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable start -->
+      <mat-card class="mat-card">
+        <mat-card-header>
+          <mat-card-subtitle>Remplissez ces informations pour commencer</mat-card-subtitle>
+          <mat-card-title>Initialiser une vente</mat-card-title>
+        </mat-card-header>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+          <!-- Contenu  -->
+          <div class="d-flex justify-content-between flex-wrap align-items-top">
+            <!-- Init sales -->
+            <div class="col">
+              <div class="table-responsive" *ngIf="!venteActif">
+                <h4 class="text-center fw-bold h5 p-3">Choissir un client pour commencer...</h4>
+                <form class="" [formGroup]="InitVente" (ngSubmit)="InitVentePost(InitVente)">
+                  <div class="col">
+                    <mat-form-field appearance="outline" class="w-100 mb-2">
+                      <mat-label>--- Choisir un client ---</mat-label>
+                      <mat-select (valueChange)="playSound()" formControlName="client">
+                        <mat-option>-- Aucun --</mat-option>
+                        <mat-option *ngFor="let c of listClient;" [value]="c.id">
+                          <strong>{{ c.raison_sociale }} | </strong> <span class="text-primary">{{ c.responsable }}</span>
+                        </mat-option>
+                      </mat-select>
+                      <mat-hint>Liste des clients</mat-hint>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col">
+                    <button type="submit" mat-raised-button class="w-100 p-2" color="accent"
+                      [disabled]="!InitVente.valid"><span class="mx-2">
+                        Initialiser la vente </span>
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- SI LA VENTE EST INITIALISER -->
+              <div class="table-responsive" *ngIf="venteActif">
+                <form class="" [formGroup]="FactureClient" (ngSubmit)="FactureClientPOST(FactureClient, 0)">
+                  <div class="col">
+                    <h2 class="text-secondary">Ajout des elements a vendre</h2>
+                    <mat-divider></mat-divider>
+                    <mat-form-field appearance="outline" class="w-100 mb-2">
+                      <mat-label>--- Arrivage (LOT) ---</mat-label>
+                      <mat-select (selectionChange)="lotValue($event.value)" (valueChange)="playSound()">
+                        <mat-option>-- Aucun --</mat-option>
+                        <mat-option *ngFor="let data of listLot" [value]="data.id">
+                          {{data.designation }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-hint>Liste des lots</mat-hint>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col" *ngIf="list">
+                    <!-- ACHAT -->
+                    <mat-form-field appearance="outline" class="w-100 mb-2">
+                      <mat-label>--- Achat (liste) ---</mat-label>
+                      <mat-select (selectionChange)="itemValue($event.value)"
+                        (valueChange)="playSound()">
+                        <mat-option>-- Aucun --</mat-option>
+                        <mat-option *ngFor="let data of AchatList; let i = index" [value]="data.achat.id">
+                          {{ i+1 }} : <span class="text-primary">{{ data.arrivage.designation }}
+                          </span> ==> Achat : 00{{data.achat.id}} >> Pds : {{ data.achat.poids_total }}g >>
+                          (Frs : <span class="small">{{ data.achat.fournisseur.prenom + " " + data.achat.fournisseur.nom
+                            }}</span> )
+                        </mat-option>
+                      </mat-select>
+                      <mat-hint>Liste des achats</mat-hint>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col" *ngIf="listItems">
+                    <mat-form-field appearance="outline" class="w-100 mb-2">
+                      <mat-label>--- Option d'envoie ---</mat-label>
+                      <mat-select (valueChange)="playSound()" formControlName="type" required (selectionChange)="optionValue($event.value)">
+                        <mat-option>-- Aucun --</mat-option>
+                        <mat-option [value]="1">Par barre</mat-option>
+                        <mat-option [value]="2">Global</mat-option>
+                      </mat-select>
+                      <mat-hint>Vendre par ?</mat-hint>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col" *ngIf="Global">
+                    <button type="submit" mat-flat-button class="w-100 p-2" color="primary"
+                      [disabled]="!FactureClient.valid"><span class="mx-2">
+                        Tout envoyer </span>
+                      <mat-icon>person</mat-icon>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Info du lot -->
+            <div class="col">
+              <div class="img-responsive text-center p-3" *ngIf="!listItems;">
+                <div class="" *ngIf="!lotBoolean">
+                  <img src="/assets/image/or.png" class="img-responsive w-50" alt="">
+                </div>
+              </div>
+
+              <div class="col-12 text-center" *ngIf="!listItems;">
+                <div class="p-2 text-center card-body shadow" id="shadow-lot" *ngIf="lotBoolean">
+                  <div class="">
+                    <h2 class="shadow p-2 text-center fw-bold">Information du lot</h2>
+                    <img src="../../../assets/image/caisse.png" class="img-responsive w-25" alt="">
+                    <!-- <hr> -->
+                    <h4 class="fw-bold p-0 m-0">{{ LotUnique.designation }}</h4>
+                    <span class="text-secondary fs-6"><strong>Date - cr&#233;ation le : </strong> {{
+                      LotUnique.created_at
+                      | date: 'dd/MM/YYYY' }}</span>
+                  </div>
+                  <hr>
+                  <div class="text-start">
+                    <table class="table">
+                      <tr>
+                        <th>Nb Barres</th>
+                        <th>:</th>
+                        <td>{{ nb_barre }} <span class="text-danger">Barres</span></td>
+                      </tr>
+                      <tr>
+                        <th>Poids Total</th>
+                        <th>:</th>
+                        <td>{{ PoidTotalLot | number }} g</td>
+                      </tr>
+                      <tr>
+                        <th>Vendu</th>
+                        <th>:</th>
+                        <td>{{ PoidVenduLot }} g</td>
+                      </tr>
+                      <tr>
+                        <th>Reste</th>
+                        <th>:</th>
+                        <td>{{ (PoidTotalLot - PoidVenduLot) | number }} g</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Export Datatable start -->
+              <div class="...-box" *ngIf="listItems">
+                <!-- Facture Detail -->
+                <div class="p-2" *ngIf="Detail">
+                  <!-- table LIST -->
+                  <div class="col-12">
+                    <div class="table-responsive m-0">
+                      <h2 class="text-dark text-center fw-bold display-4">Liste Achat</h2>
+                      <table class="table table-light table-striped table-hover" id="table_shadow">
+                        <thead class="text-primary">
+                          <th>#</th>
+                          <th>Poids</th>
+                          <th>Carrat</th>
+                          <!-- <th>Manquant</th> -->
+                          <th>Action</th>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let data of ItemsList; let i = index">
+                            <td>{{ i+1 }}</td>
+                            <td>{{ data.poids_achat }}</td>
+                            <td>{{ data.carrat_achat }}</td>
+                            <!-- <td class="text-danger text-center fw-bold">- {{ data.manquant }}</td> -->
+                            <td>
+                              <form [formGroup]="FactureClient" (ngSubmit)="FactureClientPOST(FactureClient, data.id)">
+                                <input type="hidden" formControlName="type" [value]="1">
+                                <button type="submit" [disabled]="!FactureClient.valid" mat-raised-button color="primary">
+                                  <span class="dw dw-right-arrow"></span></button>
+                              </form>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <hr>
+                      <div class="col-8 m-0 p-0">
+                        <table class="table table-light">
+                          <tr>
+                            <th>Poids Total</th>
+                            <th>:</th>
+                            <td>{{ Poids_total | number }} g</td>
+                          </tr>
+                          <tr>
+                            <th>Carrat Moyenne</th>
+                            <th>:</th>
+                            <td>{{ (carrat_moyenne / nbBarres).toString().substring(0, 5) }}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Facture GLOBAL -->
+                <div class="p-2" *ngIf="Global">
+                  <!-- table LIST -->
+                  <div class="col-12">
+                    <div class="table-responsive m-0">
+                      <h2 class="text-dark text-center fw-bold display-4">Liste Achat</h2>
+                      <table class="table table-light table-striped table-hover" id="table_shadow">
+                        <thead class="text-primary">
+                          <th>#</th>
+                          <th>Poids</th>
+                          <th>Carrat</th>
+                          <th>Manquant</th>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let data of ItemsList; let i = index">
+                            <td><input type="checkbox" checked mat-checkbox ></td>
+                            <td>{{ data.poids_achat }}</td>
+                            <td>{{ data.carrat_achat }}</td>
+                            <td class="text-danger text-center fw-bold">- {{ data.manquant }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <hr>
+                      <div class="col-8 m-0 p-0">
+                        <table class="table table-light">
+                          <tr>
+                            <th>Poids Total</th>
+                            <th>:</th>
+                            <td>{{ Poids_total | number }} g</td>
+                          </tr>
+                          <tr>
+                            <th>Carrat Moyenne</th>
+                            <th>:</th>
+                            <td>{{ (carrat_moyenne / nbBarres).toString().substring(0, 5) }}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Export Datatable End -->
+
+
+            </div>
+          </div>
+          <!-- FIN - Contenu  -->
+        </mat-card-content>
+        <mat-card-footer>
+          <div class="text-center p-3 fs-6">
+            <marquee behavior="" direction="">
+              Commencer par param&#233;trer une vente pour voir le formulaire d'ajout
+              des achats...
+            </marquee>
+          </div>
+        </mat-card-footer>
+      </mat-card>
+      <!-- Export Datatable End -->
+    </div>
+  </div>
+</div>

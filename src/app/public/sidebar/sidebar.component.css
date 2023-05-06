@@ -1,0 +1,64 @@
+*{
+  font-family: Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.brand-logo{
+  background-color: rgb(238, 238, 238);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-menu{
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+}
+
+.active-sidebar{
+  font-weight: bold;
+  background-color: rgba(247, 166, 44, 0.962);
+}
+
+.panel{
+  background-color: rgb(44, 44, 44);
+}
+
+.panel-header{
+  background-color: rgb(236, 236, 236);
+}
+
+.panel-titre{
+  font-size: 16px;
+  color: rgb(30, 30, 30);
+  /* font-weight: bold; */
+  text-transform: uppercase;
+}
+
+.menu-block{
+  /* background-color: rgb(255, 255, 255); */
+  margin: 0;
+  padding: 0;
+  height: 85vh;
+  overflow-y: scroll;
+  margin-bottom: 10%;
+}
+
+mat-expansion-panel{
+  border-bottom: 0.8px solid rgb(254, 216, 0);
+  background-color: rgb(236, 236, 236);
+  padding: 20px;
+}
+
+.menu-block ul li a{
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  width: 100%;
+}
+
+.menu-block ul li a:hover{
+  background-color: rgba(240, 150, 15, 0.962);
+}
+
