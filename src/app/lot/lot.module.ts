@@ -14,7 +14,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { AttributionComponent } from './attribution/attribution.component';
 import { MatSelectModule } from '@angular/material/select';
 
 
@@ -22,8 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
   declarations: [
     AddLotComponent,
     ListLotComponent,
-    DetailLotComponent,
-    AttributionComponent
+    DetailLotComponent
   ],
   imports: [
     CommonModule,

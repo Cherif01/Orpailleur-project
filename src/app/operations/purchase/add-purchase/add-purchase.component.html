@@ -82,7 +82,7 @@
                     </mat-form-field>
                   </div>
 
-                  <button type="submit" mat-raised-button class="w-100" color="accent" [disabled]="!Achat.valid">
+                  <button type="submit" mat-raised-button class="w-100" color="accent" (click)="Actualiser()" [disabled]="!Achat.valid">
                     <span class="mx-2"> Enregistrer </span>
                     <mat-icon>add</mat-icon>
                   </button>
@@ -94,7 +94,7 @@
             <div class="col">
               <div class="d-flex justify-content-between align-items-center">
                 <div class="col text-start">
-                  <button mat-button colors="primary">Facture provisoire</button>
+                  <button mat-raised-button colors="primary" (click)="Actualiser()"><span class="text-success fw-bold">Lot ouvert : </span> {{ listLot.designation }}</button>
                 </div>
                 <div class="col text-end">
                   <form [formGroup]="validerAchatForm" (ngSubmit)="updateAchat(validerAchatForm)">
@@ -118,7 +118,7 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let d of dataItemsList; let i=index;">
-                      <td class="text-center">{{i+1}} / {{ PTotal_this }}</td>
+                      <td class="text-center">{{i+1}}</td>
                       <td>{{d.poids_achat}}</td>
                       <td>{{d.carrat_achat}}</td>
                       <td class="text-center">22</td>

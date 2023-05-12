@@ -30,6 +30,24 @@ export class VendorServiceService {
   }
 
 
+  getDetailPurchaseItems(id_achat: any) {
+    return this.http.get<any[]>(BASE_URL.concat(LINK_BASE, "/", T_ITEMS, "/?id_achat=", id_achat))
+  }
+
+   // UPDATE TRUE ITEmS
+   updateRowsPurchase2(api:string, suffixUrl: string, data: any) {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.put(`${BASE_URL}${api}/${suffixUrl}/${data}/`, { headers });
+  }
+
+
+  // UPDATE
+  mettreAJourRessource2(ressource: any) {
+    const url = `${BASE_URL}api/achat_items/${ressource.id}/`;
+    return this.http.put(url, ressource);
+  }
+
+
   // UPDATE FIXING
   mettreAJourRessource(ressource: any) {
     const url = `${BASE_URL}api/fixing/${ressource.id}/`;

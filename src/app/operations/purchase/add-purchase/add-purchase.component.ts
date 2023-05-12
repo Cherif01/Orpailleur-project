@@ -21,9 +21,9 @@ export class AddPurchaseComponent implements OnInit {
   dataItemsList: any[] = []
 
   Achat = this.fb.group({
-    poids_achat: [, [Validators.required,Validators.min(0)]],
-    carrat_achat: [, [Validators.required,Validators.min(10),Validators.max(24)]],
-    manquant: [0,[Validators.required,Validators.min(0)]],
+    poids_achat: [, [Validators.required, Validators.min(0)]],
+    carrat_achat: [, [Validators.required, Validators.min(10), Validators.max(24)]],
+    manquant: [0, [Validators.required, Validators.min(0)]],
     achat: [0],
     created_by: [1, [Validators.required]]
   })
@@ -67,11 +67,11 @@ export class AddPurchaseComponent implements OnInit {
     // ID_FOURNISSEUR EN GET
     this.ID = this.activeroute.snapshot.params['id'];
 
-    // List achat items
-    this.getAchatItems();
+    // // List achat items
+    this.Actualiser();
     // Get
-    this.getOneFournisseurAchat();
     this.getAchatList();
+    this.getLot();
   }
 
   getAchatList(): void {
@@ -99,19 +99,34 @@ export class AddPurchaseComponent implements OnInit {
   //
   PTotal_this: any = 0;
   CAR_Total_this: any = 0;
-  getAchatItems() {
-    this.dataItemsList = []
-    this.service.getList('api', 'achat_items').subscribe((resultat: any[]) => {
-      this.dataItems = resultat.sort((a, b) => b.value - a.value);;
-      resultat.forEach((elem: any) => {
-        // console.log(elem);
-        if (elem['achat'].slug == this.slugSession) {
-          this.PTotal_this += elem.poids_achat
-          this.dataItemsList.push(elem);
-          this.CAR_Total_this += (elem.poids_achat * elem.carrat_achat)
-        }
+  getItems(): any {
+    this.purchaseService.getPurchaseOnline(this.ID)
+      .subscribe({
+        next: (dataItems => {
+          if (dataItems.length > 0) {
+            this.dataItemsList.splice(0, this.dataItemsList.length)
+            this.PTotal_this = 0
+            this.CAR_Total_this = 0
+            // console.log(dataItems);
+            dataItems.forEach((item) => {
+              this.PTotal_this += item.poids_achat
+              this.CAR_Total_this += item.poids_achat * item.carrat_achat
+            })
+            this.dataItemsList = dataItems
+            // this.snackBar.open("Nouvelle barre ajouter !", "Okey")
+          } else {
+            // this.snackBar.open("Aucune barres enregistrer au paravant vide !", "Okey")
+          }
+        }),
+        error: (error => {
+          console.log(error);
+        })
       })
-    })
+  }
+
+  Actualiser(): void {
+    // List achat items
+    this.getItems();
   }
 
   // Recuper le dernier achat
@@ -122,12 +137,13 @@ export class AddPurchaseComponent implements OnInit {
       this.dataSource.push(this.Achat.value);
       this.Achat.controls.achat.setValue(this.Id_achat)
       //Envoyer dans la Base
+      this.dataItemsList = []
       this.purchaseService.achatAddItemsPost(form.value).subscribe({
         next: (response: any) => {
-          this.dataItemsList.push(response)
           // console.log(response);
           console.log("Ligne placee avec success... ")
           this.resetForm(form, ["poids_achat", "carrat_achat", "manquant"]);
+          this.Actualiser()
         },
         error: (err: any) => console.log(err)
       })
@@ -143,7 +159,31 @@ export class AddPurchaseComponent implements OnInit {
     })
   }
 
+  // GET Arrivage
+  listLot: any
+  getLot() {
+    this.purchaseService.getList('api', 'arrivage').subscribe({
+      next: (data) => {
+        const todayDate = new Date().toLocaleDateString();
+        // console.log(todayDate);
+        data.forEach((item: any) => {
+          const dbDate = new Date(item.created_at).toLocaleDateString();
+          // console.log(dbDate);
+          if (todayDate === dbDate) {
+            // console.log("Egale");
+            this.listLot = item
+          }
+        })
+      }
+    })
+  }
+
   // update Achat
+  sendForm = new FormGroup({
+    arrivage: new FormControl(0),
+    achat: new FormControl(0)
+  })
+
   updateAchat(form: FormGroup): void {
     if (form.valid) {
       // console.log(this.Id_achat);
@@ -151,17 +191,40 @@ export class AddPurchaseComponent implements OnInit {
       this.validerAchatForm.controls.poids_total.setValue(this.PTotal_this)
       this.validerAchatForm.controls.carrat_moyen.setValue((this.CAR_Total_this / this.PTotal_this))
       // this.validerAchatForm.controls.fournisseur.setValue(this.ID)
-      console.log(form.value);
+      // console.log(form.value);
       this.purchaseService.mettreAJourRessource(form.value)
         .subscribe({
           next: (response) => {
-            this.snackBar.open("Cet achat est maintenant valider avec succès!", "Okay", {
-              duration: 3000,
-              horizontalPosition: "right",
-              verticalPosition: "top",
-              panelClass: ['bg-success', 'text-white']
+            // this.snackBar.open("Cet achat est maintenant valider avec succès!", "Okay", {
+            //   duration: 3000,
+            //   horizontalPosition: "right",
+            //   verticalPosition: "top",
+            //   panelClass: ['bg-success', 'text-white']
 
+            // })
+            // AJout dans le lot ouvert
+            this.sendForm.controls.arrivage.setValue(this.listLot.id);
+            this.sendForm.controls.achat.setValue(this.Id_achat);
+            // console.log(this.sendForm);
+            this.purchaseService.PostElement('api', 'attribution', this.sendForm.value).subscribe({
+              next: (response) => {
+                this.snackBar.open("Cet achat est maintenant dans le lot : " + this.listLot.designation + " !", "Okay", {
+                  duration: 4000,
+                  horizontalPosition: "center",
+                  verticalPosition: "top",
+                  panelClass: ['bg-success', 'text-white']
+                })
+              },
+              error: (err) => {
+                this.snackBar.open("Echec lors de l'attribution : (Clicker sur un achat...), Veuillez reessayer!", "Okay", {
+                  duration: 3000,
+                  horizontalPosition: "right",
+                  verticalPosition: "bottom",
+                  panelClass: ['bg-danger', 'text-white']
+                })
+              }
             })
+
             this.router.navigate(['/operation/facturepurchase/' + this.Id_achat])
           },
           error: (err) => {
@@ -209,6 +272,7 @@ export class AddPurchaseComponent implements OnInit {
                 if (value.id !== id) {
                   tab.push(value)
                 }
+                this.Actualiser()
               });
               this.dataItemsList = tab;
             },

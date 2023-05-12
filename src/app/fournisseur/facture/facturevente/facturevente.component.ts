@@ -22,9 +22,10 @@ export class FactureventeComponent implements OnInit {
     fournisseur: [0],
     achat_items: [],
     achat: [],
+    poids_select: [],
     fixing: [],
     type_envoie: [0],
-    checked: [false],
+    // checked: [false],
     created_by: [1, Validators.required]
   })
 
@@ -91,9 +92,9 @@ export class FactureventeComponent implements OnInit {
   }
 
 
-  ID_fournisseur: any
+  ID_fournisseur: number = 0
   Name_fournisseur: any = ''
-  Adresse_fournisseur: any
+  Adresse_fournisseur: any = ''
   poids_fixer: any
   fixing_bourse: any
   discount: any
@@ -116,72 +117,37 @@ export class FactureventeComponent implements OnInit {
         this.discount = data.discompte
         this.id_fixing = data.id,
 
-          // GET ACHAT
-          this.serviceVendor.getList('api', 'achat').subscribe({
-            next: (data_) => {
-              data_.forEach((item) => {
-
-                // Controle de la validation de l'achat
-                this.serviceVendor.getList('api', 'fixing_detail').subscribe({
-                  next: (fixItem: any) => {
-                    // console.log(fixItem);
-                    fixItem.forEach((itemFix: any) => {
-                      // SI LE TYPE D'ENVOIE EST : UN A UN
-                      if (itemFix.type_envoie == 1) {
-                        if (itemFix.achat_items.achat.id == item.id) {
-                          // console.log(itemFix);
-                          this.sommeItemsInFixingDetails += itemFix.achat_items.poids_achat
-                          this.FixingEncours = itemFix.fixing;
-
-                          if (this.id_fixing == itemFix.fixing) {
-                            this.serviceVendor.getElementById('api', 'achat_items', itemFix.achat_items.id)
-                              .subscribe({
-                                next: ((fix) => {
-                                  this.poidsAttribuer += fix.poids_achat
-                                })
-                              })
-                          }
-                        }
-                      } else {
-                        // ENVOIE GLOBAL
-                        if (itemFix.achat == item.id) {
-                          console.log(itemFix);
-                          this.sommeItemsInFixingDetails += itemFix.achat_items.poids_achat
-                          this.FixingEncours = itemFix.fixing;
-                          if (this.id_fixing == itemFix.fixing) {
-                            this.serviceVendor.getList('api', 'achat_items')
-                              .subscribe({
-                                next: ((fix) => {
-                                  fix.forEach((elem) => {
-                                    if (itemFix.achat == elem.achat.id) {
-                                      this.poidsAttribuer += elem.poids_achat
-                                    }
-                                  })
-                                })
-                              })
-                          }
-                        }
-                      }
-                    })
-
-                    // Liste des achat valid
-                    if (item.poids_total > this.sommeItemsInFixingDetails) {
-                      if (item.fournisseur.id == data.fournisseur.id) {
-                        this.ListAchatThis.push(item)
-                      }
-                    }
-                  }
-                })
-                //
-                // Fin recuperation item-Achat
+          // Controle du fixing dans fixing_detail
+          this.serviceVendor.getAllByClause('api', 'fixing_detail', 'fixing', this.id_fixing)
+            .subscribe({
+              next: ((data: any) => {
+                console.log(data);
               })
-            }
+            })
+
+        this.serviceVendor.getAllByClause('api', 'achat', 'id_fournisseur', data.fournisseur.id)
+          .subscribe({
+            next: (data) => {
+              // console.log("ACHAT FOURNISSEUR")
+              console.table(data)
+              data.forEach((item: any) => {
+                this.ListAchatThis.push(item);
+              })
+            },
+            error: (err) => console.log(err)
           })
       },
       error: (err) => console.log(err)
     })
 
   }
+
+
+
+  // Get Achat NON VALIDER
+  // getAchatList(): void {
+  //   this.serviceVendor.getElementById('api', 'f', 1);
+  // }
 
 
 
@@ -200,35 +166,54 @@ export class FactureventeComponent implements OnInit {
   TabExist: any = []
   myArray: any = []
   infoAchatView: any = {}
-  viewDetailAchat(slugAchatSend: any, idAchat: any): void {
-    // id_Achat : envoye
+  viewDetailAchat(idAchat: any): void {
+    // id_Achat : envoyer
     this.idAchat = idAchat
-    this.listItems.splice(0, this.listItems.length)
-    this.infoAchatView = this.ListAchatThis.find(v=>v.id === idAchat);
-    // Recuperation des items de l'achat
-    this.serviceVendor.getList('api', 'fixing_detail').subscribe({
-      next: (data: any) => {
-        // console.log(data);
-        data.forEach((itemss: any) => {
-          this.TabExist.push(itemss.achat_items.id)
-        });
-        this.serviceVendor.getList('api', 'achat_items')
-          .subscribe({
-            next: (a) => {
-              a.forEach((itm, index) => {
-                // console.log(a[index]);
-                // console.log(a);
+    // console.log(idAchat);
 
-                if (!this.TabExist.includes(itm.id)) {
-                  if (a[index].achat.id == this.infoAchatView.id) {
-                    this.listItems.push(a[index]);
-                  }
-                }
-              })
-            }
-          })
-      }
-    })
+    this.listItems.splice(0, this.listItems.length)
+    this.infoAchatView = this.ListAchatThis.find(v => v.id === idAchat);
+
+    this.serviceVendor.getAllByClause('api', 'fixing_detail', 'id_achat', idAchat)
+      .subscribe({
+        next: (data) => {
+          this.serviceVendor.getDetailPurchaseItems(idAchat)
+            .subscribe({
+              next: (items) => {
+                items.forEach((elem, index) => {
+                  // console.log(items),
+                  this.listItems.push(items[index])
+                })
+              },
+              error: (err) => console.log(err)
+            })
+        },
+        error: (err) => console.log(err)
+      })
+
+
+    // Recuperation des items de l'achat
+    // this.serviceVendor.getList('api', 'fixing_detail').subscribe({
+    //   next: (data: any) => {
+    //     // console.log(data);
+    //     data.forEach((itemss: any) => {
+    //       this.TabExist.push(itemss.achat_items.id)
+    //     });
+    //     this.serviceVendor.getList('api', 'achat_items')
+    //       .subscribe({
+    //         next: (a) => {
+    //           a.forEach((itm, index) => {
+    //             // console.log(a[index]);
+    //             if (!this.TabExist.includes(itm.id)) {
+    //               if (a[index].achat.id == this.infoAchatView.id) {
+    //                 this.listItems.push(a[index]);
+    //               }
+    //             }
+    //           })
+    //         }
+    //       })
+    //   }
+    // })
   }
 
   // UPDATE FIXE POIDS
@@ -244,7 +229,7 @@ export class FactureventeComponent implements OnInit {
             this.snackBar.open("Fixing MAJ avec succès!", "Okay", {
               duration: 3000,
               horizontalPosition: "right",
-              verticalPosition: "top",
+              verticalPosition: "bottom",
               panelClass: ['bg-success', 'text-white']
 
             })
@@ -299,35 +284,39 @@ export class FactureventeComponent implements OnInit {
 
 
   // ADD FIXING FOR POIDS
-  PFix(form: FormGroup): void {
+  PFix(form: FormGroup, idAchat: number): void {
     if (form.valid) {
+      this.infoAchatView = this.ListAchatThis.find(v => v.id === idAchat);
       console.log("Envoie par poids saisi...");
-      this.FactureFixing.controls.achat_items.setValue(this.idAchat)
-      this.FactureFixing.controls.achat.setValue(this.infoAchatView.id)
-      this.FactureFixing.controls.fixing.setValue(this.id_fixing)
-      this.FactureFixing.controls.type_envoie.setValue(form.value.poids_select)
+      form.value.achat = this.infoAchatView.id
+      form.value.fixing = this.id_fixing
+      form.value.fournisseur = this.infoAchatView.fournisseur.id
+      form.value.type_envoie = 3
+      this.FactureFixing.controls.poids_select.setValue(form.value.poids_select)
       console.log(form.value);
-      // this.serviceVendor.Add('api', 'fixing', form.value)
-      //   .subscribe({
-      //     next: (response) => {
-      //       this.snackBar.open("Fixing ajouter avec succès!", "Okay", {
-      //         duration: 3000,
-      //         horizontalPosition: "right",
-      //         verticalPosition: "top",
-      //         panelClass: ['bg-success', 'text-white']
 
-      //       })
-      //       this.router.navigate(['/operation/facture-fournisseur/' + this.ID_fournisseur])
-      //     },
-      //     error: (err) => {
-      //       this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
-      //         duration: 3000,
-      //         horizontalPosition: "right",
-      //         verticalPosition: "bottom",
-      //         panelClass: ['bg-danger', 'text-white']
-      //       })
-      //     }
-      //   })
+      this.serviceVendor.Add('api', 'fixing_detail', form.value)
+        .subscribe({
+          next: (response) => {
+            this.snackBar.open("Achat par poids ajouter avec succès!", "Okay", {
+              duration: 3000,
+              horizontalPosition: "right",
+              verticalPosition: "bottom",
+              panelClass: ['bg-success', 'text-white']
+
+            })
+            this.router.navigate(['/operation/facture-fournisseur/' + this.ID_fournisseur])
+            form.reset()
+          },
+          error: (err) => {
+            this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
+              duration: 3000,
+              horizontalPosition: "right",
+              verticalPosition: "bottom",
+              panelClass: ['bg-danger', 'text-white']
+            })
+          }
+        })
 
     }
   }
@@ -352,24 +341,25 @@ export class FactureventeComponent implements OnInit {
       this.PTOTAL += poids;
 
       if (this.allAdd == true) {
-        this.listItems.forEach(element => {
-          this.FactureFixing.controls.achat_items.setValue(this.idAchat)
-          this.FactureFixing.controls.achat.setValue(this.idAchat)
-          this.FactureFixing.controls.fixing.setValue(this.id_fixing)
-          this.FactureFixing.controls.type_envoie.setValue(2)
-        });
-        console.log("envoie de tout les elements");
-        this.FactureFixing.controls.achat_items.setValue(this.idAchat)
+        // this.listItems.forEach(element => {
+        //   // this.FactureFixing.controls.achat_items.setValue(null)
+        //   this.FactureFixing.controls.achat.setValue(this.idAchat)
+        //   this.FactureFixing.controls.fixing.setValue(this.id_fixing)
+        //   this.FactureFixing.controls.type_envoie.setValue(2)
+        // });
+        console.log("GLOBAL SEND...");
+        this.FactureFixing.controls.achat_items.setValue(null)
         this.FactureFixing.controls.achat.setValue(this.idAchat)
         this.FactureFixing.controls.fixing.setValue(this.id_fixing)
         this.FactureFixing.controls.type_envoie.setValue(2)
       } else if (this.allAdd == false) {
-        console.log("Un a un...");
-        this.FactureFixing.controls.achat.setValue(null)
+        console.log("ONE BY ONE...");
+        this.FactureFixing.controls.achat.setValue(this.idAchat)
         this.FactureFixing.controls.achat_items.setValue(itemsID)
         this.FactureFixing.controls.fixing.setValue(this.id_fixing)
         this.FactureFixing.controls.type_envoie.setValue(1)
       } else { }
+
       this.FactureFixing.controls.fournisseur.setValue(this.ID_fournisseur)
       console.log(form.value);
       this.serviceVendor.Add('api', 'fixing_detail', form.value).subscribe({
@@ -380,7 +370,6 @@ export class FactureventeComponent implements OnInit {
             verticalPosition: "bottom",
             panelClass: ['bg-success', 'text-white']
           })
-          // this.state = items
         },
         error: (err) => {
           this.snackBar.open("Error pendant l'envoie, Veuillez reessayer!", "D'accord !", {

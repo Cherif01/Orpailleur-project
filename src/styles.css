@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+@import 'animate.css';
+
 *{
   margin: 0;
   padding: 0;
@@ -8,6 +10,19 @@
 }
 html, body {
   height: 100%;
+}
+
+.title {
+  display: inline-block;
+  margin: 0 0.5rem;
+
+  animation: zoomIn; /* referring directly to the animation's @keyframe declaration */
+  animation-duration: 2s; /* don't forget to set a duration! */
+}
+
+.accordion-item{
+  animation: zoomIn; /* referring directly to the animation's @keyframe declaration */
+  animation-duration: 2s; /* don't forget to set a duration! */
 }
 
 ::-webkit-scrollbar {
@@ -24,10 +39,15 @@ body {
   flex: 1 1 auto;
 }
 
-#table_shadow{
-  /* box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px; */
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+#table_shadow thead, #matTable thead{
+  background-color: rgb(13, 10, 57);
 }
+
+#table_shadow th, #matTable th{
+  color: white;
+  font-size: 16px;
+}
+
 
 .separator-25{
   margin: 25px;
@@ -35,9 +55,12 @@ body {
 
 
 #text{
-  /* font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; */
   text-align: center;
   font-size: 25px;
   color: rgb(0, 255, 255);
   text-shadow: rgb(123, 123, 123) 2px 2px 2px;
+}
+
+.dw{
+  color: white;
 }

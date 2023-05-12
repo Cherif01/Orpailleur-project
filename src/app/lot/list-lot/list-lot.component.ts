@@ -13,9 +13,9 @@ export class ListLotComponent implements OnInit {
 
   constructor(private serviceLot: LotService, public location: Location) { }
   title = "Lot"
-  listLot: any
+  listLotHistory: any[] = [];
+  listLot: any[] = [];
   listAttribution: any
-  currentDate = new Date();
 
   ngOnInit(): void {
     this.getAttribution()
@@ -37,7 +37,19 @@ export class ListLotComponent implements OnInit {
   getLot() {
     this.serviceLot.getList(LINK_BASE, 'arrivage').subscribe({
       next: (data) => {
-        this.listLot = data
+        const todayDate = new Date().toLocaleDateString();
+        console.log(todayDate);
+        data.forEach((item: any) => {
+          const dbDate = new Date(item.created_at).toLocaleDateString();
+          // console.log(dbDate);
+          if (todayDate == dbDate) {
+            // console.log("Egale");
+            this.listLot.push(item)
+          }else{
+            this.listLotHistory.push(item)
+            // console.log("Different");
+          }
+        })
       }
     })
   }

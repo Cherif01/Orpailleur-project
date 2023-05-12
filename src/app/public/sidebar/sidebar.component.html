@@ -1,8 +1,8 @@
 <div class="right-sidebar">
   <div class="sidebar-title">
     <h3 class="weight-600 font-16 text-blue">
-      Parametres
-      <span class="btn-block font-weight-400 font-12">Parametres d'interface utilisateur</span>
+      Layout Settings
+      <span class="btn-block font-weight-400 font-12">User Interface Settings</span>
     </h3>
     <div class="close-sidebar" data-toggle="right-sidebar-close">
       <i class="icon-copy ion-close-round"></i>
@@ -10,79 +10,26 @@
   </div>
   <div class="right-sidebar-body customscroll">
     <div class="right-sidebar-body-content">
-      <h4 class="weight-600 font-18 pb-10">Arri&#232;re plan de la barre de navigation</h4>
+      <h4 class="weight-600 font-18 pb-10">Header Background</h4>
       <div class="sidebar-btn-group pb-30 mb-10">
         <a href="javascript:void(0);" class="btn btn-outline-primary header-white active">White</a>
         <a href="javascript:void(0);" class="btn btn-outline-primary header-dark">Dark</a>
       </div>
 
-      <h4 class="weight-600 font-18 pb-10">Arri&#232;re plan de la barre de gauche</h4>
+      <h4 class="weight-600 font-18 pb-10">Sidebar Background</h4>
       <div class="sidebar-btn-group pb-30 mb-10">
         <a href="javascript:void(0);" class="btn btn-outline-primary sidebar-light ">White</a>
         <a href="javascript:void(0);" class="btn btn-outline-primary sidebar-dark active">Dark</a>
       </div>
 
-      <h4 class="weight-600 font-18 pb-10">Menu Dropdown Icon</h4>
-      <div class="sidebar-radio-group pb-10 mb-10">
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="sidebaricon-1" name="menu-dropdown-icon" class="custom-control-input"
-            value="icon-style-1" checked="">
-          <label class="custom-control-label" for="sidebaricon-1"><i class="fa fa-angle-down"></i></label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="sidebaricon-2" name="menu-dropdown-icon" class="custom-control-input"
-            value="icon-style-2">
-          <label class="custom-control-label" for="sidebaricon-2"><i class="ion-plus-round"></i></label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="sidebaricon-3" name="menu-dropdown-icon" class="custom-control-input"
-            value="icon-style-3">
-          <label class="custom-control-label" for="sidebaricon-3"><i class="fa fa-angle-double-right"></i></label>
-        </div>
-      </div>
 
-      <h4 class="weight-600 font-18 pb-10">Menu List Icon</h4>
-      <div class="sidebar-radio-group pb-30 mb-10">
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="sidebariconlist-1" name="menu-list-icon" class="custom-control-input"
-            value="icon-list-style-1" checked="">
-          <label class="custom-control-label" for="sidebariconlist-1"><i class="ion-minus-round"></i></label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="sidebariconlist-2" name="menu-list-icon" class="custom-control-input"
-            value="icon-list-style-2">
-          <label class="custom-control-label" for="sidebariconlist-2"><i class="fa fa-circle-o"
-              aria-hidden="true"></i></label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="sidebariconlist-3" name="menu-list-icon" class="custom-control-input"
-            value="icon-list-style-3">
-          <label class="custom-control-label" for="sidebariconlist-3"><i class="dw dw-check"></i></label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="sidebariconlist-4" name="menu-list-icon" class="custom-control-input"
-            value="icon-list-style-4" checked="">
-          <label class="custom-control-label" for="sidebariconlist-4"><i class="icon-copy dw dw-next-2"></i></label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="sidebariconlist-5" name="menu-list-icon" class="custom-control-input"
-            value="icon-list-style-5">
-          <label class="custom-control-label" for="sidebariconlist-5"><i class="dw dw-fast-forward-1"></i></label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="sidebariconlist-6" name="menu-list-icon" class="custom-control-input"
-            value="icon-list-style-6">
-          <label class="custom-control-label" for="sidebariconlist-6"><i class="dw dw-next"></i></label>
-        </div>
-      </div>
-
-      <div class="reset-options pt-30 text-center">
-        <button class="btn btn-danger" id="reset-settings">Reinitialiser les param&#232;tres</button>
+      <div class="reset-options pt-5 text-center">
+        <button class="btn p-2 btn-danger" id="reset-settings">Reset Settings</button>
       </div>
     </div>
   </div>
 </div>
-<!-- fin settings -->
+
 
 
 <div class="left-side-bar bg-transparent">
@@ -95,397 +42,280 @@
       <i class="icon-close-round"></i>
     </div>
   </div>
-  <!-- <hr> -->
+  <hr>
   <div class="menu-block mt-lg-4 mt-md-4">
     <!-- <hr> -->
     <div class="sidebar-menu">
       <ul id="menu" class="w-100">
+        <!-- OPERATION -->
+        <div class="accordion" id="sidebarCollapseParent">
 
-        <mat-accordion>
-          <mat-expansion-panel class="rounded-0 p-0 panel">
-            <mat-expansion-panel-header class="panel-header bg-light">
-              <mat-panel-title class="panel-titre">
-                <span> Op&#233;ration </span>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="div">
-              <li class="">
-                <a routerLink="home" routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow"
-                  (click)="playSound()">
-                  <span class="micon dw dw-house text-light"></span>
-                  <span class="mtext">Tableau de bord</span>
-                </a>
-              </li>
-              <li class="w-100 p-0">
-                <a href="#" routerLink="lot/list-lot" routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow"
-                  (click)="playSound()">
-                  <i class="micon dw dw-trolley text-light"></i>
-                  <span class="mtext">Lot</span>
-                </a>
-              </li>
-              <li>
-                <a routerLink="operation/purchase" href="#" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-truck"></i>
-                  <span class="mtext">Achat</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="/etat-entreprise/entrer-caisse" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-enter-1"></i>
-                  <span class="mtext">Entrer de caisse</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="/etat-entreprise/sortie-caisse" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-logout-1"></i>
-                  <span class="mtext">Sortie de caisse</span>
-                </a>
-              </li>
+          <div class="accordion-item p-0 m-0">
+            <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#operation" aria-expanded="true" aria-controls="operation">
+              <span class="text-uppercase">Op&#233;ration</span>
+            </button>
+            <div id="operation" class="accordion-collapse collapse" aria-labelledby="headingOne"
+              data-bs-parent="#sidebarCollapseParent">
+              <div class="accordion-body panel p-0">
+                <!-- <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow. -->
+                <div class="div">
+                  <li class="p-0">
+                    <a routerLink="home" routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow"
+                      (click)="playSound()">
+                      <i class="micon dw dw-house"></i>
+                      <span class="mtext">Tableau de bord</span>
+                    </a>
+                  </li>
+                  <li class="w-100 p-0">
+                    <a href="#" routerLink="lot/list-lot" routerLinkActive="active-sidebar"
+                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      <i class="micon dw dw-trolley"></i>
+                      <span class="mtext">Lot</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a routerLink="operation/purchase" href="#" routerLinkActive="active-sidebar"
+                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      <i class="micon dw dw-wheat"></i>
+                      <span class="mtext">Achat</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" routerLink="/etat-entreprise/entrer-caisse" routerLinkActive="active-sidebar"
+                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      <i class="micon dw dw-enter-1"></i>
+                      <span class="mtext">Entrer de caisse</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" routerLink="/etat-entreprise/sortie-caisse" routerLinkActive="active-sidebar"
+                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      <i class="micon dw dw-logout-1"></i>
+                      <span class="mtext">Sortie de caisse</span>
+                    </a>
+                  </li>
+                </div>
+              </div>
             </div>
-          </mat-expansion-panel>
-        </mat-accordion>
+          </div>
 
-        <!-- FIXING -->
-        <mat-accordion>
-          <mat-expansion-panel class="rounded-0 p-0 panel">
-            <mat-expansion-panel-header class="panel-header bg-light">
-              <mat-panel-title class="panel-titre">
-                <span> Etat </span>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="div">
-              <li>
-                <a routerLink="/etat-entreprise/stock-principale" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-compass-1"></i>
-                  <span class="mtext">Stock principale</span>
-                </a>
-              </li>
-              <li>
-                <a routerLink="/etat-entreprise/caisse-principale" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-compass-1"></i>
-                  <span class="mtext">Caisse principale</span>
-                </a>
-              </li>
+          <!-- ETAT / SITUATION -->
+          <div class="accordion-item p-0 m-0">
+            <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#etat" aria-expanded="true" aria-controls="etat">
+              <span>SITUATION</span>
+            </button>
+            <div id="etat" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+              data-bs-parent="#sidebarCollapseParent">
+              <div class="accordion-body panel p-0">
+                <div class="div">
+                  <li>
+                    <a routerLink="/etat-entreprise/stock-principale" class="dropdown-toggle no-arrow"
+                      routerLinkActive="active-sidebar" (click)="playSound()">
+                      <i class="micon dw dw-analytics-11"></i>
+                      <span class="mtext">Stock principale</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a routerLink="/etat-entreprise/caisse-principale" class="dropdown-toggle no-arrow"
+                      routerLinkActive="active-sidebar" (click)="playSound()">
+                      <i class="micon dw dw-analytics-14"></i>
+                      <span class="mtext">Caisse principale</span>
+                    </a>
+                  </li>
+                </div>
+              </div>
             </div>
-          </mat-expansion-panel>
-        </mat-accordion>
+          </div>
 
-
-        <!-- FOURNISSEUR -->
-        <mat-accordion>
-          <mat-expansion-panel class="rounded-0 p-0 panel">
-            <mat-expansion-panel-header class="panel-header bg-light">
-              <mat-panel-title class="panel-titre">
-                <span> FOURNISSEUR </span>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="div py-1">
-              <li>
-                <a href="#" routerLink="fournisseur/add-fournisseur" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-add text-light"></i>
-                  <span class="mtext">Ajouter</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="fournisseur/list-fournisseur" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-user2 text-light"></i>
-                  <span class="mtext">Listes & Comptes</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="operation/facture-fournisseur" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-file text-light"></i>
-                  <span class="mtext">Facturier</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="operation/create-facture" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-money-1"></i>
-                  <span class="mtext">Facture vente</span>
-                </a>
-              </li>
-              <!-- <li>
-                <a href="#" routerLink="fournisseur/encaissement" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-enter-1"></i>
-                  <span class="mtext">Retour en caisse</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="fournisseur/decaissement" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-logout-1"></i>
-                  <span class="mtext">D&#233;caissement</span>
-                </a>
-              </li> -->
-              <li>
-                <a href="#" routerLink="fournisseur/stock" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-shopping-bag"></i>
-                  <span class="mtext">Etat du stock</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="fournisseur/situation-monetaire" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-money-2"></i>
-                  <span class="mtext">Situation mon&#233;taire</span>
-                </a>
-              </li>
+          <!-- FOURNISSEUR -->
+          <div class class="accordion-item p-0 m-0">
+            <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#fournisseur" aria-expanded="true" aria-controls="fournisseur">
+              <span>FOURNISSEUR</span>
+            </button>
+            <div id="fournisseur" class="accordion-collapse collapse" aria-labelledby="headingFournisseur"
+              data-bs-parent="#sidebarCollapseParent">
+              <div class="accordion-body panel p-0">
+                <div class="div">
+                  <li>
+                    <a href="#" routerLink="fournisseur/add-fournisseur" routerLinkActive="active-sidebar"
+                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      <i class="micon dw dw-add"></i>
+                      <span class="mtext">Ajouter</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" routerLink="fournisseur/list-fournisseur" routerLinkActive="active-sidebar"
+                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      <i class="micon dw dw-user2"></i>
+                      <span class="mtext">Listes & Comptes</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" routerLink="operation/facture-fournisseur" routerLinkActive="active-sidebar"
+                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      <i class="micon dw dw-file"></i>
+                      <span class="mtext">Facturier</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" routerLink="operation/create-facture" routerLinkActive="active-sidebar"
+                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      <i class="micon dw dw-folder-28"></i>
+                      <span class="mtext">Facture vente</span>
+                    </a>
+                  </li>
+                </div>
+              </div>
             </div>
-          </mat-expansion-panel>
-        </mat-accordion>
+          </div>
 
 
-        <!-- CLIENT -->
-        <mat-accordion>
-          <mat-expansion-panel class="rounded-0 p-0 panel">
-            <mat-expansion-panel-header class="panel-header bg-light">
-              <mat-panel-title class="panel-titre text-uppercase">
-                <span> MES CLIENT </span>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="div">
-              <li>
-                <a href="#" routerLink="client/list-client" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-user-1 text-light"></i>
-                  <span class="mtext">Liste Client</span>
-                </a>
-              </li>
-              <!-- <li>
-                <a href="#" routerLink="operation/list-fixing-client" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-file2 text-light"></i>
-                  <span class="mtext">Fixing Client</span>
-                </a>
-              </li> -->
-              <!-- <li>
-                <a href="#" routerLink="operation/facture-client" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-file text-light"></i>
-                  <span class="mtext">Facture CLient</span>
-                </a>
-              </li> -->
-              <li>
-                <a routerLink="operation/sales" href="#" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <!-- <i class="micon dw dw-curved-arrow1 text-light"></i> -->
-                  <i class="micon dw dw-truck"></i>
-                  <span class="mtext">Expedition</span>
-                </a>
-                <li>
-                  <a routerLink="operation/situation-client" href="#" routerLinkActive="active-sidebar"
-                    class="dropdown-toggle no-arrow" (click)="playSound()">
-                    <i class="micon dw dw-curved-arrow1 text-light"></i>
-                    <span class="mtext">Situation</span>
-                  </a>
-              </li>
+          <!-- CLIENT -->
+          <div class class="accordion-item p-0 m-0">
+            <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#client" aria-expanded="true" aria-controls="client">
+              <span>CLIENTS</span>
+            </button>
+            <div id="client" class="accordion-collapse collapse" aria-labelledby="headingClient"
+              data-bs-parent="#sidebarCollapseParent">
+              <div class="accordion-body panel p-0">
+                <div class="div">
+                  <li>
+                    <a href="#" routerLink="client/list-client" routerLinkActive="active-sidebar"
+                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      <i class="micon dw dw-user-1"></i>
+                      <span class="mtext">Liste Client</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a routerLink="operation/sales" href="#" routerLinkActive="active-sidebar"
+                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      <i class="micon dw dw-truck"></i>
+                      <span class="mtext">Expedition</span>
+                    </a>
+                  <li>
+                    <a routerLink="operation/situation-client" href="#" routerLinkActive="active-sidebar"
+                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      <i class="micon dw dw-calculator"></i>
+                      <span class="mtext">Situation</span>
+                    </a>
+                  </li>
+                </div>
+              </div>
             </div>
-          </mat-expansion-panel>
-        </mat-accordion>
+          </div>
 
-        <!-- GESTION PARTICULIER -->
-        <!-- <mat-accordion>
-          <mat-expansion-panel class="rounded-0 p-0 panel">
-            <mat-expansion-panel-header class="panel-header bg-light">
-              <mat-panel-title class="panel-titre">
-                <span> Gestion des particuliers </span>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="div">
-              <li>
-                <a href="#" routerLink="bank/list-account" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-list text-light"></i>
-                  <span class="mtext">Liste des Comptes</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="bank/add-account" routerLinkActive="active-sidebar"
-                  class="dropdown-toggle no-arrow" (click)="playSound()">
-                  <i class="micon dw dw-city text-light"></i>
-                  <span class="mtext">Cr&#233;er un compte</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="/" class="dropdown-toggle no-arrow">
-                  <i class="micon dw dw-diagram text-light"></i>
-                  <span class="mtext">Op&#233;rations</span>
-                </a>
-              </li>
+
+          <!-- FIXING -->
+          <div class class="accordion-item p-0 m-0">
+            <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#fixing" aria-expanded="true" aria-controls="fixing">
+              <span>FIXING</span>
+            </button>
+            <div id="fixing" class="accordion-collapse collapse" aria-labelledby="headingFixing"
+              data-bs-parent="#sidebarCollapseParent">
+              <div class="accordion-body panel p-0">
+                <div class="div">
+                  <li>
+                    <a href="#" routerLink="/fixing/bourse-view" class="dropdown-toggle no-arrow"
+                      routerLinkActive="active-sidebar" (click)="playSound()">
+                      <i class="micon dw dw-key"></i>
+                      <span class="mtext">Afficher la bourse</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" routerLink="/fixing/list-fixing" class="dropdown-toggle no-arrow"
+                      routerLinkActive="active-sidebar" (click)="playSound()">
+                      <i class="micon dw dw-list3"></i>
+                      <span class="mtext">Liste des fixings</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" routerLink="/fixing/add-fixing" class="dropdown-toggle no-arrow"
+                      routerLinkActive="active-sidebar" (click)="playSound()">
+                      <i class="micon dw dw-add-file-1"></i>
+                      <span class="mtext">Fix&#233; un poids</span>
+                    </a>
+                  </li>
+                </div>
+              </div>
             </div>
-          </mat-expansion-panel>
-        </mat-accordion> -->
+          </div>
 
 
-        <!-- FIXING -->
-        <mat-accordion>
-          <mat-expansion-panel class="rounded-0 p-0 panel">
-            <mat-expansion-panel-header class="panel-header bg-light">
-              <mat-panel-title class="panel-titre">
-                <span> FIXING </span>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="div">
-              <li>
-                <a href="#" routerLink="/fixing/bourse-view" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-compass-1"></i>
-                  <span class="mtext">Afficher la bourse</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="/fixing/list-fixing" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-list3"></i>
-                  <span class="mtext">Liste des fixings</span>
-                </a>
-              </li>
-               <li>
-                <a href="#" routerLink="/fixing/add-fixing" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-add-file-1"></i>
-                  <span class="mtext">Fix&#233; un poids</span>
-                </a>
-              </li>
+          <!-- Rapport -->
+          <div class class="accordion-item p-0 m-0">
+            <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#rapport" aria-expanded="true" aria-controls="rapport">
+              <span>RAPPORT</span>
+            </button>
+            <div id="rapport" class="accordion-collapse collapse" aria-labelledby="headingRapport"
+              data-bs-parent="#sidebarCollapseParent">
+              <div class="accordion-body panel p-0">
+                <div class="div pb-3">
+                  <li>
+                    <a href="#" routerLink="home" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
+                      (click)="playSound()">
+                      <i class="micon dw dw-user-2"></i>
+                      <span class="mtext">Fournisseur</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" routerLink="home" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
+                      (click)="playSound()">
+                      <i class="micon dw dw-user-3"></i>
+                      <span class="mtext">Client</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" routerLink="operation/caisse-principale" class="dropdown-toggle no-arrow"
+                      routerLinkActive="active-sidebar" (click)="playSound()">
+                      <i class="micon dw dw-diamond"></i>
+                      <span class="mtext">Caisse</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" routerLink="home" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
+                      (click)="playSound()">
+                      <i class="micon dw dw-delivery-truck-1"></i>
+                      <span class="mtext">Arrivage (convoie)</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" routerLink="home" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
+                      (click)="playSound()">
+                      <i class="micon dw dw-truck"></i>
+                      <span class="mtext">Exp&#233;dition (convoie)</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" routerLink="home" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
+                      (click)="playSound()">
+                      <i class="micon dw dw-shopping-cart-1"></i>
+                      <span class="mtext">Achats</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" routerLink="home" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
+                      (click)="playSound()">
+                      <i class="micon dw dw-food-cart"></i>
+                      <span class="mtext">Ventes</span>
+                    </a>
+                  </li>
+                </div>
+              </div>
             </div>
-          </mat-expansion-panel>
-        </mat-accordion>
+          </div>
 
-        <!-- RAPPORTS -->
-        <mat-accordion>
-          <mat-expansion-panel class="rounded-0 p-0 panel">
-            <mat-expansion-panel-header class="panel-header bg-light">
-              <mat-panel-title class="panel-titre">
-                <span> Rapport & <span class="text-danger">Docs</span> </span>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="div">
-              <li>
-                <a href="#" routerLink="home" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-user-2"></i>
-                  <span class="mtext">Fournisseur</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="home" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-user-3"></i>
-                  <span class="mtext">Client</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="operation/caisse-principale" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-diamond"></i>
-                  <span class="mtext">Caisse</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="home" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-delivery-truck-1"></i>
-                  <span class="mtext">Arrivage (convoie)</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="home" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-truck"></i>
-                  <span class="mtext">Exp&#233;dition (convoie)</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="home" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-shopping-cart-1"></i>
-                  <span class="mtext">Achats</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="home" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-food-cart"></i>
-                  <span class="mtext">Ventes</span>
-                </a>
-              </li>
-            </div>
-          </mat-expansion-panel>
-        </mat-accordion>
-
-        <!-- Documents -->
-        <!-- <mat-accordion>
-          <mat-expansion-panel class="rounded-0 p-0 panel">
-            <mat-expansion-panel-header class="panel-header bg-light">
-              <mat-panel-title class="panel-titre">
-                <span> Documents </span>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="div">
-              <li>
-                <a href="#" routerLink="/h" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-folder text-light"></i>
-                  <span class="mtext">Facture</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="/l" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-folder text-light"></i>
-                  <span class="mtext">Entete</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="/m" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-folder text-light"></i>
-                  <span class="mtext">Autres documents</span>
-                </a>
-              </li>
-            </div>
-          </mat-expansion-panel>
-        </mat-accordion> -->
-
-        <!-- Documents -->
-        <!-- <mat-accordion>
-          <mat-expansion-panel class="rounded-0 p-0 panel">
-            <mat-expansion-panel-header class="panel-header bg-light">
-              <mat-panel-title class="panel-titre">
-                <span> Donn&#233;es de base </span>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="div">
-              <li>
-                <a href="#" routerLink="/homes" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-pendrive text-light"></i>
-                  <span class="mtext">Base des donn&#233;es</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" routerLink="/home" class="dropdown-toggle no-arrow" routerLinkActive="active-sidebar"
-                  (click)="playSound()">
-                  <i class="micon dw dw-folder text-light"></i>
-                  <span class="mtext">Archives</span>
-                </a>
-              </li>
-            </div>
-        </mat-expansion-panel>
-        </mat-accordion> -->
+        </div>
       </ul>
     </div>
   </div>
 </div>
 <div class="mobile-menu-overlay"></div>
+
+
+

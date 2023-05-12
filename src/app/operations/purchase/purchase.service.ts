@@ -31,6 +31,11 @@ export class PurchaseService {
     return this.http.put(url, ressourceID, { headers });
   }
 
+  // AdD iN LOT ACTIF
+  PostElement(api:string, suffixUrl:string, data: any) : Observable<any> {
+    // console.log(data);
+    return this.http.post(`${BASE_URL}${api}/${suffixUrl}/`, data)
+  }
 
    // UPDATE
    updateRowsPurchase2(api:string, suffixUrl: string, data: any) {
@@ -64,7 +69,7 @@ export class PurchaseService {
   getPurchaseOnline(body: any) {
     let ID_F = body;
     let httpParams = new HttpParams().set('id_fournisseur', ID_F)
-    return this.http.get<any[]>(BASE_URL.concat(LINK_BASE, "/", "achat", "/",), {
+    return this.http.get<any[]>(BASE_URL.concat(LINK_BASE, "/", "achat_items", "/",), {
       params: httpParams,
     })
   }

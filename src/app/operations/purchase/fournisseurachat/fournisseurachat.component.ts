@@ -62,6 +62,8 @@ export class FournisseurachatComponent implements OnInit {
         .subscribe({
           next: (data => {
             if(data.length > 0){
+              console.log(data);
+              // this.dataSource
               this.router.navigate([`/operation/add-purchase/${id_fournisseur}`])
             }else{
               this.router.navigate([`/operation/init-purchase/${id_fournisseur}`])

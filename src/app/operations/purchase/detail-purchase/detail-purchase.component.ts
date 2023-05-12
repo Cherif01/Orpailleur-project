@@ -22,7 +22,7 @@ export class DetailPurchaseComponent implements OnInit {
   constructor(
     private activeroute: ActivatedRoute,
     private service: ApiserviceService,
-    private http: HttpClient, private fb: FormBuilder,
+    private fb: FormBuilder,
     private purchaseService: PurchaseService,
     private snackBar: MatSnackBar,
     public location: Location
@@ -60,7 +60,6 @@ export class DetailPurchaseComponent implements OnInit {
         });
       }
     })
-
   }
 
   // GET Fournisseur
@@ -110,7 +109,7 @@ export class DetailPurchaseComponent implements OnInit {
           this.snackBar.open("Mise à jour effctuée avec succès!", undefined, {
             duration: 1000,
             horizontalPosition: "right",
-            verticalPosition: "top",
+            verticalPosition: "bottom",
             panelClass: ['bg-success', 'text-white']
 
           });
