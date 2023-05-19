@@ -5,6 +5,7 @@ import { LINK_BASE, LINK_BASE_CLIENT } from 'src/app/config';
 import { LotService } from 'src/app/lot/lot.service';
 import { OperationsService } from '../../operations.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Location } from '@angular/common';
 
 // import { Audio } from 'standardized-audio-context';
 
@@ -37,7 +38,7 @@ export class AddSaleComponent implements OnInit {
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    public location: Location
   ) { }
 
   title = 'Ajout d\'une vente';
@@ -113,23 +114,18 @@ export class AddSaleComponent implements OnInit {
         // console.log(data)
         this.AchatList.splice(0, this.AchatList.length);
         data.forEach((value: any) => {
-          // console.log(value);
+          console.log(value.achat.id);
           if (idLot == value.arrivage.id) {
             // console.log(value);
             this.list = true;
             this.AchatList.push(value);
 
-            this.serviceLot.getList(LINK_BASE, 'achat_items').subscribe({
-              next: (n) => {
-                n.forEach(elem => {
-                  if (value.achat.id == elem.achat.id) {
-                    // console.log(elem);
-                    this.PoidTotalLot += elem.poids_achat
-                    this.nb_barre += 1
-                  }
-                })
-              }
-            })
+            // this.serviceLot.getItemsOfAchat("api", "achat_items", value.achat.id).subscribe({
+            //   next: ((data: any) => {
+            //     console.log(data);
+
+            //   })
+            // })
           }
         })
       }

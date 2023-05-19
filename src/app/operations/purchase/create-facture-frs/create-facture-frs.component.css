@@ -14,6 +14,11 @@
   border: 1px solid black;
 }
 
+#divTable_ th{
+  color: rgb(6, 5, 33);
+  font-size: 15px;
+}
+
 .printTable thead th{
   color: rgb(8, 8, 8);
   border: 1.6px solid black;

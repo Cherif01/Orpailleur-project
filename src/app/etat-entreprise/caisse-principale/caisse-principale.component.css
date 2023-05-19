@@ -1,0 +1,12 @@
+#bgTable table td, #bgTable table th {
+  border: 1px solid black;
+}
+
+#bgTable table th{
+  width: 50%;
+}
+
+#bgTable table td{
+  width: 50%;
+  text-align: center;
+}

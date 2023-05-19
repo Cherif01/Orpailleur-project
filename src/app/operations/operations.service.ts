@@ -26,6 +26,11 @@ export class OperationsService {
     return this.http.get<any[]>(`${BASE_URL}${api}/${suffixUrl}`, {params});
   }
 
+  getItemsOfAchat(api: string, suffixUrl: string, id_achat: any) {
+    const url = `${BASE_URL}${api}/${suffixUrl}/${id_achat}/achat_items_by_achat/`;
+    return this.http.get<any[]>(url)
+  }
+
   // GET CLAUSE
   getByClause(idClause: any) {
     return this.http.get<any[]>(BASE_URL.concat(LINK_BASE, "/", T_CompteF, "/?fournisseur=", idClause))

@@ -35,6 +35,7 @@ import { FacturepurchaseComponent } from './purchase/facturepurchase/facturepurc
 import { CreateFactureFrsComponent } from './purchase/create-facture-frs/create-facture-frs.component';
 import { FixingClientComponent } from './sales/fixing/fixing-client/fixing-client.component';
 import { AddFixingClientComponent } from './sales/fixing/add-fixing-client/add-fixing-client.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,8 @@ import { AddFixingClientComponent } from './sales/fixing/add-fixing-client/add-f
     MatButtonToggleModule,
     MatDividerModule,
     A11yModule,
+    MatIconModule,
+    MatTabsModule,
     NgxMatSelectSearchModule,
     MatSelectModule,
     MatRadioModule,

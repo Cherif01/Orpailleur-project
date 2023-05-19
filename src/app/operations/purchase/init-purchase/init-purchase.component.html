@@ -37,19 +37,25 @@
       <!-- Export Datatable start  mat-elevation-z2-->
       <div class="...-box">
         <!-- Init -->
-        <div class="pb-20 text-center" *ngIf="!LastAchat">
-          <div class="text-center">
-            <mat-icon>arrow_downward</mat-icon>
-            <div class="col p-5 mt-4">
+        <mat-card class="mat-elevation-z8">
+          <div class="text-center" *ngIf="!LastAchat">
+            <div class="arrow">
+              <img src="./assets/gif/arrow-down-blue.gif" class="img-responsive" id="img-gif" alt="" srcset="">
+            </div>
+            <div class="col p-3">
               <form [formGroup]="initAchat" (ngSubmit)="InitAchatForm(initAchat)">
                 <button type="submit" [disabled]="LastAchat" mat-flat-button color="accent"
-                  [disabled]="!initAchat.valid"><span class="mx-2">Initialiser un achat</span>
+                  [disabled]="!initAchat.valid"><span class="mx-2 p-3">Initialiser un achat</span>
                   <mat-icon> add </mat-icon></button>
               </form>
+              <div class="text-center pt-3">
+                <span>Aucun achat en cours... <br> cliquer sur ce button pour initialiser un achat...</span>
+              </div>
             </div>
           </div>
-        </div>
+        </mat-card>
         <!-- Export Datatable End -->
       </div>
     </div>
   </div>
+</div>

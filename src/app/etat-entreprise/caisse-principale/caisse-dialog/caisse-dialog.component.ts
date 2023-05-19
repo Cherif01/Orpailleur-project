@@ -13,6 +13,7 @@ export class CaisseDialogComponent implements OnInit {
   form = new FormGroup({
     operation:new FormControl([Validators.required]),
     fournisseur:new FormControl(null),
+    representant:new FormControl(null),
     devise:new FormControl([Validators.required]),
     montant:new FormControl([Validators.required]),
     montant_anterieur:new FormControl(),

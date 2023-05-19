@@ -15,9 +15,9 @@
             </nav>
           </div>
           <div class="text-right">
-            <a class="btn btn-outline-primary mx-2" href="#" routerLink="/fournisseur">
-              <span class="micon dw dw-mouse"></span><span class="mtext mx-2">Autres</span>
-            </a>
+            <button mat-flat-button routerLink="/" color="primary">
+              <span class="micon dw dw-mouse text-light"></span><span class="mtext mx-2">Autres</span>
+            </button>
           </div>
         </div>
       </div>
@@ -26,8 +26,8 @@
         <mat-card class="mat-elevation-z0 bg-transparent">
           <mat-card-content>
             <div class="row">
-              <div class="col-6">
-                <div class="card mb-4 shadow-lg border-0">
+              <div class="col-12 col-lg-4 col-sm-4 col-md-6">
+                <div class="card mb-4 shadow-lg border-0 m-2">
                   <div class="card-body text-center">
                     <h4 class="my-3 fw-bold text-primary" id="text">STOCK (ENTRER)</h4>
                     <h2 class="text-center">Aujourd'hui</h2>
@@ -37,10 +37,10 @@
                   </div>
                 </div>
               </div>
-              <div class="col-6">
-                <div class="card mb-4 shadow-lg border-0">
+              <div class="col-12 col-lg-4 col-sm-4 col-md-6">
+                <div class="card mb-4 shadow-lg border-0 m-2">
                   <div class="card-body text-center">
-                    <h4 class="my-3 fw-bold text-danger" id="text">STOCK (EXPEDITION)</h4>
+                    <h4 class="my-3 fw-bold text-danger" id="text">STOCK (EXPEDIE)</h4>
                     <h2 class="text-center">Aujourd'hui</h2>
                     <div class="p-3">
                       <h2>{{ QTE_EXPEDIER | number: '2.0-2'}} g</h2>
@@ -48,12 +48,12 @@
                   </div>
                 </div>
               </div>
-              <div class="col">
-                <hr>
-                <div class="card mb-4 shadow-lg border-0">
+              <div class="col-12 col-lg-4 col-sm-4 col-md-6">
+                <div class="card mb-4 shadow-lg border-0 m-2">
                   <div class="card-body text-center">
                     <h4 class="my-3 fw-bold text-success" id="text">STOCK (ACTIF <span
-                        class="dw dw-inbox text-success"></span> )</h4>
+                        class="dw dw-inbox text-success"></span>)</h4>
+                        <h2 class="text-center">Total</h2>
                     <div class="p-3">
                       <h2>{{ (STOCK_PRINCIPALE_ENTRER - QTE_EXPEDIER) | number: '2.0-2'}} g</h2>
                     </div>

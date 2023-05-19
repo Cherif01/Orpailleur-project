@@ -64,6 +64,10 @@ export class PurchaseService {
   getDetailPurchaseItems(id_achat: any) {
     return this.http.get<any[]>(BASE_URL.concat(LINK_BASE, "/", T_ITEMS, "/?id_achat=", id_achat))
   }
+  getItemsOfAchat(api: string, suffixUrl: string, id_achat: any) {
+    const url = `${BASE_URL}${api}/${suffixUrl}/${id_achat}/achat_items_by_achat/`;
+    return this.http.get<any[]>(url)
+  }
 
   // Achat
   getPurchaseOnline(body: any) {

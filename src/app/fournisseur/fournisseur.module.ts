@@ -21,9 +21,10 @@ import { FactureachatComponent } from './facture/factureachat/factureachat.compo
 import { FactureventeComponent } from './facture/facturevente/facturevente.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
-import { SituationFournisseurComponent } from './caisse-fournisseur/situation-fournisseur/situation-fournisseur.component';
-import { StockFournisseurComponent } from './caisse-fournisseur/stock-fournisseur/stock-fournisseur.component';
+import { SituationFournisseurComponent } from './situation-fournisseur/situation-fournisseur.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 @NgModule({
@@ -33,8 +34,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     ListFournisseurComponent,
     FactureachatComponent,
     FactureventeComponent,
-    SituationFournisseurComponent,
-    StockFournisseurComponent
+    SituationFournisseurComponent
   ],
   imports: [
     CommonModule,
@@ -52,6 +52,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatPaginatorModule,
+    MatCheckboxModule,
+    MatTabsModule,
     RouterModule.forChild(FournisseurRouting),
   ]
 })

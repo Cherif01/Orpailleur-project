@@ -22,7 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { BourseViewComponent } from './bourse-view/bourse-view.component';
-import { MatSliderModule } from '@angular/material/slider';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -51,6 +51,7 @@ import { MatSliderModule } from '@angular/material/slider';
     MatSelectModule,
     MatRadioModule,
     MatCheckboxModule,
+    MatSortModule,
     RouterModule.forChild(FixingRouting),
   ]
 })

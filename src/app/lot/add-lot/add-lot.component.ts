@@ -36,13 +36,14 @@ export class AddLotComponent implements OnInit {
     if (form.valid) {
       //Envoyer dans la Base
       this.service.lotPost(form.value).subscribe({
-        next: (reponse: any) => console.log(reponse),
-        error: (err: any) => console.log(err)
+        next: (reponse: any) => console.log("Lot creer " + reponse),
+        error: (err: any) => console.log("error " + err)
       })
       form.reset()
       this.router.navigate(['/lot/list-lot'])
     } else {
-      console.log(form.value)
+      console.log("Formulaire inconnus, creation du lot");
+
     }
   }
 

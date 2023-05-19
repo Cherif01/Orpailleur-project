@@ -18,7 +18,6 @@ import { SortieCaisseComponent } from './caisse-principale/sortie-caisse/sortie-
 import { CaisseOptDialogComponent } from './caisse-principale/caisse-opt-dialog-entrer/caisse-opt-dialog.component';
 import { CaisseOptDialogSortieComponent } from './caisse-principale/caisse-opt-dialog-sortie/caisse-opt-dialog-sortie.component';
 
-
 @NgModule({
   declarations: [
     StockComponent,

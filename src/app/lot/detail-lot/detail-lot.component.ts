@@ -73,15 +73,16 @@ export class DetailLotComponent implements OnInit {
   ListAchat() {
     this.serviceLot.getList(LINK_BASE, 'attribution').subscribe({
       next: (data) => {
+        console.log("Attribution: ", data);
         data.forEach(element => {
           if (element.arrivage.id == this.IDLot) {
             this.List_Achat.push(element);
-            // console.log(element);
+            console.log(element);
             this.serviceLot.getList(LINK_BASE, 'achat_items').subscribe({
               next: (n) => {
                 n.forEach(elem => {
                   if (element.achat.id == elem.achat.id) {
-                    console.log(elem);
+                    // console.log(elem);
                     this.PoidTotalLot += elem.poids_achat
                     this.nb_barre += 1
                   }
@@ -97,14 +98,8 @@ export class DetailLotComponent implements OnInit {
   // Attribuer un achat a un lot
   AttributionForm(form: FormGroup): void {
     if (form.valid) {
-      // this.Attribution.controls.arrivage.setValue(this.IDLot)
       //Envoyer dans la Base
-      console.log(form.value);
-
-      // this.serviceLot.PostElement('api', 'attribution' ,form.value).subscribe({
-      //   next: (reponse: any) => console.log(reponse),
-      //   error: (err: any) => console.log(err)
-      // })
+      // console.log(form.value);
       form.reset()
       this.router.navigate(['/lot/detail-lot/' + this.IDLot])
     } else {
@@ -122,32 +117,6 @@ export class DetailLotComponent implements OnInit {
         error: (err: any) => console.log(err)
       })
     }
-  }
-
-
-
-
-
-
-
-
-  // DRAG
-  todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
-
-  done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
-
-  drop(event: CdkDragDrop<any[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-    console.log(event);
   }
 
 }

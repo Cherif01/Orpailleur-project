@@ -32,77 +32,33 @@ export class FacturepurchaseComponent implements OnInit {
   ngOnInit(): void {
     // ID ACHAT EN GET
     this.ID_ACHAT_GET = this.activeroute.snapshot.params['id'];
-    this.getAchat()
-    this.getItems()
+    this.getItemAchat()
   }
 
   onSubscribePurchage: any
   InfoAchat: any = {}
   NameF: string = ""
   AdresseF: string = ""
-  getAchat() {
-    this.onSubscribePurchage = this.purchaseService
-      .getList('api', 'achat')
-      .pipe(
-        map(data => {
-          let result: any[] = [];
-          // console.log(data)
-          data.forEach(item => {
-            // let index = result.findIndex(i => i.slug === item.slug);
-            if (this.ID_ACHAT_GET == item.id) {
-              this.InfoAchat = item;
-              // console.log(item);
-              this.NameF = item.fournisseur.prenom + " " + item.fournisseur.nom
-              this.AdresseF = item.fournisseur.adresse + " " + item.fournisseur.telephone
-              result.push(item);
-              // console.log(this.InfoAchat);
-            } else {
-              // result[index].poids_achat += item.poids_achat;
-            }
-          });
-          // console.log(this.dataSource.data);
-          return result;
-        })
-      )
-      .subscribe(data => {
-        // this.ACHAT_TAB = data;
-      });
 
-  }
-
-
-  // Get ITEMS ACHAT
-  onSubscribePurchage2: any
   Poids_total: number = 0
   carrat_moyenne: number = 0
   nbBarres: number = 0
-  getItems() {
-    this.onSubscribePurchage2 = this.purchaseService
-      .getList('api', 'achat_items')
-      .pipe(
-        map(data => {
-          let result: any[] = [];
-          console.log(data)
+  getItemAchat() {
+    this.purchaseService.getItemsOfAchat('api', 'achat_items', this.ID_ACHAT_GET)
+      .subscribe({
+        next: (data) => {
+          this.ACHAT_TAB = data
           data.forEach(item => {
-            // let index = result.findIndex(i => i.slug === item.slug);
-            if (this.ID_ACHAT_GET == item.achat.id) {
-              console.log(item);
-              this.Poids_total += item.poids_achat
-              this.carrat_moyenne += (item.poids_achat * item.carrat_achat)
-              this.nbBarres += 1
-              result.push(item);
-            } else {
-              // result[index].poids_achat += item.poids_achat;
-            }
-          });
-          // console.log(this.dataSource.data);
-          // console.log(result);
-          return result;
-        })
-      )
-      .subscribe(data => {
-        this.ACHAT_TAB = data;
-      });
+            this.InfoAchat = item.achat;
+            this.Poids_total += parseFloat(item.poids_achat)
+            this.carrat_moyenne += (parseFloat(item.poids_achat) * (parseFloat(item.carrat_achat) - parseFloat(item.manquant)))
+            this.nbBarres += 1
+            this.NameF = item.achat.fournisseur.prenom + " " + item.achat.fournisseur.nom
+              this.AdresseF = item.achat.fournisseur.adresse + " / " + item.achat.fournisseur.telephone
+          })
+          // console.log("Achat items list : ", data);
+        }
+      })
   }
 
 
@@ -114,15 +70,5 @@ export class FacturepurchaseComponent implements OnInit {
     document.body.innerHTML = originalContents;
   }
 
-
-
-
-  // getItems2(){
-  //   this.purchaseService.getDetailPurchaseItems(this.SLUG_ACHAT).subscribe({
-  //     next: (data: any) =>{
-  //       console.log(data);
-  //     }
-  //   })
-  // }
 
 }

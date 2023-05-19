@@ -34,57 +34,164 @@
           </div>
         </div>
       </div>
+
+
+
       <!-- Export Datatable start -->
-      <div class="main-box mb-10">
-        <mat-card class="mat-elevation-z8" id="table_shadow">
-          <h2 class="text-dark fs-3">Gestion des Lots</h2>
-          <hr>
-          <table id=""
-            class="table">
-            <thead>
-              <th>Date</th>
-              <th>No:-Docs</th>
-              <th>Designation</th>
-              <th class="">Status</th>
-              <th class="text-center">Action</th>
-            </thead>
-            <tbody>
-              <tr *ngFor="let lot of listLot">
-                <td><strong>{{ lot.created_at | date:'dd/MM/yyyy' }}</strong></td>
-                <td>000{{ lot.id }}</td>
-                <td>{{ lot.designation }}</td>
-                <td class="">
-                  <span class="text-warning fw-bold" *ngIf="lot.status == 1"> <i
-                      class="icon-copy dw dw-folder-78 mx-1"></i> Ouvert <br> <i class="small text-dark">Ce lot est
-                      encore ouvert...</i> </span>
-                </td>
-                <td class="text-center">
-                  <a routerLink="/lot/detail-lot/{{ lot.id }}" (click)="playSound()" mat-raised-button color="">
-                    <span class="fw-bold">Voir le contenu </span>
-                    <i class="icon-copy dw dw-right-arrow"></i>
-                  </a>
-                </td>
-              </tr>
-              <tr *ngFor="let lot of listLotHistory">
-                <td><strong>{{ lot.created_at | date:'dd/MM/yyyy' }}</strong></td>
-                <td>000{{ lot.id }}</td>
-                <td>{{ lot.designation }}</td>
-                <td class="">
+      <mat-card class="mat-elevation-z8">
+        <mat-tab-group>
+          <mat-tab label="LOT DU JOUR">
+            <table class="table">
+              <thead>
+                <th>Date</th>
+                <th>No:-Docs</th>
+                <th>Designation</th>
+                <th class="">Status</th>
+                <th class="text-center">Action</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let lot of listLot">
+                  <td><strong>{{ lot.created_at | date:'dd/MM/yyyy' }}</strong></td>
+                  <td>00{{ lot.id }}</td>
+                  <td>{{ lot.designation }}</td>
+                  <td class="">
+                    <span class="text-warning fw-bold" *ngIf="lot.status == 1"> <i
+                        class="icon-copy dw dw-folder-78 mx-1">
+                      </i>Ouvert <br>
+                      <i class="small text-dark">Ce lot est encore ouvert...</i> </span>
+                  </td>
+                  <td class="text-center">
+                    <a routerLink="/lot/detail-lot/{{ lot.id }}" (click)="playSound()" mat-raised-button color="">
+                      <span class="fw-bold">Voir le contenu </span>
+                      <i class="icon-copy dw dw-right-arrow"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </mat-tab>
+
+
+          <!-- Historique -->
+          <mat-tab label="ARCHIVES DES LOTS">
+            <mat-form-field>
+              <mat-label>Rechercher</mat-label>
+              <input matInput (keyup)="applyFilter($event)" class="w-100" placeholder="Ex. lot du 13xxx" #input>
+            </mat-form-field>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
+              <!-- Position Column -->
+              <ng-container matColumnDef="Date">
+                <th mat-header-cell *matHeaderCellDef> Date </th>
+                <td mat-cell *matCellDef="let element"> {{element.created_at | date:'dd/MM/YYYY'}} </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="Docs">
+                <th mat-header-cell *matHeaderCellDef> Docs </th>
+                <td mat-cell *matCellDef="let element"> #00{{element.id}} </td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="Designation">
+                <th mat-header-cell *matHeaderCellDef> Designation </th>
+                <td mat-cell *matCellDef="let element"> {{element.designation}} </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="Status">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let element">
                   <span class="text-danger fw-bold"> <i class="icon-copy dw dw-lock mx-1"></i>
                     Fermer</span>
                 </td>
-                <td class="text-center">
-                  <a routerLink="/lot/detail-lot/{{ lot.id }}" (click)="playSound()" mat-raised-button color="warn">
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="Action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element">
+                  <a routerLink="/lot/detail-lot/{{ element.id }}" (click)="playSound()" mat-raised-button color="warn">
                     <span class="fw-bold">Voir le contenu </span>
                     <i class="icon-copy dw dw-right-arrow"></i>
                   </a>
                 </td>
-              </tr>
-            </tbody>
-          </table>
-        </mat-card>
+              </ng-container>
 
-        <!-- Export Datatable End -->
-      </div>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+              <!-- Row shown when there is no matching data. -->
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+              </tr>
+            </table>
+          </mat-tab>
+
+          <!-- MAJ -->
+          <!-- api/arrivage/id_lot/get_achat_items/ -->
+          <mat-tab label="MISE A JOURS">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="col">
+                <h4 class="pt-3">Mise a jours des poids et carrat</h4>
+              </div>
+              <div class="col text-end">
+                <!-- Type -->
+                <mat-form-field appearance="fill" class="mb-2 p-0">
+                  <mat-label>--- LISTE LOT ---</mat-label>
+                  <mat-select disableRipple required (selectionChange)="listLotEvent($event.value)">
+                    <mat-option>-- Ne rien afficher ---</mat-option>
+                    <mat-option *ngFor="let x of allLot" [value]="x.id">{{ x.designation }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <!-- Tableau update -->
+            <mat-form-field>
+              <mat-label>Rechercher</mat-label>
+              <input matInput (keyup)="applyFilter($event)" class="w-100" placeholder="Ex. lot du 13xxx" #input>
+            </mat-form-field>
+            <table mat-table [dataSource]="dataSource_maj" class="mat-elevation-z8 w-100">
+              <!-- Position Column -->
+              <ng-container matColumnDef="Date">
+                <th mat-header-cell *matHeaderCellDef> Date </th>
+                <td mat-cell *matCellDef="let element"> {{element.achat.created_at | date:'dd/MM/YYYY'}} </td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="Poids">
+                <th mat-header-cell *matHeaderCellDef> Poids </th>
+                <td mat-cell *matCellDef="let element"> {{element.poids_achat}} </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="Carrat">
+                <th mat-header-cell *matHeaderCellDef> Carrat </th>
+                <td mat-cell *matCellDef="let element"> {{element.carrat_achat}} </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="Manquant">
+                <th mat-header-cell *matHeaderCellDef> Manquant </th>
+                <!-- <td mat-cell *matCellDef="let element" class="text-danger"> {{element.manquant}} </td> -->
+                <td mat-cell *matCellDef="let element">
+                  <input matInput [(ngModel)]="element.manquant" (blur)="saveTableData(element)">
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns_maj"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns_maj;"></tr>
+
+              <!-- Row shown when there is no matching data. -->
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">Aucune donnees pour ce filtre : "{{input.value}}"</td>
+              </tr>
+            </table>
+          </mat-tab>
+
+        </mat-tab-group>
+      </mat-card>
+
+      <!-- Export Datatable End -->
     </div>
   </div>
+</div>

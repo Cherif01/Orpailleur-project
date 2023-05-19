@@ -29,15 +29,31 @@ export class VendorServiceService {
     return this.http.get<any>(url);
   }
 
-
-  getDetailPurchaseItems(id_achat: any) {
-    return this.http.get<any[]>(BASE_URL.concat(LINK_BASE, "/", T_ITEMS, "/?id_achat=", id_achat))
+  // api/fixing_detail/4/get_fixing_by_id/
+  infoFixing(api: string, suffixUrl: string, id: number): Observable<any> {
+    const url = `${BASE_URL}${api}/${suffixUrl}/${id}/get_fixing_by_id/`;
+    return this.http.get<any>(url);
   }
 
-   // UPDATE TRUE ITEmS
-   updateRowsPurchase2(api:string, suffixUrl: string, data: any) {
+  situationMonetaire(api: string, suffixUrl: string, id: number): Observable<any> {
+    const url = `${BASE_URL}${api}/${suffixUrl}/${id}/situation_fournisseur/`;
+    return this.http.get<any>(url);
+  }
+
+  getDetailPurchaseItems(api: string, suffixUrl: string, id_achat: any) {
+    // api/achat_items/28/get_achat_items_by_achat/
+    const url = `${BASE_URL}${api}/${suffixUrl}/${id_achat}/get_achat_items_by_achat/`;
+    return this.http.get<any[]>(url)
+  }
+
+  // UPDATE TRUE ITEmS
+  updateRowsPurchase2(api: string, suffixUrl: string, data: any) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.put(`${BASE_URL}${api}/${suffixUrl}/${data}/`, { headers });
+  }
+
+  updateRows(data: any) {
+    return this.http.put<any[]>(BASE_URL.concat(LINK_BASE, `/fournisseur/${data.id}/`), data)
   }
 
 

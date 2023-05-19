@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ApiserviceService } from '../../api_service/apiservice.service'
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { VendorServiceService } from '../vendor-service.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -23,6 +25,8 @@ export class ListFournisseurComponent implements OnInit {
 
   constructor(
     private service: ApiserviceService,
+    private service_vendor: VendorServiceService,
+    private snackBar: MatSnackBar,
     public location: Location
   ) {
 
@@ -35,7 +39,7 @@ export class ListFournisseurComponent implements OnInit {
   listFournisseur: any;
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
-  displaysColums = ["nom", "prenom", "pays", "ville", "adresse", "tel", "mail", "action"];
+  displaysColums = ["nom", "prenom", "pays", "ville", "adresse", "tel", "action"];
 
   ngOnInit() {
     // Datatables
@@ -51,6 +55,53 @@ export class ListFournisseurComponent implements OnInit {
         // console.log(data)
       }
     })
+  }
+
+
+  oldValueNom: any;
+  oldValuePrenom: any;
+  oldValuePays: any;
+  oldValueVille: any;
+  oldValueAdresse: any;
+  oldValueTelephone: any;
+  newRowsUpdate: any = [];
+
+  setOldValues(row: any) {
+    this.newRowsUpdate = row;
+  }
+
+  updateDirectRow(row: any) {
+    // console.log("row : ", row);
+    if (row == this.newRowsUpdate) {
+      this.saveTableData(row);
+    }
+  }
+
+  saveTableData(element: any) {
+    // console.log("ID : ", index);
+    // console.log("Row : ", element);
+    this.service_vendor.updateRows(element)
+      .subscribe({
+        next: (response) => {
+          this.snackBar.open("Mise à jour effctuée avec succès!", undefined, {
+            duration: 2000,
+            horizontalPosition: "right",
+            verticalPosition: "top",
+            panelClass: ['bg-success', 'text-white']
+
+          });
+        },
+        error: (err) => {
+          this.snackBar.open("Echec, Veuillez reessayer!", undefined, {
+            duration: 1000,
+            horizontalPosition: "right",
+            verticalPosition: "bottom",
+            panelClass: ['bg-danger', 'text-white']
+          })
+        }
+      })
+
+    // Traitez les données modifiées ici
   }
 
   filterTable(value: string) {

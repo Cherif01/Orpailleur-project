@@ -158,12 +158,12 @@
 
                 <ng-container matColumnDef="poids_total">
                   <th mat-header-cell *matHeaderCellDef>Poids Total</th>
-                  <td mat-cell *matCellDef="let element">{{element.poids_total}}</td>
+                  <td mat-cell *matCellDef="let element">{{ element.poids_total }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="carrat_achat">
                   <th mat-header-cell *matHeaderCellDef>Carrat Moyen</th>
-                  <td mat-cell *matCellDef="let element">{{ element.carrat_moyen }}</td>
+                  <td mat-cell *matCellDef="let element">{{ element.carrat_moyen.toString().substring(0, 5) }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="action">

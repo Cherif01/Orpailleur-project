@@ -56,17 +56,6 @@ export class InitPurchaseComponent implements OnInit {
     this.getLastPurchase()
   }
 
-  // getAchatItems() {
-  //   this.service.getList('api', 'achat_items').subscribe((resultat: any[]) => {
-  //     this.dataItems = resultat;
-  //     resultat.forEach((elem: any) => {
-  //       if (elem['achat'].slug == this.slugSession) {
-  //         this.dataItemsList.push(elem);
-  //       }
-  //     })
-  //   })
-  // }
-
 
   // Recuper le dernier achat
   getLastPurchase() {
@@ -75,7 +64,6 @@ export class InitPurchaseComponent implements OnInit {
       donnees.forEach((elem: any) => {
         if(elem.fournisseur.id == this.ID && elem.status == 1){
           // console.log(elem.fournisseur.id);
-          // console.log(elem);
           this.router.navigate(['/operation/add-purchase/' + this.ID])
         }
       })
@@ -95,6 +83,7 @@ export class InitPurchaseComponent implements OnInit {
             verticalPosition: "bottom",
             panelClass: ['bg-success', 'text-white']
           })
+          this.router.navigate(['/operation/add-purchase/' + this.ID])
         },
         error: (err) => {
           this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
@@ -105,7 +94,6 @@ export class InitPurchaseComponent implements OnInit {
           })
         }
       })
-      this.router.navigate(['/operation/add-purchase/' + this.ID])
       // setTimeout(() => {
         // }, 500)
       // form.reset()

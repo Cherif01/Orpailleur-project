@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OperationsService } from '../../operations.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-list-sale',
@@ -8,7 +9,10 @@ import { OperationsService } from '../../operations.service';
 })
 export class ListSaleComponent implements OnInit {
 
-  constructor(private serviceOperation: OperationsService) { }
+  constructor(
+    private serviceOperation: OperationsService,
+    public location: Location
+    ) { }
 
   title = "Vente"
 

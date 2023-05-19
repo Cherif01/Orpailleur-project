@@ -38,46 +38,85 @@
             <mat-card-title>
               <h2 class="text-blue">Tous les fixings de : <span class="text-secondary">{{ name }}</span> </h2>
             </mat-card-title>
-            <mat-card-content id="">
-              <table class="table">
-                <thead>
-                  <th>#REF</th>
-                  <th>Date Fixing</th>
-                  <th>Pds Total</th>
-                  <!-- <th>Pds Confirme</th> -->
-                  <th>Discompte</th>
-                  <th class="text-center">Status</th>
-                  <th class="text-center">Action</th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let data of TabFixing">
-                    <td>#00{{ data.id }}</td>
-                    <td><i>{{ data.created_at | date: 'dd/MM/YYYY' }}</i></td>
-                    <td><i>{{ data.poids_fixe | number }}</i></td>
-                    <!-- <td><i>{{ data.poids_fixe  - 100| number }}</i></td> -->
-                    <td><i>{{ data.discompte | number }}</i></td>
-                    <td class="text-center">
-                      <span class="text-danger fw-bold" *ngIf="data.status == 1"> <i
-                          class="icon-copy dw dw-folder-78 mx-1"></i> En attente </span>
-                      <span class="text-success fw-bold" *ngIf="data.status == 2"> <i
-                          class="icon-copy dw dw-checked mx-1"></i> Valider</span>
-                    </td>
-                    <td class="text-center">
-                      <a *ngIf="data.status == 1" routerLink="/fournisseur/facture-vente/{{data.id}}" mat-raised-button
-                        color="primary" class="mx-3">G&#233;rer <span class="dw dw-right-arrow"></span></a>
-                      <a *ngIf="data.status == 2" routerLink="/fournisseur/facture-vente/{{data.id}}" mat-raised-button
-                        color="accent" class="mx-3">Facture <span class="dw dw-file2"></span></a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </mat-card-content>
+            <mat-tab-group>
+              <!-- EN COURS -->
+              <mat-tab label="EN COURS">
+                <mat-card-content id="">
+                  <table class="table">
+                    <thead>
+                      <th>#REF</th>
+                      <th>Date Fixing</th>
+                      <th>Pds Total</th>
+                      <!-- <th>Pds Confirme</th> -->
+                      <th>Discompte</th>
+                      <th class="text-center">Status</th>
+                      <th class="text-center">Action</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of TabFixing">
+                        <td *ngIf="data.status == 1">{{ data.id }}</td>
+                        <td *ngIf="data.status == 1"><i>{{ data.created_at | date: 'dd/MM/YYYY' }}</i></td>
+                        <td *ngIf="data.status == 1"><i>{{ data.poids_fixe | number }}</i></td>
+                        <!-- <td><i>{{ data.poids_fixe  - 100| number }}</i></td> -->
+                        <td *ngIf="data.status == 1"><i>{{ data.discompte | number }}</i></td>
+                        <td *ngIf="data.status == 1" class="text-center">
+                          <span class="text-danger fw-bold" *ngIf="data.status == 1"> <i
+                              class="icon-copy dw dw-folder-78 mx-1"></i> En attente </span>
+                        </td>
+                        <td *ngIf="data.status == 1" class="text-center">
+                          <a *ngIf="data.status == 1" routerLink="/fournisseur/facture-vente/{{data.id}}"
+                            mat-raised-button color="primary" class="mx-3">G&#233;rer <span
+                              class="dw dw-right-arrow"></span></a>
+                          <a *ngIf="data.status == 2" routerLink="/fournisseur/facture-vente/{{data.id}}"
+                            mat-raised-button color="accent" class="mx-3">Facture <span class="dw dw-file2"></span></a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </mat-card-content>
+              </mat-tab>
+
+              <!-- VALIDER -->
+              <mat-tab label="VALIDER">
+                <mat-card-content id="">
+                  <table class="table">
+                    <thead>
+                      <th>#REF</th>
+                      <th>Date Fixing</th>
+                      <th>Pds Total</th>
+                      <!-- <th>Pds Confirme</th> -->
+                      <th>Discompte</th>
+                      <th class="text-center">Status</th>
+                      <th class="text-center">Action</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of TabFixing">
+                        <td *ngIf="data.status == 2">#00{{ data.id }}</td>
+                        <td *ngIf="data.status == 2"><i>{{ data.created_at | date: 'dd/MM/YYYY' }}</i></td>
+                        <td *ngIf="data.status == 2"><i>{{ data.poids_fixe | number }}</i></td>
+                        <!-- <td><i>{{ data.poids_fixe  - 100| number }}</i></td> -->
+                        <td *ngIf="data.status == 2"><i>{{ data.discompte | number }}</i></td>
+                        <td *ngIf="data.status == 2" class="text-center">
+                          <span class="text-success fw-bold" *ngIf="data.status == 2"> <i
+                              class="icon-copy dw dw-checked mx-1"></i> Valider</span>
+                        </td>
+                        <td *ngIf="data.status == 2" class="text-center">
+                          <a *ngIf="data.status == 2" routerLink="/fournisseur/facture-vente/{{data.id}}"
+                            mat-raised-button color="accent" class="mx-3">Facture <span class="dw dw-file2"></span></a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </mat-card-content>
+              </mat-tab>
+            </mat-tab-group>
+
           </mat-card>
         </div>
         <!-- FIN  -->
 
         <!-- LISTE DES FOURNISSEURS -->
-        <mat-card class="mat-elevation-z0 bg-transparent" *ngIf="!ID_F">
+        <mat-card class="mat-elevation-z8" *ngIf="!ID_F">
           <mat-card-title>
             <h2 class="text-blue">Liste g&#233;n&#233;rale des fournisseurs</h2>
           </mat-card-title>

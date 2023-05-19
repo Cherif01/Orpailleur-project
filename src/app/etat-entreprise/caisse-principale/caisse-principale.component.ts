@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-caisse-principale',
@@ -21,6 +22,7 @@ export class CaissePrincipaleComponent implements OnInit {
   search = new FormControl();
 
   constructor(
+    private activeroute: ActivatedRoute,
     private dialog: MatDialog,
     private serviceEntreprise: EntrepriseService,
     private snackBar: MatSnackBar
@@ -33,9 +35,13 @@ export class CaissePrincipaleComponent implements OnInit {
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   displaysColums = ["date"];
 
-
+  idOperation: any
   ngOnInit(): void {
+    this.idOperation = this.activeroute.snapshot.params['id'];
+
     this.getCaisse()
+    // Un element
+    // this.getInfo()
   }
   openDialog() {
     this.showSolde()
@@ -46,45 +52,141 @@ export class CaissePrincipaleComponent implements OnInit {
         // console.log(this.GNFAmount);
         // console.log(this.USDAmount);
         if (result?.event && result.event === "insert") {
-          if(result.data.devise == 1){
-            result.data.montant_anterieur = this.GNFAmount
-          }else{
-            result.data.montant_anterieur = this.USDAmount
+          if (result.data.operation == 1 || result.data.operation == 3) {
+            if (result.data.devise == 1) {
+              result.data.montant_anterieur = this.GNFAmount + result.data.montant
+            } else {
+              result.data.montant_anterieur = this.USDAmount + result.data.montant
+            }
+          } else {
+            if (result.data.devise == 1) {
+              result.data.montant_anterieur = this.GNFAmount - result.data.montant
+            } else {
+              result.data.montant_anterieur = this.USDAmount - result.data.montant
+            }
           }
-          // console.log(result.data);
-          this.serviceEntreprise.Add(result.data, 'api', 'caisse')
-            .subscribe({
-              next: (data => {
-                this.snackBar.open("Operation effectuer avec success", "Okay", { duration: 3000 })
-                this.historique.push(data)
-                // this.getCaisse()
-              }),
-              error: (err) => {
-                this.snackBar.open("Erreur, pendant l'operation...", "Okay", { duration: 3000 })
-              }
-            })
 
+          if (result.data.operation == 2 || result.data.operation == 4) {
+            if (result.data.devise == 1) {
+              if (result.data.montant > this.GNFAmount) {
+                this.snackBar.open("Solde insuffisant, Veuillez recharger votre solde !", "Okay", {
+                  duration: 4000,
+                  horizontalPosition: "right",
+                  verticalPosition: "top",
+                  panelClass: ['bg-danger', 'text-light']
+                })
+              } else {
+                // console.log(result.data);
+                this.serviceEntreprise.Add(result.data, 'api', 'caisse')
+                  .subscribe({
+                    next: (data => {
+                      this.snackBar.open("Operation effectuer avec success", "Okay", { duration: 3000 })
+                      this.historique.push(data)
+                      // this.getCaisse()
+                    }),
+                    error: (err) => {
+                      this.snackBar.open("Erreur, pendant l'operation...", "Okay", { duration: 3000 })
+                    }
+                  })
+              }
+            } else {
+              if (result.data.montant > this.USDAmount) {
+                this.snackBar.open("Solde insuffisant, Veuillez recharger votre solde !", "Okay", {
+                  duration: 4000,
+                  horizontalPosition: "right",
+                  verticalPosition: "top",
+                  panelClass: ['bg-danger', 'text-light']
+                })
+              } else {
+                // console.log(result.data);
+                this.serviceEntreprise.Add(result.data, 'api', 'caisse')
+                  .subscribe({
+                    next: (data => {
+                      this.snackBar.open("Operation effectuer avec success", "Okay", { duration: 3000 })
+                      this.historique.push(data)
+                      // this.getCaisse()
+                    }),
+                    error: (err) => {
+                      this.snackBar.open("Erreur, pendant l'operation...", "Okay", { duration: 3000 })
+                    }
+                  })
+              }
+            }
+
+          } else {
+            // console.log(result.data);
+            this.serviceEntreprise.Add(result.data, 'api', 'caisse')
+              .subscribe({
+                next: (data => {
+                  this.snackBar.open("Operation effectuer avec success", "Okay", { duration: 3000 })
+                  this.historique.push(data)
+                  // this.getCaisse()
+                }),
+                error: (err) => {
+                  this.snackBar.open("Erreur, pendant l'operation...", "Okay", { duration: 3000 })
+                }
+              })
+          }
         }
       })
   }
 
 
+  // FACTURE CAISSE
+  infosLine: any = {}
+  FounisseurName: any = ''
+  getInfo(id: number): void {
+    this.serviceEntreprise.getElementById('api', 'caisse', id)
+      .subscribe({
+        next: (data: any) => {
+          this.infosLine = data
+          if(data.operation == 3 || data.operation == 4){
+            this.serviceEntreprise.getElementById('api', 'fournisseur', data.fournisseur)
+            .subscribe({
+              next: (frs: any) => {
+                this.FounisseurName = frs.prenom + ' ' + frs.nom
+              }
+            })
+          }
+        },
+        error: (err: any) => console.log(err)
+      })
+  }
+
+  // FUnction detectTypeOperation
+  getTypeOperation(IDtype: number): any {
+    switch (IDtype) {
+      case 1:
+        return "entrer de caisse";
+      case 2:
+        return "sortie de caisse";
+      case 3:
+        return "retour en caisse";
+      case 4:
+        return "décaissement";
+      default:
+        return "-"
+    }
+  }
+
+
   // CAISSE ELEMENT
-  historique: any = []
+  historique: any[] = []
   Today_h: Date = new Date()
   getCaisse(): void {
-    this.serviceEntreprise.getList('api', 'caisse')
+    this.serviceEntreprise.getList2('api', 'caisse')
       .subscribe({
         next: ((data: any) => {
           data.forEach((item: any) => {
             // console.log(item);
-            // let dateDB_ = new Date(item.created_at)
-            // if (dateDB_.getDay() == this.Today_h.getDay()) {
-            // }
-            this.historique.push(item)
+            let dateDB_ = new Date(item.created_at)
+            if (dateDB_.getDay() == this.Today_h.getDay()) {
+              this.historique.push(item)
+            }
           })
         })
       })
+
   }
 
 

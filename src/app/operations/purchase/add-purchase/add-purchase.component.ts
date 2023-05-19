@@ -7,6 +7,7 @@ import { PurchaseService } from '../purchase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogMessageComponent } from 'src/app/public/dialogs/dialog-message/dialog-message.component';
 import { Location } from '@angular/common';
+import { max } from 'rxjs';
 
 @Component({
   selector: 'app-add-purchase',
@@ -97,8 +98,8 @@ export class AddPurchaseComponent implements OnInit {
   }
 
   //
-  PTotal_this: any = 0;
-  CAR_Total_this: any = 0;
+  PTotal_this: any = 0.0;
+  CAR_Total_this: any = 0.0;
   getItems(): any {
     this.purchaseService.getPurchaseOnline(this.ID)
       .subscribe({
@@ -109,8 +110,8 @@ export class AddPurchaseComponent implements OnInit {
             this.CAR_Total_this = 0
             // console.log(dataItems);
             dataItems.forEach((item) => {
-              this.PTotal_this += item.poids_achat
-              this.CAR_Total_this += item.poids_achat * item.carrat_achat
+              this.PTotal_this += parseFloat(item.poids_achat)
+              this.CAR_Total_this += (item.poids_achat * (item.carrat_achat - item.manquant))
             })
             this.dataItemsList = dataItems
             // this.snackBar.open("Nouvelle barre ajouter !", "Okey")
@@ -208,9 +209,9 @@ export class AddPurchaseComponent implements OnInit {
             // console.log(this.sendForm);
             this.purchaseService.PostElement('api', 'attribution', this.sendForm.value).subscribe({
               next: (response) => {
-                this.snackBar.open("Cet achat est maintenant dans le lot : " + this.listLot.designation + " !", "Okay", {
+                this.snackBar.open("Achat valider avec success !", "Okay", {
                   duration: 4000,
-                  horizontalPosition: "center",
+                  horizontalPosition: "right",
                   verticalPosition: "top",
                   panelClass: ['bg-success', 'text-white']
                 })

@@ -1,7 +1,7 @@
 import { environment } from "src/environments/environment";
 
-// url
-export const BASE_URL = environment.production?"http://192.168.43.158:8000/":"http://192.168.43.158:8000/";
+// url de base
+export const BASE_URL = environment.production?"http://192.168.197.100:8000/":"http://192.168.43.158:8000/";
 
 // application
 export const LINK_BASE = 'api';

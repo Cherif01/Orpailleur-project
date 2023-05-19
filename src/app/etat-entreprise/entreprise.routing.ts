@@ -22,6 +22,10 @@ const EntrepriseRouting: Routes = [
         component: CaissePrincipaleComponent,
       },
       {
+        path: 'caisse-principale/:id',
+        component: CaissePrincipaleComponent,
+      },
+      {
         path: 'entrer-caisse',
         component: EntrerCaisseComponent,
       },

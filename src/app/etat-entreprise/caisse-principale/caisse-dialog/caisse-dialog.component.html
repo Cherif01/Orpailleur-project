@@ -29,6 +29,13 @@
     </mat-form-field>
     <br>
 
+    <!-- Representant -->
+    <mat-form-field appearance="outline" class="w-100" *ngIf="isTrue">
+      <mat-label>Representant</mat-label>
+      <input matInput type="text" formControlName="representant" class="w-100" placeholder="Representant">
+      <mat-hint>Payer a :</mat-hint>
+    </mat-form-field>
+
     <!-- Devise -->
     <mat-form-field appearance="outline" class="w-100 mb-2">
       <mat-label>--- Devise de l'op&#233;ration ---</mat-label>

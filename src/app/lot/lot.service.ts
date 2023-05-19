@@ -10,26 +10,40 @@ export class LotService {
 
   constructor(private http: HttpClient) { }
 
-  getList(api:string,suffixUrl:string){
+  getList(api: string, suffixUrl: string) {
     return this.http.get<any[]>(`${BASE_URL}${api}/${suffixUrl}/`);
+  }
+
+  getItemsOfAchat(api: string, suffixUrl: string, id_achat: any) {
+    const url = `${BASE_URL}${api}/${suffixUrl}/${id_achat}/achat_items_by_achat/`;
+    return this.http.get<any[]>(url)
+  }
+  getLotContentById(api: string, suffixUrl: string, id_lot: any) {
+    const url = `${BASE_URL}${api}/${suffixUrl}/${id_lot}/get_achat_items/`;
+    return this.http.get<any[]>(url)
   }
 
   getDetailPurchaseItems(id_achat: any) {
     return this.http.get<any[]>(BASE_URL.concat(LINK_BASE, "/", T_ITEMS, "/?id_achat=", id_achat))
   }
 
-  updateRowsPurchase(purchase:any) {
+  updateRowsPurchase(purchase: any) {
     return this.http.put<any[]>(BASE_URL.concat(LINK_BASE, `/achat_items/${purchase.id}/`), purchase)
   }
 
+
+  updateRows(data: any) {
+    return this.http.put<any[]>(BASE_URL.concat(LINK_BASE, `/achat_items/${data.id}/`), data)
+  }
+
   // Add Lot
-  PostElement(api:string, suffixUrl:string, data: any) : Observable<any> {
+  PostElement(api: string, suffixUrl: string, data: any): Observable<any> {
     // console.log(data);
     return this.http.post(`${BASE_URL}${api}/${suffixUrl}/`, data)
   }
 
   // UPDATE
-  updateResource(api:string, suffixUrl: string, data: any): Observable<any> {
+  updateResource(api: string, suffixUrl: string, data: any): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.put(`${BASE_URL}${api}/${suffixUrl}/`, data, { headers });
   }

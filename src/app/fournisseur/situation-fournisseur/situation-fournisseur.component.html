@@ -1,0 +1,137 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-5 col-sm-12">
+            <div class="title">
+              <h4 class="text- fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+            <hr>
+          </div>
+          <div class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon
+                  class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+            <div class="col-btn">
+              <button mat-flat-button color="primary" href="#" routerLink="/">
+                <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable start -->
+      <div class="...-box">
+        <mat-card class="mat-elevation-z6">
+          <mat-card-content>
+            <div class="col">
+              <div class="" *ngIf="objetFRS">
+                <div class="row">
+                  <div class="col-12 col-lg-3">
+                    <div class="card border-0">
+                      <div class="card-body text-center">
+                        <h4 class="fw-bold">{{ objetFRS.prenom }} {{ objetFRS.nom }}</h4>
+                        <span class="fs-6 p-2">{{ objetFRS.pays }} / {{ objetFRS.ville }}</span> <br>
+                        <span class="">{{ objetFRS.email }}</span> <br>
+                        <span class="">{{ objetFRS.adresse }} / {{ objetFRS.telephone }}</span> <br>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col">
+                    <table class="table table-light">
+                      <thead class="text-blue text-center">
+                        <th>SOLDE GNF</th>
+                        <th>SOLDE USD</th>
+                        <th>STATUS</th>
+                      </thead>
+                      <tbody>
+                        <tr class="text-center">
+                          <td>
+                            <span *ngIf="SoldeGNF >= 0">{{ SoldeGNF | number: '2.2-2'}} GNF</span>
+                            <span *ngIf="SoldeGNF < 0" class="text-danger">{{ SoldeGNF | number: '2.2-2'}} GNF</span>
+                          </td>
+                          <td>
+                            <span *ngIf="SoldeUSD >= 0">{{ SoldeUSD | number: '2.2-2'}} USD</span>
+                            <span *ngIf="SoldeUSD < 0" class="text-danger">{{ SoldeUSD | number: '2.2-2'}} USD</span>
+                          </td>
+                          <td>
+                            <span *ngIf="SoldeGNF >= 0 && SoldeUSD >= 0" class="text-success fw-bold">Aucune dettes
+                              !</span>
+                            <span *ngIf="SoldeGNF >= 0 && SoldeUSD < 0" class="text-warning fw-bold">Dettes USD !</span>
+                            <span *ngIf="SoldeGNF < 0 && SoldeUSD >= 0" class="text-warning fw-bold">Dettes GNF !</span>
+                            <span *ngIf="SoldeGNF < 0 && SoldeUSD < 0" class="text-dagner fw-bold">Plein dettes !</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="mb-4 mb-lg-0 shadow-lg mt-3">
+                    <!-- SITUATION -->
+                    <mat-tab-group>
+                      <mat-tab>
+                        <ng-template mat-tab-label>
+                          <mat-icon>reply</mat-icon>
+                          Retour/Decaissement
+                        </ng-template>
+                        <table class="table">
+                          <thead class="text-dark">
+                            <th>Date d'operation</th>
+                            <th>Retour en caisse</th>
+                            <th>Decaissement</th>
+                            <th>Representant</th>
+                            <th>Motif</th>
+                            <th class="text-center">Action</th>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let data of TabCaisseOpts">
+                              <td>{{ data.created_at | date: 'dd/MM/YYYY' }}</td>
+                              <td>
+                                <span *ngIf="data.operation == 3">{{ data.montant | number: '2.2-2' }}</span>
+                                <span *ngIf="data.operation == 4">---</span>
+                              </td>
+                              <td>
+                                <span *ngIf="data.operation == 4">{{ data.montant | number: '2.2-2' }}</span>
+                                <span *ngIf="data.operation == 3">---</span>
+                              </td>
+                              <td>{{ data.representant }}</td>
+                              <td>{{ data.motif }}</td>
+                              <td class="text-center">
+                                <button mat-button color="primary"><mat-icon>printer</mat-icon></button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </mat-tab>
+
+                      <!-- Fixing valider -->
+                      <mat-tab>
+                        <ng-template mat-tab-label>
+                          <mat-icon>check</mat-icon>
+                          Fixing valider
+                        </ng-template>
+                      </mat-tab>
+
+                    </mat-tab-group>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <!-- Export Datatable End -->
+    </div>
+  </div>
+</div>

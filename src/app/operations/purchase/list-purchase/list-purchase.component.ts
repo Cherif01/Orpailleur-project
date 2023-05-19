@@ -56,7 +56,7 @@ export class ListPurchaseComponent implements OnInit {
   title = "Achat";
   items: any[] = []
   dataAchat: any[] = []
-  displaysColums = ["created_at", "slug", "fournisseur", "poids_total" ,"carrat_achat", "telephone", "action"];
+  displaysColums = ["created_at", "slug", "fournisseur", "telephone", "poids_total" ,"carrat_achat", "action"];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
 

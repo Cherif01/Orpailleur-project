@@ -2,65 +2,68 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 @import 'animate.css';
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
-}
-html, body {
-  height: 100%;
+  font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .title {
   display: inline-block;
   margin: 0 0.5rem;
 
-  animation: zoomIn; /* referring directly to the animation's @keyframe declaration */
-  animation-duration: 2s; /* don't forget to set a duration! */
+  animation: zoomIn;
+  /* referring directly to the animation's @keyframe declaration */
+  animation-duration: 2s;
+  /* don't forget to set a duration! */
 }
 
-.accordion-item{
-  animation: zoomIn; /* referring directly to the animation's @keyframe declaration */
-  animation-duration: 2s; /* don't forget to set a duration! */
-}
+/* .accordion-item {
+  animation: zoomIn;
+  animation-duration: 2s;
+} */
 
 ::-webkit-scrollbar {
   display: none;
-}
-
-body {
-  margin: 0;
-  font-family: 'Roboto', sans-serif;
-  /* scrollbar-width: none; */
 }
 
 .menu-spacer {
   flex: 1 1 auto;
 }
 
-#table_shadow thead, #matTable thead{
-  background-color: rgb(13, 10, 57);
+#table_shadow thead, #matTable thead {
+  background-color: rgb(6, 5, 33);
 }
 
-#table_shadow th, #matTable th{
+#table_shadow th, #matTable th {
   color: white;
   font-size: 16px;
 }
 
 
-.separator-25{
+.separator-25 {
   margin: 25px;
 }
 
-
-#text{
+#text {
   text-align: center;
   font-size: 25px;
   color: rgb(0, 255, 255);
   text-shadow: rgb(123, 123, 123) 2px 2px 2px;
 }
 
-.dw{
+.dw {
+  color: rgb(2, 2, 0);
+}
+.dw-edit2, .dw-print{
+  color: white;
+  margin-left: 5px;
+}
+.col-btn span{
+  color: white;
+}
+
+table .dw{
   color: white;
 }

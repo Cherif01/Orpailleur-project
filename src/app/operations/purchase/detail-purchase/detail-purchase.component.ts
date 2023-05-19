@@ -1,10 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { ChangeDetectionStrategy, Input } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApiserviceService } from 'src/app/api_service/apiservice.service';
 import { ActivatedRoute } from '@angular/router';
 import { LINK_BASE, T_FOURNISSEUR } from 'src/app/config';
@@ -53,13 +48,14 @@ export class DetailPurchaseComponent implements OnInit {
 
 
   getItemAchat() {
-    this.purchaseService.getDetailPurchaseItems(this.ID_ACHAT_GET).subscribe({
-      next: (data) => {
-        data.forEach(item => {
-          this.rows.push(this.createItemFormGroup(item));
-        });
-      }
-    })
+    this.purchaseService.getItemsOfAchat('api', 'achat_items', this.ID_ACHAT_GET)
+      .subscribe({
+        next: (data) => {
+          data.forEach(item => {
+            this.rows.push(this.createItemFormGroup(item));
+          });
+        }
+      })
   }
 
   // GET Fournisseur
@@ -93,12 +89,12 @@ export class DetailPurchaseComponent implements OnInit {
 
   updateDirectRow(row: any) {
     // console.log("row",row,"oM",this.oldValueM,"oP",this.oldValueP);
-
-    if (row.valid && (row.value.manquant !== this.oldValueM||row.value.poids_achat !== this.oldValueP)) {
+    if (row.valid && (row.value.manquant !== this.oldValueM || row.value.poids_achat !== this.oldValueP)) {
       this.updateRowsPurchase(row.value);
     }
   }
-  setOldValues(row:any){
+
+  setOldValues(row: any) {
     this.oldValueM = row.value.manquant;
     this.oldValueP = row.value.poids_achat;
   }

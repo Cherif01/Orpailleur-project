@@ -2,7 +2,9 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PurchaseService } from '../purchase.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-create-facture-frs',
@@ -13,6 +15,9 @@ export class CreateFactureFrsComponent implements OnInit {
 
   @ViewChild('divToPrint') divToPrint: ElementRef | any;
   @ViewChild('head') head: ElementRef | any;
+  dataSource: MatTableDataSource<any> = new MatTableDataSource();
+  displaysColums: string[] = ["select", "Date", "Fournisseur", "Poids_total", "Fixing", "Poids vendu", "Discount", "Utilisateur", "Status"];
+  selection = new SelectionModel<any>(true, []);
 
   title = 'Create Facture'
   idGet: any
@@ -26,24 +31,29 @@ export class CreateFactureFrsComponent implements OnInit {
     id: [, Validators.required],
     created_by: [1, Validators.required]
   })
-
+  search = new FormControl();
 
   constructor(
     private serviceOperation: PurchaseService,
     private activeroute: ActivatedRoute,
     public location: Location,
     private fb: FormBuilder,
-    private router: Router
-  ) { }
+  ) {
+    this.search.valueChanges.subscribe(v => {
+      this.filterTable(v)
+    })
+  }
+  filterTable(v: any) {
+    throw new Error('Method not implemented.');
+  }
 
   ngOnInit() {
     // ID Fournisseur EN GET
     this.idGet = this.activeroute.snapshot.params['id'];
-
-    this.ListFix()
-    this.ListAchat()
+    this.detailFixing()
   }
 
+  // Reset form
   resetForm(form: FormGroup, fields: string[]) {
     fields.forEach(field => {
       form.controls[field].setValue(null);
@@ -51,115 +61,101 @@ export class CreateFactureFrsComponent implements OnInit {
     })
   }
 
-
   // FIXING POST
-  _TYPE_: any = false
-  idFixing: any
-  fixingClick: any = false
-  TabItemsFix: any = []
-  infosFix: any = []
   fournisseurName: any = ""
+  TabItemsFix: any[] = [];
+  infosFix: any = {}
+  _TYPE_: any = false
   poidsTotal: number = 0
   carratMoyen: number = 0
-  fixingPOST(form: FormGroup) {
-    this.TabItemsFix = []
-    if (form.valid) {
-      this.idFixing = form.value.id
-      // console.log(form.value.id);
-      this.serviceOperation.getList('api', 'fixing_detail')
-        .subscribe({
-          next: ((data) => {
-            data.forEach((item) => {
-              if (item.fixing == this.idFixing) {
-                if (item.type_envoie == 1) {
-                  this._TYPE_ = false
-                  this.TabItemsFix.push(item)
-                  this.fournisseurName = item.fournisseur.prenom + " " + item.fournisseur.nom
-                  // console.log(item);
-                  this.poidsTotal += item.achat_items.poids_achat
-                  this.carratMoyen += (item.achat_items.poids_achat * item.achat_items.carrat_achat)
-                }
-                else if (item.type_envoie == 2) {
-                  this._TYPE_ = true
-                  this.serviceOperation.getList('api', 'achat_items')
-                    .subscribe({
-                      next: ((ai) => {
-                        ai.forEach((a) => {
-                          if (a.achat.id == item.achat) {
-                            this.TabItemsFix.push(a)
-                            // console.log(a);
-                            this.poidsTotal += a.poids_achat
-                            this.carratMoyen += (a.poids_achat * a.carrat_achat)
-                          }
-                        });
-                        this.resetForm(form,['id'])
-                      })
-                    })
-                } else { }
-              }
-            })
-            this.fixingClick = true;
-            this.router.navigate(['operation/create-facture/'])
-          })
-        })
+  detailFixing() {
+    this.serviceOperation.getList('api', 'fixing_detail')
+      .subscribe({
+        next: (data => {
+          this.dataSource.data = data;
+          console.log("detail", this.TabItemsFix)
+        }),
+        error: (err) => console.log(err)
+      })
+  }
 
-      this.serviceOperation.getElementById('api', 'fixing', this.idFixing)
-        .subscribe({
-          next: ((data) => {
-            this.infosFix = data
-            // console.log(data);
-          })
-        })
 
+  // Unique
+  factureUnique: any = false;
+  // Multiple
+  factureMultiple: any = false;
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    if (numSelected == 1) {
+      this.factureUnique = true;
+      this.factureMultiple = false;
+    } else if (numSelected > 1) {
+      this.factureMultiple = true;
+      this.factureUnique = false;
+    } else {
+      this.factureUnique = false;
+      this.factureMultiple = false;
+      this.facture = false;
     }
+    return numSelected === numRows;
   }
 
-  // ACHAT POST
-  achatPOST(form: FormGroup) {
-
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+    this.selection.select(...this.dataSource.data);
   }
 
-  // LIST FIXING
-  ListFixing: any = []
-  ListFix(): void {
-    this.serviceOperation.getList('api', 'fixing')
-      .subscribe({
-        next: ((value) => {
-          value.forEach((item) => {
-            this.ListFixing.push(item)
-            // console.log(item);
-          })
-        })
-      })
-  }
-
-  // LIST FIXING
-  listAchat: any = []
-  ListAchat(): void {
-    this.serviceOperation.getList('api', 'achat')
-      .subscribe({
-        next: ((value) => {
-          value.forEach((item) => {
-            this.listAchat.push(item)
-            // console.log(item);
-          })
-        })
-      })
-  }
-
-  // SELECT CHANGE
-  infosFixing(e: any): void {
-
+  /** The label for the checkbox on the passed row */
+  tab: number = 0
+  checkboxLabel(row?: any): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
 
+  poids_fixer: any
+  fixing_bourse: any
+  discount: any
+  id_fixing: any
+
+  logSelected() {
+    let selected = this.selection.selected;
+    let tab: any[] = [];
+    selected.forEach(v => {
+      tab.push({
+        achat_items: v.id,
+        achat: v.achat.id,
+        fournisseur: v.achat.fournisseur.id,
+        fixing: this.id_fixing,
+        type_envoie: 1,
+        created_by: 1,
+      });
+    });
+  }
+
+
+  facture: any = false;
+  activeDetailFacture() {
+    this.facture = true;
+    // console.log("ETAT : ", this.facture);
+
+  }
 
   //
   Total: number = 0
   calculPrice(pu: any, poids: any, carrat: any) {
     let Montant = ((pu / 22) * poids * carrat)
     this.Total += Montant
-    return Montant
+    return Number(Montant)
   }
 
   imprimerDiv(): void {
