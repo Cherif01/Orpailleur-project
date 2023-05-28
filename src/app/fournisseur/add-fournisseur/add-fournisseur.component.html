@@ -48,18 +48,6 @@
 
                 <!-- Nom et Prenom -->
                 <div class="d-flex justify-content-between flex-row align-items-center mb-2">
-                  <div class="col mx-2">
-                    <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Nom du
-                        fournisseur</mat-label>
-                      <input formControlName="nom" matInput placeholder="Ex : Cherif">
-                      <mat-hint>Exemple : Cherif</mat-hint>
-                      <mat-error *ngIf="Fournisseur.controls.nom.errors">
-                        Le Nom est obligatoire
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
-
                   <!-- Prenom -->
                   <div class="col mx-2">
                     <mat-form-field appearance="outline" class="w-100">
@@ -72,8 +60,18 @@
                       </mat-error>
                     </mat-form-field>
                   </div>
+                  <div class="col mx-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Nom du
+                        fournisseur</mat-label>
+                      <input formControlName="nom" matInput placeholder="Ex : Cherif">
+                      <mat-hint>Exemple : Cherif</mat-hint>
+                      <mat-error *ngIf="Fournisseur.controls.nom.errors">
+                        Le Nom est obligatoire
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
                 </div>
-
 
                 <!-- Pays et Ville -->
                 <div class="d-flex justify-content-between flex-row align-items-center mb-2">

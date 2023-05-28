@@ -29,7 +29,6 @@ export class ListFournisseurComponent implements OnInit {
     private snackBar: MatSnackBar,
     public location: Location
   ) {
-
     this.search.valueChanges.subscribe(v => {
       this.filterTable(v)
     })

@@ -109,10 +109,10 @@
                             </thead>
                             <tbody>
                               <tr *ngFor="let x of ListAchatThis">
-                                <td>#00{{ x.id }}</td>
+                                <td>{{ x.id }}</td>
                                 <td>{{ x.created_at | date: 'dd/MM/YYYY' }}</td>
                                 <td>{{ x.poids_total }}</td>
-                                <td>{{ x.carrat_moyen }}</td>
+                                <td>{{ (x.carrat_moyen).toString().substring(0, 5) }}</td>
                                 <td class="text-center">
                                   <form>
                                     <button data-bs-toggle="collapse" data-bs-target="#listAchat"
@@ -177,8 +177,17 @@
                       <div class="d-flex align-items-center">
                         <div class="col">
                           <h2 class="text-blue p-0 m-0">Toutes les barres restantes</h2>
-                          <span class="p-1">POIDS TOTAL : {{ infoAchatView.poids_total }} g</span> <br>
-                          <span class="p-1 text-danger">POIDS RESTANT : {{ PT_Restant | number }} g</span>
+                          <hr>
+                          <div class="d-flex justify-content start">
+                            <div class="col">
+                              <span class="p-1">POIDS TOTAL DE L'ACHAT : <u class="text-dark fw-bold">{{ infoAchatView.poids_total }} g</u></span> <br>
+                              <span class="p-1 text-dark">POIDS RESTANT DE L'ACHAT : <u class="text-dark fw-bold">{{ PT_Restant | number }} g</u></span> <br>
+                            </div>
+                            <div class="col">
+                            <span class="p-1 text-dark">POIDS FIXER : <u class="text-dark fw-bold">{{ this.poids_fixer | number }} g</u></span> <br>
+                            <span class="p-1 text-dark">POIDS DU FIXING RESTANT : <u class="text-dark fw-bold">{{ this.poids_fixer - this.poidsAttribuer | number }} g</u></span> <br>
+                        </div>
+                      </div>
                         </div>
                         <div class="col-2"><button mat-raised-button color="accent" (click)="logSelected()">
                             <mat-icon>check</mat-icon> Valider</button></div>
@@ -224,7 +233,6 @@
                                 discount).toString().substring(0, 5) }}</td>
                             </ng-container>
 
-
                             <tr mat-header-row *matHeaderRowDef="displaysColums;"></tr>
                             <tr mat-row *matRowDef="let row; columns:displaysColums" (click)="selection.toggle(row)">
                             </tr>
@@ -250,33 +258,31 @@
                               <tr>
                                 <th>POIDS TOTAL</th>
                                 <th>:</th>
-                                <td>{{ infoAchatView.poids_total }}</td>
+                                <td class="text-success">{{ infoAchatView.poids_total }} g</td>
                               </tr>
                               <tr>
                                 <th>POIDS VENDU</th>
                                 <th>:</th>
-                                <td>{{ PVendu | number }}</td>
+                                <td>{{ this.PVendu  | number: '2.2-2' }} g</td>
                               </tr>
                               <tr>
                                 <th>POIDS RESTANT</th>
                                 <th>:</th>
-                                <td>{{ PT_Restant | number }}</td>
+                                <td class="text-danger">{{ PT_Restant | number: '2.2-2' }} g</td>
                               </tr>
                               <tr>
                                 <th>CARRAT</th>
                                 <th>:</th>
-                                <td>{{ infoAchatView.carrat_moyen }}</td>
+                                <td>{{ (cMoyenActif) }}</td>
                               </tr>
                             </table>
-                            <!-- <span class="p-1 fs-4">POIDS TOTAL : {{ infoAchatView.poids_total }}</span> <br>
-                            <span class="p-1 text-primary fs-4">POIDS VENDU : {{ PVendu }}</span> <br>
-                            <span class="p-1 text-danger fs-4">POIDS RESTANT : {{ PT_Restant }}</span> <br>
-                            <span class="p-1 fs-4">CARRAT : {{ infoAchatView.carrat_moyen }}</span> -->
                           </div>
+<!--  -->
                           <div class="card-body text-center">
                             <div class="mt-2">
-                              <form [formGroup]="FixingPoids" (ngSubmit)="PFix(FixingPoids, infoAchatView.id)">
+                              <form [formGroup]="FixingPoids" (ngSubmit)="PFix(FixingPoids, infoAchatView.id, (cMoyenActif).toString().substring(0,5))">
                                 <div class="col">
+                                  <input type="number" hidden formControlName="carrat_moyen_restant">
                                   <mat-form-field class="w-100">
                                     <mat-label>Poids</mat-label>
                                     <input matInput type="number" min="0" max="{{PT_Restant}}"
@@ -285,9 +291,9 @@
                                   </mat-form-field>
                                 </div>
                                 <div class="col text-center">
-                                  <button type="submit" class="w-100" [disabled]="!FixingPoids.valid" mat-raised-button
+                                  <button type="submit" class="w-100 p-2" [disabled]="!FixingPoids.valid" mat-raised-button
                                     color="primary">
-                                    <span class="dw dw-add"></span> Valider avec ce poids
+                                    <span class="dw dw-add text-light"></span> Valider avec ce poids
                                   </button>
                                 </div>
                               </form>

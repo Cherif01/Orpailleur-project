@@ -19,10 +19,12 @@ import { MatCardModule } from '@angular/material/card';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {CdkAccordionModule} from '@angular/cdk/accordion';
-import { DialogMessageComponent } from './public/dialogs/dialog-message/dialog-message.component';
 import { DialogUpdateFixingInfoComponent } from './public/dialogs/dialog-update-fixing-info/dialog-update-fixing-info.component';
 import { DialogAddClientComponent } from './public/dialogs/dialog-add-client/dialog-add-client.component';
 import { DialogConvertMoneyComponent } from './public/dialogs/dialog-convert-money/dialog-convert-money.component';
+import { LoginComponent } from './user/login/login.component';
+import { LogoutComponent } from './user/logout/logout.component';
+
 // DATA-TABLES
 
 
@@ -32,10 +34,11 @@ import { DialogConvertMoneyComponent } from './public/dialogs/dialog-convert-mon
     NavbarComponent,
     SidebarComponent,
     ErrorComponent,
-    DialogMessageComponent,
     DialogUpdateFixingInfoComponent,
     DialogAddClientComponent,
     DialogConvertMoneyComponent,
+    LoginComponent,
+    LogoutComponent,
   ],
   imports: [
     BrowserModule,

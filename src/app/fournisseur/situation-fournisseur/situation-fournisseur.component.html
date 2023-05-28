@@ -62,7 +62,7 @@
                           </td>
                           <td>
                             <span *ngIf="SoldeUSD >= 0">{{ SoldeUSD | number: '2.2-2'}} USD</span>
-                            <span *ngIf="SoldeUSD < 0" class="text-danger">{{ SoldeUSD | number: '2.2-2'}} USD</span>
+                            <span *ngIf="SoldeUSD < 0" class="text-danger">{{ (SoldeUSD ) | number: '2.2-2'}} USD</span>
                           </td>
                           <td>
                             <span *ngIf="SoldeGNF >= 0 && SoldeUSD >= 0" class="text-success fw-bold">Aucune dettes
@@ -81,46 +81,73 @@
                     <mat-tab-group>
                       <mat-tab>
                         <ng-template mat-tab-label>
-                          <mat-icon>reply</mat-icon>
-                          Retour/Decaissement
+                          <mat-icon>person</mat-icon>
+                          <span class="fw-bold text-dark">SITUATION</span>
                         </ng-template>
                         <table class="table">
                           <thead class="text-dark">
                             <th>Date d'operation</th>
-                            <th>Retour en caisse</th>
-                            <th>Decaissement</th>
-                            <th>Representant</th>
-                            <th>Motif</th>
-                            <th class="text-center">Action</th>
+                            <th>Mouvement</th>
+                            <th>Credit</th>
+                            <th>Debit</th>
+                            <th>Solde A</th>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let data of TabCaisseOpts">
+                            <tr *ngFor="let data of fusionTab">
                               <td>{{ data.created_at | date: 'dd/MM/YYYY' }}</td>
-                              <td>
-                                <span *ngIf="data.operation == 3">{{ data.montant | number: '2.2-2' }}</span>
-                                <span *ngIf="data.operation == 4">---</span>
+                              <td class="">
+                                <span class="text-dark" *ngIf="data.type == 1">Facturation - Poids {{ data.poids_item }}</span>
+                                <span class="text-dark" *ngIf="data.type == 2">Paiement - <i *ngIf="data.representant != null" class="text-uppercase fw-bold">{{ data.representant }}</i> <i *ngIf="data.representant == null">{{ data.fournisseur }}</i> </span>
                               </td>
                               <td>
-                                <span *ngIf="data.operation == 4">{{ data.montant | number: '2.2-2' }}</span>
-                                <span *ngIf="data.operation == 3">---</span>
+                                <span *ngIf="data.type == 1">{{ data.montant | number: '2.2-2' }}</span>
+                                <span *ngIf="data.type == 2">---</span>
                               </td>
-                              <td>{{ data.representant }}</td>
-                              <td>{{ data.motif }}</td>
-                              <td class="text-center">
-                                <button mat-button color="primary"><mat-icon>printer</mat-icon></button>
+                              <td>
+                                <span *ngIf="data.type == 2">{{ data.montant | number: '2.2-2' }}</span>
+                                <span *ngIf="data.type == 1">---</span>
                               </td>
+                              <td class="fw-bold">$ {{ format2Chart(data.montant) | number }}</td>
                             </tr>
                           </tbody>
                         </table>
                       </mat-tab>
 
                       <!-- Fixing valider -->
-                      <mat-tab>
+                      <!-- <mat-tab>
                         <ng-template mat-tab-label>
                           <mat-icon>check</mat-icon>
                           Fixing valider
                         </ng-template>
-                      </mat-tab>
+                        <table class="table" matTable>
+                          <thead class="text-dark">
+                            <th>NB Barres</th>
+                            <th>Poids</th>
+                            <th>Carrat</th>
+                            <th>Densite</th>
+                            <th>P.Unit</th>
+                            <th>Montant</th>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let data of TabFixingOpts; let i = index">
+                              <td>{{ i+1 }}</td>
+                              <td>{{ data.poids_item | number }}</td>
+                              <td>{{ data.carrat | number }}</td>
+                              <td>{{ 22 }}</td>
+                              <td>{{ (data.prix_unit ).toString().substring(0, 5) }}</td>
+                              <td>{{ calculMontant((data.prix_unit).toString().substring(0, 5), data.poids_item, data.carrat) }}</td>
+                            </tr>
+                          </tbody>
+                          <tfoot>
+                            <th>NB Barres</th>
+                            <th>Poids</th>
+                            <th>Carrat</th>
+                            <th>Densite</th>
+                            <th>P.Unit</th>
+                            <th>0</th>
+                          </tfoot>
+                        </table>
+                      </mat-tab> -->
 
                     </mat-tab-group>
                   </div>

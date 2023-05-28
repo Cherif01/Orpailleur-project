@@ -101,8 +101,8 @@
                               class="icon-copy dw dw-checked mx-1"></i> Valider</span>
                         </td>
                         <td *ngIf="data.status == 2" class="text-center">
-                          <a *ngIf="data.status == 2" routerLink="/fournisseur/facture-vente/{{data.id}}"
-                            mat-raised-button color="accent" class="mx-3">Facture <span class="dw dw-file2"></span></a>
+                          <a *ngIf="data.status == 2" routerLink="/operation/create-facture"
+                            mat-stroked-button color="primary" class="mx-3">Facture <span class="dw dw-file2"></span></a>
                         </td>
                       </tr>
                     </tbody>

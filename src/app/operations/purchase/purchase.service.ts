@@ -24,6 +24,11 @@ export class PurchaseService {
     return this.http.put<any[]>(BASE_URL.concat(LINK_BASE, `/achat_items/${purchase.id}/`), purchase)
   }
 
+  situationMonetaire(api: string, suffixUrl: string, id: number): Observable<any> {
+    const url = `${BASE_URL}${api}/${suffixUrl}/${id}/situation_fournisseur/`;
+    return this.http.get<any>(url);
+  }
+
   // UPDATE ACHAT
   mettreAJourRessource(ressourceID: any) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });

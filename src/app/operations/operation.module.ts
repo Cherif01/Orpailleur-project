@@ -4,7 +4,6 @@ import { AddPurchaseComponent, dialogAddPurchase } from './purchase/add-purchase
 import { ListPurchaseComponent } from './purchase/list-purchase/list-purchase.component';
 import { DetailPurchaseComponent } from './purchase/detail-purchase/detail-purchase.component';
 import { AddSaleComponent } from './sales/add-sale/add-sale.component';
-import { ListSaleComponent } from './sales/list-sale/list-sale.component';
 import { DetailSaleComponent } from './sales/detail-sale/detail-sale.component';
 import OperationRouting from './operation.routing';
 import { RouterModule } from '@angular/router';
@@ -27,15 +26,12 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { ClientventeComponent } from './sales/clientvente/clientvente.component';
-import { FactureclientComponent } from './sales/factureclient/factureclient.component';
 import { InitPurchaseComponent } from './purchase/init-purchase/init-purchase.component';
 import { FactureFournisseurComponent } from './purchase/facture-fournisseur/facture-fournisseur.component';
 import { FacturepurchaseComponent } from './purchase/facturepurchase/facturepurchase.component';
 import { CreateFactureFrsComponent } from './purchase/create-facture-frs/create-facture-frs.component';
-import { FixingClientComponent } from './sales/fixing/fixing-client/fixing-client.component';
-import { AddFixingClientComponent } from './sales/fixing/add-fixing-client/add-fixing-client.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { NgxSelectModule } from 'ngx-select-ex';
 
 @NgModule({
   declarations: [
@@ -43,18 +39,13 @@ import { MatTabsModule } from '@angular/material/tabs';
     ListPurchaseComponent,
     DetailPurchaseComponent,
     AddSaleComponent,
-    ListSaleComponent,
     DetailSaleComponent,
     FournisseurachatComponent,
     dialogAddPurchase,
-    ClientventeComponent,
-    FixingClientComponent,
-    FactureclientComponent,
     InitPurchaseComponent,
     FactureFournisseurComponent,
     FacturepurchaseComponent,
-    CreateFactureFrsComponent,
-    AddFixingClientComponent
+    CreateFactureFrsComponent
   ],
   imports: [
     CommonModule,
@@ -79,6 +70,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatSelectModule,
     MatRadioModule,
     MatCheckboxModule,
+    NgxSelectModule,
     RouterModule.forChild(OperationRouting),
   ]
 })

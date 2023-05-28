@@ -17,6 +17,8 @@ import { EntrerCaisseComponent } from './caisse-principale/entrer-caisse/entrer-
 import { SortieCaisseComponent } from './caisse-principale/sortie-caisse/sortie-caisse.component';
 import { CaisseOptDialogComponent } from './caisse-principale/caisse-opt-dialog-entrer/caisse-opt-dialog.component';
 import { CaisseOptDialogSortieComponent } from './caisse-principale/caisse-opt-dialog-sortie/caisse-opt-dialog-sortie.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { CaisseOptDialogSortieComponent } from './caisse-principale/caisse-opt-d
     MatSelectModule,
     MatButtonModule,
     MatInputModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatTabsModule,
+    MatIconModule
   ]
 })
 export class EntrepriseStateModule { }

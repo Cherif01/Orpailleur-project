@@ -27,6 +27,11 @@ export class EntrepriseService {
     return this.http.get<any[]>(`${BASE_URL}${api}/${suffixUrl}`, {params});
   }
 
+  getInfoStockAPI(api: string, suffixUrl: string, idUser: any) {
+    const url = `${BASE_URL}${api}/${suffixUrl}/${idUser}/situation_stock/`;
+    return this.http.get<any[]>(url)
+  }
+
   getAllByClause(api: string, suffixUrl: string, field: any, value: any) {
     const options = {
       // headers: new HttpHeaders().set('Accept', 'application/json'),

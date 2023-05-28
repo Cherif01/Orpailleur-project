@@ -17,11 +17,11 @@ export class AddFournisseurComponent implements OnInit {
   Fournisseur = this.fb.group({
     nom: ['', Validators.required],
     prenom: ['', Validators.required],
-    pays: ['', Validators.required],
-    ville: ['', Validators.required],
-    adresse: ['', Validators.required],
+    pays: [''],
+    ville: [''],
+    adresse: [''],
     telephone: ['', Validators.required],
-    email: ['', Validators.email],
+    email: ['', Validators.required],
     created_by: [1, Validators.required]
   })
 
@@ -44,9 +44,8 @@ export class AddFournisseurComponent implements OnInit {
       //Envoyer dans la Base
       this.service.fournisseurPost(form.value).subscribe({
         next: (reponse: any) => {
-          console.log(reponse),
           this.snackBar.open("Enregistrer avec succès !", "Okay", {
-            duration: 5000,
+            duration: 3000,
             horizontalPosition: "right",
             verticalPosition: "bottom",
             panelClass: ['bg-success', 'text-white']
@@ -54,6 +53,7 @@ export class AddFournisseurComponent implements OnInit {
           this.router.navigate(['fournisseur/list-fournisseur/']);
         },
         error: (err: any) => {
+          console.log("ERREUR : ", err),
           this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
             duration: 4000,
             horizontalPosition: "right",

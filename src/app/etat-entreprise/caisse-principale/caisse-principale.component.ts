@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CaisseDialogComponent } from './caisse-dialog/caisse-dialog.component';
 import { EntrepriseService } from '../entreprise.service';
@@ -7,6 +7,9 @@ import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
+
 
 @Component({
   selector: 'app-caisse-principale',
@@ -17,6 +20,8 @@ export class CaissePrincipaleComponent implements OnInit {
 
   title = 'Caisse Principale'
 
+  @ViewChild('divToPrint') divToPrint: ElementRef | any;
+  @ViewChild('head') head: ElementRef | any;
   @ViewChild(MatPaginator, { static: true })
   paginator: MatPaginator = Object.create(null);
   search = new FormControl();
@@ -52,22 +57,32 @@ export class CaissePrincipaleComponent implements OnInit {
         // console.log(this.GNFAmount);
         // console.log(this.USDAmount);
         if (result?.event && result.event === "insert") {
+          let usd_amount = ''
+          let gnf_amount = ''
+          usd_amount = (this.USDAmount).toString()
+          gnf_amount = (this.GNFAmount).toString()
+          // console.log("THIS AMOUT : ", this.USDAmount);
+          // console.log("usd_amount : ", usd_amount);
+          // console.log("USD CONVERTIT(usd_amount) : ", parseFloat(usd_amount));
+
           if (result.data.operation == 1 || result.data.operation == 3) {
+            // ENTRER OU RETOUR EN CAISSE
             if (result.data.devise == 1) {
-              result.data.montant_anterieur = this.GNFAmount + result.data.montant
+              result.data.montant_anterieur = parseFloat(gnf_amount) + result.data.montant
             } else {
-              result.data.montant_anterieur = this.USDAmount + result.data.montant
+              result.data.montant_anterieur = parseFloat(usd_amount) + result.data.montant
             }
           } else {
-            if (result.data.devise == 1) {
-              result.data.montant_anterieur = this.GNFAmount - result.data.montant
-            } else {
-              result.data.montant_anterieur = this.USDAmount - result.data.montant
+            // SORTIE OU DECAISSEMENT
+            if (result.data.devise == 1) { // GNF
+              result.data.montant_anterieur = parseFloat(gnf_amount) - result.data.montant
+            } else { // USD
+              result.data.montant_anterieur = parseFloat(usd_amount) - result.data.montant
             }
           }
 
           if (result.data.operation == 2 || result.data.operation == 4) {
-            if (result.data.devise == 1) {
+            if (result.data.devise == 1) { // GNF
               if (result.data.montant > this.GNFAmount) {
                 this.snackBar.open("Solde insuffisant, Veuillez recharger votre solde !", "Okay", {
                   duration: 4000,
@@ -89,7 +104,7 @@ export class CaissePrincipaleComponent implements OnInit {
                     }
                   })
               }
-            } else {
+            } else { // USD
               if (result.data.montant > this.USDAmount) {
                 this.snackBar.open("Solde insuffisant, Veuillez recharger votre solde !", "Okay", {
                   duration: 4000,
@@ -98,15 +113,24 @@ export class CaissePrincipaleComponent implements OnInit {
                   panelClass: ['bg-danger', 'text-light']
                 })
               } else {
+                result.data.montant_anterieur = Number(result.data.montant_anterieur)
+                // console.log("DATA SENDED... : ", result.data);
                 // console.log(result.data);
                 this.serviceEntreprise.Add(result.data, 'api', 'caisse')
                   .subscribe({
                     next: (data => {
-                      this.snackBar.open("Operation effectuer avec success", "Okay", { duration: 3000 })
+                      this.snackBar.open("Operation effectuer avec success", "Okay", {
+                        duration: 3000,
+                        horizontalPosition: "right",
+                        verticalPosition: "top",
+                        panelClass: ['bg-success', 'text-light']
+                      })
                       this.historique.push(data)
                       // this.getCaisse()
+
                     }),
                     error: (err) => {
+                      console.log(err);
                       this.snackBar.open("Erreur, pendant l'operation...", "Okay", { duration: 3000 })
                     }
                   })
@@ -186,7 +210,6 @@ export class CaissePrincipaleComponent implements OnInit {
           })
         })
       })
-
   }
 
 
@@ -253,6 +276,30 @@ export class CaissePrincipaleComponent implements OnInit {
 
   filterTable(value: string) {
     this.dataSource.filter = value?.trim()?.toLowerCase();
+  }
+
+  imprimerDiv(): void {
+    let printContents = this.divToPrint.nativeElement.innerHTML;
+    let originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+  }
+
+  generatePDF() {
+    const doc = new jsPDF();
+    const divElement: any = document.getElementById('recu'); // Remplacez 'divId' par l'ID de votre div
+
+    // Utilisez la méthode html2canvas pour capturer la div sous forme d'image
+    html2canvas(divElement).then((canvas) => {
+      const imageData = canvas.toDataURL('image/png');
+
+      // Ajoutez l'image capturée au document PDF
+      doc.addImage(imageData, 'PNG', 10, 10, 190, 280); // Modifiez les coordonnées et la taille selon vos besoins
+
+      // Enregistrez le document PDF
+      doc.save('_recu_caisse_.pdf');
+    });
   }
 
 }

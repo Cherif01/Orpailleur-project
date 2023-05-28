@@ -41,12 +41,20 @@ const AppRouting: Routes = [
                 loadChildren: () => import('./banque/operation/operationb.module').then(m => m.OperationbModule)
             },
             {
+                path: 'rapport',
+                loadChildren: () => import('./rapport/rapport.module').then(m => m.rapportModule)
+            },
+            {
+                path: 'user',
+                loadChildren: () => import('./user/user.module').then(m => m.UserModule)
+            },
+            {
                 path: 'notfound',
                 loadChildren: () => import('./error/error.module').then(m => m.ErrorModule)
             },
             {
                 path: '',
-                redirectTo: 'home',
+                redirectTo: 'login',
                 pathMatch: 'full'
             }
         ]

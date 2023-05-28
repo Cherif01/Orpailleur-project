@@ -50,6 +50,7 @@ export class DetailFournisseurComponent implements OnInit {
     this.getFournisseur()
     this.getCompteFournisseur()
     this.stockFournisseur()
+    this.getInfoSolde()
   }
 
   // Recup fournisseur
@@ -163,6 +164,86 @@ export class DetailFournisseurComponent implements OnInit {
           //Envoyer dans la Base
         }
       })
+  }
+
+
+
+
+
+
+
+
+
+
+  TabCaisseOpts: any[] = []
+  TabFixingOpts: any[] = []
+  baseSoldeUSD: number = 0
+  baseSoldeGNF: number = 0
+  SoldeGNF: number = 0;
+  SoldeUSD: number = 0;
+  soldeRetourGNF: number = 0;
+  soldeRetourUSD: number = 0;
+  soldeDecaissementGNF: number = 0;
+  soldeDecaissementUSD: number = 0;
+  infoElem: any = {}
+  PoidsValider: number = 0;
+  getInfoSolde(): void {
+    this.service_vendor.situationMonetaire('api', 'caisse', this.ID_F)
+      .subscribe({
+        next: (response: any) => {
+          console.log(response);
+          let dataCaisse:any = response.caisse_fournisseur
+          let dataFixing:any = response.fixing_detail
+          // console.log(response.caisse_fournisseur);
+
+          // 1 : Parcours du tableau de caisse
+          dataCaisse.forEach((itemCaisse: any) => {
+            this.TabCaisseOpts.push(itemCaisse);
+            if(itemCaisse.devise == 1){
+              if(itemCaisse.operation == 3){
+                this.soldeRetourGNF += Number(itemCaisse.montant)
+              }else if(itemCaisse.operation == 4){
+                this.soldeDecaissementGNF += Number(itemCaisse.montant)
+              }
+            }else if(itemCaisse.devise == 2){
+              if(itemCaisse.operation == 3){
+                this.soldeRetourUSD += Number(itemCaisse.montant)
+              }else if(itemCaisse.operation == 4){
+                this.soldeDecaissementUSD += parseFloat(itemCaisse.montant)
+              }
+            }else{}
+          })
+
+          // 2 : Parcours du tableau de fixing detail
+          // console.log(response.fixing_detail);
+          dataFixing.forEach((elem: any) => {
+            let pu_ = ''
+            pu_ = (elem.prix_unit).toString().substring(0, 5)
+            this.TabFixingOpts.push(elem)
+            // console.log(pu_);
+            this.baseSoldeUSD += this.calculMontant(pu_, elem.poids_item, ((elem.carrat).toString().substring(0, 5) - elem.manquant))
+            // console.log(elem);
+            this.infoElem = elem;
+            this.PoidsValider += elem.poids_item
+          })
+          // console.log("Decaissement : ", this.soldeDecaissementUSD);
+          console.log("POIDS : ", this.PoidsValider);
+
+          let soldeUSD_ = this.baseSoldeUSD + this.soldeRetourUSD // USD
+          let soldeGNF_ = this.soldeRetourGNF - this.soldeDecaissementGNF // GNF
+          this.SoldeGNF = soldeGNF_
+          this.SoldeUSD = soldeUSD_ - this.soldeDecaissementUSD;
+        }
+      })
+  }
+
+  // Historique des operations
+  MontantTotalFixing: number = 0
+  calculMontant(pu: any, poids: any, carrat: any): any {
+    let Montant = 0
+    Montant = ((pu/22) * poids * carrat)
+    this.MontantTotalFixing += Montant
+    return Montant
   }
 
 

@@ -48,9 +48,9 @@
 
 #text {
   text-align: center;
-  font-size: 25px;
-  color: rgb(0, 255, 255);
-  text-shadow: rgb(123, 123, 123) 2px 2px 2px;
+  font-size: 19px;
+  color: rgb(37, 37, 37);
+  /* text-shadow: rgb(123, 123, 123) 2px 2px 2px; */
 }
 
 .dw {

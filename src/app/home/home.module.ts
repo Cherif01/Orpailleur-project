@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 import { homeRouting } from './home.routing';
 import { DemoMaterialModule } from '../demo-material-module';
+import { MatCardModule } from '@angular/material/card';
 
 
 
@@ -13,6 +14,7 @@ import { DemoMaterialModule } from '../demo-material-module';
   ],
   imports: [
     CommonModule,
+    MatCardModule,
     RouterModule.forChild(homeRouting),
     DemoMaterialModule
   ]

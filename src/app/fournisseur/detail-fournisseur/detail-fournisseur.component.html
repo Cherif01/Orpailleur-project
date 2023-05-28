@@ -68,7 +68,7 @@
                             <tr>
                               <th class="fw-bold fs-5"> Disponible </th>
                               <td class="fw-bold fs-5">
-                                {{ Poids_total_compte_fournisseur | number:'1.2-2'}} g
+                                {{ (Poids_total_compte_fournisseur - PoidsValider) | number:'1.2-2'}} g
                               </td>
                             </tr>
                           </tbody>
@@ -91,7 +91,10 @@
                         <td>1</td>
                         <td>GNF</td>
                         <td>{{ NumberGNF }}</td>
-                        <td>0</td>
+                        <td>
+                          <span *ngIf="SoldeGNF >= 0">{{ SoldeGNF | number: '2.2-2'}} GNF</span>
+                          <span *ngIf="SoldeGNF < 0" class="text-danger">{{ SoldeGNF | number: '2.2-2'}} GNF</span>
+                        </td>
                         <td class="text-center">
                           <form class="mx-1 mx-md-4 mt-0" [formGroup]="accountFournisseurGNF"
                             (ngSubmit)="accountFournisseurFormUSD(accountFournisseurGNF, 1)">
@@ -108,7 +111,11 @@
                         <td>2</td>
                         <td>USD</td>
                         <td>{{ NumberUSD }}</td>
-                        <td>0.00</td>
+                        <td>
+                          <span *ngIf="SoldeUSD >= 0">{{ SoldeUSD | number: '2.2-2'}} USD</span>
+                          <span *ngIf="SoldeUSD < 0" class="text-danger">{{ (SoldeUSD) | number:
+                            '2.2-2'}} USD</span>
+                        </td>
                         <td class="text-center">
                           <form class="mx-1 mx-md-4" [formGroup]="accountFournisseurUSD"
                             (ngSubmit)="accountFournisseurFormUSD(accountFournisseurUSD,2)">

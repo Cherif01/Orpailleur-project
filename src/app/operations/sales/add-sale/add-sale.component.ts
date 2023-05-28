@@ -1,11 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LINK_BASE, LINK_BASE_CLIENT } from 'src/app/config';
+import { LINK_BASE } from 'src/app/config';
 import { LotService } from 'src/app/lot/lot.service';
 import { OperationsService } from '../../operations.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { SelectionModel } from '@angular/cdk/collections';
 
 // import { Audio } from 'standardized-audio-context';
 
@@ -17,19 +20,21 @@ import { Location } from '@angular/common';
 export class AddSaleComponent implements OnInit {
   @ViewChild('divToPrint') divToPrint: ElementRef | any;
   @ViewChild('head') head: ElementRef | any;
-  // Form Init
-  InitVente = this.fb.group({
-    client: [, Validators.required],
-    created_by: [1, Validators.required],
-  })
+  @ViewChild(MatPaginator, { static: true })
+  paginator: MatPaginator = Object.create(null);
+  search = new FormControl();
+  selection = new SelectionModel<any>(true, []);
 
-  // Form
-  FactureClient = this.fb.group({
-    achat_item: [],
-    vente: [0, Validators.required],
-    type: [, Validators.required],
-    created_by: [1, Validators.required],
-  })
+  dataSource: MatTableDataSource<any> = new MatTableDataSource();
+  displaysColums = ["Date", "Client", "Lot", "Poids", "CarratMoyen", "Status", "Action"];
+
+  dataSource2: MatTableDataSource<any> = new MatTableDataSource();
+  displaysColums2 = ['Select', 'Date', 'Fournisseur', 'Achat', 'Poids', 'Carrat', 'Manquant'];
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource2.filter = filterValue.trim().toLowerCase();
+  }
 
   constructor(
     private serviceLot: LotService,
@@ -42,294 +47,274 @@ export class AddSaleComponent implements OnInit {
   ) { }
 
   title = 'Ajout d\'une vente';
-  IDAttr: any
-  listLot: any
-  lotCliquer: string = ""
-
   ngOnInit(): void {
-    this.IDAttr = this.activeroute.snapshot.params['id'];
-    this.getLastSaleForCustomer()
-    this.getCustomer()
+    this.getCusters()
     this.getLot()
-    this.ListAchat()
-    this.getFournisseurAchat()
-    this.listAttributionLot()
+    this.getListExpedition()
   }
 
-  // Verification si une vente est en cours au nom du client actif
-  venteEnCoursSearch: any = []
-  venteClient: any = []
-  venteActif: any = false
-  ID_VENTE: number = 0
-  // GET Last sale
-  getLastSaleForCustomer() {
-    this.serviceLot.getList(LINK_BASE_CLIENT, 'vente').subscribe({
-      next: (data) => {
-        // console.log(data);
-        this.venteEnCoursSearch = data
-        this.venteEnCoursSearch.forEach((data: any) => {
-          if (data.client.id == this.IDAttr) {
-            this.ID_VENTE = data.id
-            this.venteActif = true
-            this.venteClient.push(data)
-          }
+  // LIST EXPEDITION
+  PT_SEND: number = 0
+  CM_SEND: number = 0
+  expeditionDatatable: any
+  datatable: any[] = []
+  getListExpedition(): void {
+    this.OperationService.getList('client_api', 'expedition/1/liste_expeditions')
+      .subscribe({
+        next: (response: any) => {
+          // console.log("list : ", response);
+          // console.log("list : ", response.data);
+          response.data.forEach((res: any) => {
+            this.PT_SEND = 0
+            this.CM_SEND = 0
+            // console.log("res : ", res.achat_items);
+            res.achat_items.forEach((item: any) => {
+              this.PT_SEND += item.poids
+              this.CM_SEND += (item.poids * item.carrat)
+              // console.log("item : ", item);
+            }) // fin boucle parcours boucle achat items
+            this.expeditionDatatable = {
+              created_at: res.created_at,
+              raison_socile: res.raison_socile,
+              lot: res.lot,
+              poidsTotal: this.PT_SEND,
+              carratMoyen: (this.CM_SEND),
+            }
+            // console.log("OBJET : ", this.expeditionDatatable);
+            this.datatable.push(this.expeditionDatatable)
+          })
+          this.dataSource.data = this.datatable
+        },
+        error: (err: any) => console.log("erreur : ", err)
+
+      })
+  }
+
+
+  // Liste des clients
+  TabClient: any[] = [];
+  getCusters(): void {
+    this.OperationService.getList('client_api', 'client').subscribe({
+      next: (client: any) => {
+        client.forEach((c: any) => {
+          this.TabClient.push(c)
         })
-        // console.log(data)
       }
     })
   }
 
-  // GET CLIENT
-  listClient: any = []
-  getCustomer() {
-    this.serviceLot.getList(LINK_BASE_CLIENT, 'client').subscribe({
-      next: (data) => {
-        this.listClient = data
-        // console.log(data)
-      }
-    })
+  // Liste des lots
+  selectLot: any = false
+  TabLot: any[] = [];
+  idLotSelect: number = 0;
+  getLot(): void {
+    this.OperationService.getList('api', 'arrivage')
+      .subscribe({
+        next: (arrivage: any) => {
+          arrivage.forEach((lot: any) => {
+            this.TabLot.push(lot)
+          })
+        }
+      })
   }
 
-  // GET LOT
-  getLot() {
-    this.serviceLot.getList(LINK_BASE, 'arrivage').subscribe({
-      next: (data) => {
-        this.listLot = data
-        // console.log(data)
-      }
-    })
+  // Liste des lots
+  TabAchat: any[] = [];
+  selectAchat: any = false
+  idAchatSelect: number = 0;
+
+  // EXPEDITION OBJET
+  expditionObj: any = {
+    client_exp: null,
+    lot_exp: null,
+    achat: null,
+    achat_items: null,
+    type_envoie: 1,
+    status: 2,
+    created_by: 1
   }
 
-  // Value Lot
-  AchatList: any = []
-  list: any = false
-  lotBoolean: any = false
-  Lot_id: number = 0
-  LotUnique: any = []
-  lotValue(idLot: any): void {
-    this.list = false
-    // console.log("Lot envoyer : ", + idLot);
-    this.OperationService.getList(LINK_BASE, 'attribution').subscribe({
+  // CONTROLE DU BOUTTON D'ENVOIE
+  btnSend: any = false
+
+  // Event
+  eventClient(event: any): void {
+    console.log("Event CLIENT : ", event);
+    this.expditionObj.client_exp = event
+  }
+  eventLot(event: any): void {
+    this.expditionObj.lot_exp = event
+    this.selectLot = true
+    this.idLotSelect = event
+    console.log("Event LOT : ", event);
+  }
+  eventAchat(event: any): void {
+    this.TabExpedition = []
+    this.expditionObj.achat = event
+    this.expditionObj.type_envoie = 2
+    this.selectAchat = true
+    this.checkedAchatDetail = false;
+    // this.idAchatSelect = event
+    // console.log("Event ACHAT : ", event);
+    this.btnSend = true;
+    // Liste des items contenu dans l'achat selectionner
+    this.serviceLot.getItemsOfAchat('api', 'achat_items', event).subscribe({
       next: (data: any) => {
-        // console.log(data)
-        this.AchatList.splice(0, this.AchatList.length);
-        data.forEach((value: any) => {
-          console.log(value.achat.id);
-          if (idLot == value.arrivage.id) {
-            // console.log(value);
-            this.list = true;
-            this.AchatList.push(value);
-
-            // this.serviceLot.getItemsOfAchat("api", "achat_items", value.achat.id).subscribe({
-            //   next: ((data: any) => {
-            //     console.log(data);
-
-            //   })
-            // })
-          }
-        })
-      }
-    })
-
-    this.OperationService.getList(LINK_BASE, 'arrivage').subscribe({
-      next: (data) => {
-        data.forEach(item => {
-          if (item.id == idLot) {
-            // console.log(item);
-            this.lotBoolean = true;
-            this.LotUnique = item
-            // ACHAT
-          }
-        })
-        // console.log(this.LotUnique)
+        // console.log(data);
+        this.dataSource2.data = data;
+      },
+      error: (err: any) => {
+        console.log("Erreur : ", err);
       }
     })
 
   }
 
-  // GET ACHAT
-  List_Achat: any = []
-  PoidTotalLot: number = 0
-  PoidVenduLot: number = 0
-  nb_barre: number = 0
-  ListAchat() {
-    this.serviceLot.getList(LINK_BASE, 'attribution').subscribe({
-      next: (data) => {
-        data.forEach(element => {
-          if (element.arrivage.id == this.Lot_id) {
-            this.List_Achat.push(element);
-            // console.log(element);
-            this.serviceLot.getList(LINK_BASE, 'achat_items').subscribe({
-              next: (n) => {
-                n.forEach(elem => {
-                  if (element.achat.id == elem.achat.id) {
-                    // console.log(elem);
-                    this.PoidTotalLot += elem.poids_achat
-                    this.nb_barre += 1
-                  }
-                })
-              }
-            })
-          }
-        })
-      }
-    })
-  }
+  checkedGlobal = false;
+  checkedDetail = false;
+  checkedAchatGlobal = false
+  checkedAchatDetail = false
 
-  // Facture en f(x) de l'achat choisis
-  ItemsList: any = []
-  listItems: any = false
-  Poids_total: number = 0
-  carrat_moyenne: number = 0
+
+  // Infos poids lot select
+  PoidsTotalContenuLot: number = 0
   nbBarres: number = 0
-  ID_ACHAT_ENCOURS: number = 0
-  itemValue(idAchat: any): void {
-    this.ID_ACHAT_ENCOURS = idAchat
-    // console.log("Achat envoyer : ", + idAchat);
-    this.OperationService.getList(LINK_BASE, 'achat_items').subscribe({
+  // LOT GLOBAL
+  checkedG() {
+    this.checkedGlobal = true;
+    this.checkedDetail = false
+    this.btnSend = true
+    // Liste des items contenu dans le lot selectionner
+    this.PoidsTotalContenuLot = 0
+    this.nbBarres = 0
+    this.serviceLot.getLotContentById(LINK_BASE, 'arrivage', this.idLotSelect).subscribe({
       next: (data: any) => {
-        this.Poids_total = 0
-        this.carrat_moyenne = 0
-        this.nbBarres = 0
-        // console.log(data)
-        this.ItemsList.splice(0, this.ItemsList.length);
-        data.forEach((value: any) => {
-          // console.log(value);
-          if (idAchat == value.achat.id) {
-            // console.log(value);
-            this.Poids_total += value.poids_achat
-            this.carrat_moyenne += value.carrat_achat
-            this.nbBarres += 1
-            this.listItems = true;
-            this.ItemsList.push(value);
-          }
+        data.data.forEach((item: any) => {
+          // console.log("Lot : ", item);
+          this.TabExpedition.push(item);
+          this.PoidsTotalContenuLot += parseFloat(item.poids_achat)
+          this.nbBarres += 1
         })
+        this.dataSource2.data = data.data;
       }
     })
   }
 
+  // LOT DETAILS
+  checkedD() {
+    this.TabExpedition = []
+    this.checkedGlobal = false
+    this.checkedDetail = true;
+    this.btnSend = false
+    // LISTE DES ACHATS
+    this.serviceLot.getAchatOfLot('api', 'achat', this.idLotSelect)
+      .subscribe({
+        next: (achat: any) => {
+          achat.data.forEach((elem: any) => {
+            // console.log(elem);
+            this.TabAchat.push(elem)
+          })
+        }
+      })
+  }
 
-  // OPTION DE VENTE
-  Detail: any = false
-  Global: any = false
-  optionValue(idOption: any): void {
-    console.log(idOption);
-    if (idOption == 1) {
-      this.Global = false;
-      this.Detail = true;
-    } else {
-      this.Detail = false;
-      this.Global = true;
+  checkedAchatG() {
+    this.checkedAchatGlobal = true;
+    this.checkedAchatDetail = false
+    this.btnSend = true;
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    // console.log(this.selection.selected);
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource2.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
     }
+    this.selection.select(...this.dataSource2.data);
   }
 
-  // GET ATTRIBUTION
-  listAttribution: any = []
-  PoidTotal: number = 0
-  listAttributionLot() {
-    this.serviceLot.getList(LINK_BASE, 'attribution').subscribe({
-      next: (data) => {
-        this.IDAttr = this.activeroute.snapshot.params['id'];
-        this.listAttribution.splice(0, this.listAttribution.length);
-        // console.log(this.IDAttr);
-        // console.log(data);
-        data.forEach(item => {
-          if (item.arrivage.id == this.IDAttr) {
-            this.serviceLot.getList(LINK_BASE, 'achat_items').subscribe({
-              next: (dataItem) => {
-                // console.log(dataItem);
-                data.forEach(itemAchat => {
-                  if (itemAchat.achat.id == item.achat.id) {
-                    this.PoidTotal += itemAchat.achat.poids_achat
-                  }
-                })
-              }
-            })
-            // console.log(item);
-            this.listAttribution.push(item);
-          }
-        })
-        // console.log(this.listAttribution)
-      }
-    })
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: any): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
+
+
+  // ENVOIE DE L'EXPEDITION
+  TabExpedition: any = []
+  sendExpedition(): void {
+
+    let selected = this.selection.selected;
+    let poids: any = 0
+
+    // console.log("selected : ", selected);
+
+    selected.forEach(v => {
+      poids += Number(v.poids_achat)
+      this.TabExpedition.push({
+        client_exp: this.expditionObj.client_exp,
+        lot_exp: this.expditionObj.lot_exp,
+        achat_items: v.id,
+        type_envoie: 2,
+        status: 2,
+        created_by: 1
+      });
+    });
+
+    if(this.expditionObj.client_exp == null) {
+      this.snackBar.open("Le client ne peut pas etre vide ?, Veuillez reessayer!", "Okay", {
+        duration: 3000,
+        horizontalPosition: "right",
+        verticalPosition: "bottom",
+        panelClass: ['bg-danger', 'text-white']
+      })
+      return
+    }
+
+    console.log("EXPEDITION : ", this.TabExpedition);
+    // DEBLOQUER ET ENVOYER DANS LA BDD
+    this.serviceLot.Add('client_api', 'expedition/1/create_expedition', this.TabExpedition)
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          this.snackBar.open("Expedition ajouter avec succès!", "Okay", {
+            duration: 3000,
+            horizontalPosition: "right",
+            verticalPosition: "bottom",
+            panelClass: ['bg-success', 'text-white']
+          })
+          window.location.reload()
+        },
+        error: (err) => {
+          this.snackBar.open("Donnees deja expedier, Veuillez reessayer!", "Okay", {
+            duration: 3000,
+            horizontalPosition: "right",
+            verticalPosition: "bottom",
+            panelClass: ['bg-danger', 'text-white']
+          })
+        }
+      })
+
+  }
+
+
+
 
   playSound() {
     const audio = new Audio();
     audio.src = 'assets/click/click3.wav';
     audio.load();
     audio.play();
-  }
-
-
-  // GET
-  FournisseurList: any = []
-  getFournisseurAchat() {
-    this.OperationService.getList(LINK_BASE, 'fournisseur').subscribe({
-      next: (data) => {
-        this.FournisseurList = data
-      }
-    })
-  }
-
-
-  // POST
-  InitVentePost(form: FormGroup): void {
-    if (form.valid) {
-      console.log(form.value);
-      this.OperationService.Add(form.value, 'client_api', 'vente').subscribe({
-        next: (response) => {
-          this.snackBar.open("Vente initialiser avec succès !", "Okay", {
-            duration: 3000,
-            horizontalPosition: "right",
-            verticalPosition: "bottom",
-            panelClass: ['bg-success', 'text-white']
-          })
-        },
-        error: (err) => {
-          this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
-            duration: 3000,
-            horizontalPosition: "right",
-            verticalPosition: "bottom",
-            panelClass: ['bg-danger', 'text-white']
-          })
-        }
-      })
-      this.router.navigate(['/operation/add-sales/' + form.value.client])
-      form.reset()
-      // Déclencher la détection de changement
-    }
-  }
-
-  // POST FACTURE CLIENT
-  FactureClientPOST(form: FormGroup, id: any): void {
-    if (form.valid) {
-      this.FactureClient.controls.vente.setValue(this.ID_VENTE)
-      this.FactureClient.controls.achat_item.setValue(id)
-      console.log(form.value);
-      this.OperationService.Add(form.value, LINK_BASE_CLIENT, 'vente_detail').subscribe({
-        next: (response) => {
-          this.snackBar.open("Vente envoyer avec succès !", "Okay", {
-            duration: 3000,
-            horizontalPosition: "right",
-            verticalPosition: "top",
-            panelClass: ['bg-success', 'text-white']
-
-          })
-        },
-        error: (err) => {
-          this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
-            duration: 3000,
-            horizontalPosition: "right",
-            verticalPosition: "bottom",
-            panelClass: ['bg-danger', 'text-white']
-          })
-        }
-      })
-      form.reset()
-      window.location.reload()
-      // this.router.navigate(['/operation/add-sales/' + this.IDAttr])
-    }
   }
 
 

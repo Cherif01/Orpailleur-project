@@ -4,6 +4,7 @@ import { LotService } from '../lot.service';
 import { Location } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { log } from 'handsontable/helpers';
 
 @Component({
   selector: 'app-list-lot',
@@ -70,9 +71,9 @@ export class ListLotComponent implements OnInit {
           } else {
             this.listLotHistory.push(item)
             // console.log("Different");
+            this.dataSource.data = data
           }
         })
-        this.dataSource.data = data;
       }
     })
   }
@@ -81,7 +82,7 @@ export class ListLotComponent implements OnInit {
     // console.log(idLotSelect);
     this.serviceLot.getLotContentById(LINK_BASE, 'arrivage', idLotSelect).subscribe({
       next: (data: any) => {
-        // console.log(data.data);
+        console.log(data.data);
         this.dataSource_maj.data = data.data;
       }
     })
@@ -90,7 +91,17 @@ export class ListLotComponent implements OnInit {
 
   saveTableData(element: any) {
     console.log("Row : ", element);
-    this.serviceLot.updateRows(element)
+    let obj = {
+      id: element.id,
+      achat: element.achat.id,
+      poids_achat: element.poids_achat,
+      carrat_achat: element.carrat_achat,
+      manquant: element.manquant,
+      item_used: element.item_used,
+    }
+    // console.log("NEW OBJET : ", obj);
+
+    this.serviceLot.updateRows(obj)
       .subscribe({
         next: (response) => {
           this.snackBar.open("Manquant modifier avec succès!", undefined, {

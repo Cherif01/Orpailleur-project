@@ -14,6 +14,9 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 
 
@@ -38,6 +41,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatPaginatorModule,
     MatDatepickerModule,
     MatDialogModule,
+    MatTabsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
     RouterModule.forChild(ClientRouting),
   ]
 })

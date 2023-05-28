@@ -1,33 +1,77 @@
-
-<div class="midde_cont">
-   <div class="container-fluid">
-      <!-- row -->
-      <div class="row column1">
-         <div class="col-md-12">
-            <div class="white_shd full margin_bottom_30">
-               <div class="full graph_head">
-                  <div class="heading d-flex justify-content-between align-items-center">
-                     <div class="col"><h2>Liste des <small>( {{title}})</small></h2></div>
-                     <div class="col d-flex justify-content-end">
-                       <section>
-                             <button mat-raised-button class="mx-2">Ajouter <span class="fa fa-plus text-primary"></span></button>
-                             <button mat-raised-button class="mx-2">Listes <span class="fa fa-list text-primary"></span></button>
-                             <button mat-raised-button class="mx-2">Ajouter <span class="fa fa-plus text-primary"></span></button>
-                             <button mat-raised-button class="mx-2">Ajouter <span class="fa fa-plus text-primary"></span></button>
-                             <button mat-raised-button class="mx-2">Ajouter <span class="fa fa-plus text-primary"></span></button>
-                             <button mat-raised-button class="mx-2">Ajouter <span class="fa fa-plus text-primary"></span></button>
-                         </section>
-                   </div>
-                  </div>
-               </div>
-               <div class="full pt-2">
-                  <!-- contenu -->
-                  <h1>Bonjour</h1>
-               </div>
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
             </div>
-         </div>
-         <!-- end row -->
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="text-right">
+            <button mat-raised-button color="primary" routerLink="/client/list-client" class="mx-2">Liste client</button>
+          </div>
+        </div>
       </div>
-   </div>
-   <!-- end dashboard inner -->
+      <!-- Export Datatable start -->
+      <div class="...-box mb-30">
+        <mat-card>
+          <mat-card-content>
+            <mat-tab-group>
+              <!-- SITUATION -->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <h3 class="fw-bold">SITUATION CLIENT</h3>
+                </ng-template>
+                <form action="" [formGroup]="clientOperation">
+                  <div class="pt-3 pb-3 d-flex justify-content-start flex-wrap align-items-center">
+                    <mat-form-field class="me-3">
+                      <mat-label>Select</mat-label>
+                      <mat-select formControlName="operation_client">
+                        <mat-option value="">---- OPERATION ----</mat-option>
+                        <mat-option value="1">Versement</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="me-3">
+                      <mat-label>Entrer le montant</mat-label>
+                      <input matInput type="number" formControlName="montant_client" required>
+                    </mat-form-field>
+                    <button mat-flat-button color="primary" [hidden]="clientOperation.invalid" (click)="addMouvClient(clientOperation)">Primary</button>
+                  </div>
+                </form>
+              </mat-tab>
+              <!-- EXPEDITION -->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <h3 class="fw-bold">EXPEDITION</h3>
+                </ng-template>
+              </mat-tab>
+              <!-- FIXING -->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <h3 class="fw-bold">FIXING</h3>
+                </ng-template>
+              </mat-tab>
+            </mat-tab-group>
+          </mat-card-content>
+          <mat-card-footer>
+            <table class="table fs-3 fw-bold">
+              <tr>
+                <th>SOLDE</th>
+                <th>:</th>
+                <td>0.00 $</td>
+              </tr>
+            </table>
+          </mat-card-footer>
+        </mat-card>
+      </div>
+      <!-- Export Datatable End -->
+    </div>
+  </div>
 </div>

@@ -68,11 +68,6 @@ export class ListPurchaseComponent implements OnInit {
   // LIST ACHAT
 
 
-  filterTable(value: string) {
-    this.dataSource.filter = value?.trim()?.toLowerCase();
-  }
-
-
   _onSelectedChange(date: Date): void {
     this.matButtonControle = undefined
     if (
@@ -217,6 +212,10 @@ export class ListPurchaseComponent implements OnInit {
       this.dataSource.data = this.items.filter(data => data.fournisseur?.id == vendorId)
     else
       this.dataSource.data = this.items
+  }
+
+  filterTable(value: string) {
+    this.dataSource.filter = value?.trim()?.toLowerCase();
   }
 
 }

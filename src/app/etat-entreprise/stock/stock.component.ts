@@ -10,21 +10,17 @@ import { EntrepriseService } from '../entreprise.service';
 })
 export class StockComponent implements OnInit {
 
-  title = 'Stock Principale'
+  title = 'Detail du stock'
   selectedValue: string = '';
   selectedCar: string = '';
 
   // GET ACHAT FOURNISSEUR
-  TabItems: any[] = [];
-  STOCK_PRINCIPALE_ENTRER: number = 0
-  TabItems_du_jour: number = 0
-  STOCK_PRINCIPALE_DU_JOUR: number = 0
-  TabExpedition_du_jour: any = []
+  STOCK_PRINCIPALE_ENTRER_DU_JOUR: number = 0
   QTE_EXPEDIER: number = 0
+  QTE_DIPONIBLE: number = 0
 
 
   constructor(
-    private activeroute: ActivatedRoute,
     private serviceEntreprise: EntrepriseService,
     public location: Location
   ) { }
@@ -39,20 +35,12 @@ export class StockComponent implements OnInit {
   Today_hExp: Date = new Date()
   getSTOCKINFO(): void {
     // console.log(this.objetFRS)
-    this.serviceEntreprise.getList('api', 'fixing').subscribe({
+    this.serviceEntreprise.getInfoStockAPI('api', 'fournisseur', 1).subscribe({
       next: (data_: any) => {
-        // console.log(data)
-        data_.forEach((item: any) => {
-          let dateDB_ = new Date(item.created_at)
-          if(item.status == 2){
-            if (dateDB_.getDay() == this.Today_h.getDay()) {
-              this.TabItems_du_jour += item.poids_fixe
-            }
-            this.TabItems.push(item.poids_fixe)
-          }
-        });
-        this.STOCK_PRINCIPALE_ENTRER = this.TabItems.reduce((acc, item) => acc + item,0)
-        this.STOCK_PRINCIPALE_DU_JOUR = this.TabItems_du_jour;
+        console.log(data_)
+        this.STOCK_PRINCIPALE_ENTRER_DU_JOUR = data_.poids_dans_fixing_detail
+        this.QTE_EXPEDIER = data_.poids_dans_expedition
+        this.QTE_DIPONIBLE = data_.poids_actif
       }
     })
 
@@ -62,21 +50,19 @@ export class StockComponent implements OnInit {
         // console.log(data_)
         data_.forEach((item: any) => {
           let dateDB_2 = new Date(item.created_at)
-          if(item.status == 2){
+          if (item.status == 2) {
             this.serviceEntreprise.getAllByClause('client_api', 'vente_detail', 'vente.id', item.id)
-            .subscribe({
-              next: (d => {
-                // console.log(d);
-                d.forEach((k: any) => {
-                  if (dateDB_2.getDay() == this.Today_hExp.getDay()) {
-                    // console.log(item);
-                    this.TabExpedition_du_jour.push(k.achat_item.poids_achat)
-                    this.QTE_EXPEDIER += k.achat_item.poids_achat
-                    console.log(this.TabExpedition_du_jour);
-                  }
+              .subscribe({
+                next: (d => {
+                  // console.log(d);
+                  d.forEach((k: any) => {
+                    if (dateDB_2.getDay() == this.Today_hExp.getDay()) {
+                      // console.log(item);
+                      this.QTE_EXPEDIER += 0
+                    }
+                  })
                 })
               })
-            })
           }
         });
         // console.log(this.TabItems);

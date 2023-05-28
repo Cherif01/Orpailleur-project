@@ -26,12 +26,18 @@
     "bootstrap": "^5.2.3",
     "edittable": "^0.1.2",
     "handsontable": "^12.3.3",
+    "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.10.1",
     "jquery": "^3.7.0",
+    "jspdf": "^2.5.1",
     "jszip": "^3.10.1",
     "moment": "^2.29.4",
     "ngx-mat-select-search": "^4.2.1",
+    "ngx-select-ex": "^8.0.1",
+    "qrcode": "^1.5.3",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
+    "whatsapp-web.js": "^1.20.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

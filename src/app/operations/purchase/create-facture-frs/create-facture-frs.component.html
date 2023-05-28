@@ -24,7 +24,7 @@
               <button class="mx-2 fw-bold" mat-flat-button color="accent" routerLink="/operation/facture-fournisseur">
                 <span class="micon dw dw-list"></span><span class="mtext mx-2"> Liste</span>
               </button>
-              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
+              <button class="mx-2 fw-bold" mat-flat-button color="primary">
                 <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
               </button>
             </div>
@@ -35,29 +35,28 @@
 
       <!-- CONFIG -->
       <mat-card class="mat-elevation-z8">
-        <div class="d-flex justify-content-between">
-          <div class="col-5 d-flex input-group">
+        <div class="d-flex justify-content-between flex-wrap">
+          <div class="col" [hidden]="selection.selected.length > 10 || selection.selected.length < 1">
+            <button mat-flat-button color="primary" (click)="factureElement()" class="mx-2">
+              <mat-icon>folder</mat-icon> Voir la facture</button>
+          </div>
+          <div class="col-5 d-flex input-group" *ngIf="facture == false">
             <input type="date" class="form-control">
             <input type="date" class="mx-1 form-control">
             <button mat-button color="warn" class="border-dark"><span
                 class="dw dw-search fs-4 fw-bold text-primary"></span></button>
           </div>
-          <div class="col text-end">
-            <button mat-raised-button color="primary" (click)="activeDetailFacture()" class="mx-2"
-              [disabled]="!factureUnique"><span class="dw dw-file text-light"></span> Facture unique</button>
-            <button mat-raised-button color="primary" (click)="activeDetailFacture()" class="mx-2"
-              [disabled]="!factureMultiple"><span class="dw dw-file2 text-light"></span> Facture multiple</button>
-          </div>
         </div>
         <!-- <hr> -->
         <mat-tab-group>
-          <mat-tab label="FACTURE PAR FIXING">
+          <mat-tab label="FACTURE PAR FIXING" *ngIf="facture == false">
             <mat-card-content>
-              <mat-form-field class="w-100">
-                <input [formControl]="search" placeholder="Rechercher un fixing ici...." matInput>
+              <mat-form-field class="w-100 mt-3">
+                <input [formControl]="search" placeholder="Rechercher ..." matInput>
                 <mat-icon matSuffix>search</mat-icon>
               </mat-form-field>
-              <table mat-table [dataSource]="dataSource" class="table w-100 mt-3" id="divTable_">
+              <table mat-table [dataSource]="dataSource" class="table table-striped border-dark w-100 mt-3"
+                id="divTable_">
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
                   <th mat-header-cell *matHeaderCellDef>
@@ -75,152 +74,313 @@
 
                 <ng-container matColumnDef="Date">
                   <th mat-header-cell *matHeaderCellDef>Date</th>
-                  <td *matCellDef="let element">{{ element.achat.created_at | date: 'dd/MM/YYYY' }}</td>
+                  <td *matCellDef="let element">{{ element.created_at | date: 'dd/MM/YYYY' }}</td>
                 </ng-container>
                 <ng-container matColumnDef="Fournisseur">
                   <th mat-header-cell *matHeaderCellDef>Fournisseur</th>
-                  <td *matCellDef="let element">{{ element.fournisseur.prenom + ' ' + element.fournisseur.nom }}</td>
+                  <td *matCellDef="let element">{{ element.prenom + ' ' + element.nom }}</td>
                 </ng-container>
                 <ng-container matColumnDef="Poids_total">
-                  <th mat-header-cell *matHeaderCellDef>Pds Total</th>
-                  <td *matCellDef="let element">{{ element.achat.poids_total }}</td>
+                  <th mat-header-cell *matHeaderCellDef>Pds total_achat</th>
+                  <td *matCellDef="let element">{{ element.achat_poids_total | number: '2.2-2' }}</td>
                 </ng-container>
                 <ng-container matColumnDef="Fixing">
                   <th mat-header-cell *matHeaderCellDef>Fixing($)</th>
-                  <td *matCellDef="let element">{{ element.fixing }}</td>
-                </ng-container>
-                <ng-container matColumnDef="Poids vendu">
-                  <th mat-header-cell *matHeaderCellDef>Pds vendu</th>
-                  <td *matCellDef="let element">{{ element.poids_select }}</td>
+                  <td *matCellDef="let element">{{ element.fixing_bourse | number: '2.2-2' }}</td>
                 </ng-container>
                 <ng-container matColumnDef="Discount">
                   <th mat-header-cell *matHeaderCellDef>Discount</th>
-                  <td *matCellDef="let element">{{ 0.3 }}</td>
+                  <td *matCellDef="let element">{{ element.fixing_discompte }}</td>
                 </ng-container>
-                <ng-container matColumnDef="Utilisateur">
-                  <th mat-header-cell *matHeaderCellDef>Utilisateur</th>
-                  <td *matCellDef="let element">Cherif</td>
+                <ng-container matColumnDef="P_Fixing">
+                  <th mat-header-cell *matHeaderCellDef>Pds fix&#233;</th>
+                  <td *matCellDef="let element">{{ element.poids_fixe | number: '2.2-2' }} g</td>
+                </ng-container>
+                <ng-container matColumnDef="Poids vendu">
+                  <th mat-header-cell *matHeaderCellDef>Pds vendu</th>
+                  <td *matCellDef="let element">
+                    <span *ngIf="element.achat_item">{{ element.achat_item[element.achat_item.length - 1] |
+                      number: '2.2-2' }} g</span>
+
+                    <span *ngIf="!element.achat_item">{{ element.poids_select[0] | number: '2.2-2' }}
+                      g</span>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Poids_restant">
+                  <th mat-header-cell *matHeaderCellDef>Reste</th>
+                  <td *matCellDef="let element">
+                    <span class="text-danger" *ngIf="element.achat_item">{{ (element.poids_fixe -
+                      element.achat_item[element.achat_item.length - 1]) | number: '2.2-2' }}</span>
+
+                    <span class="text-danger" *ngIf="!element.achat_item">{{ (element.poids_fixe -
+                      element.poids_select[0]) | number: '2.2-2' }}</span>
+                  </td>
                 </ng-container>
                 <ng-container matColumnDef="Status">
                   <th mat-header-cell *matHeaderCellDef>Status</th>
                   <td *matCellDef="let element" class="text-success">Valid&#233;</td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displaysColums;"></tr>
-                <tr mat-row *matRowDef="let row; columns:displaysColums" (click)="selection.toggle(row)">
+                <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+                <tr mat-row *matRowDef="let row; columns:displayedColumns" (click)="selection.toggle(row)">
                 </tr>
               </table>
-              <mat-paginator [pageSizeOptions]="[5, 10, 25, 50, 100, 500]" showFirstLastButtons></mat-paginator>
+              <mat-paginator [pageSizeOptions]="[5, 10, 15, 50, 100]" showFirstLastButtons></mat-paginator>
             </mat-card-content>
           </mat-tab>
           <!-- F/Achat -->
           <mat-tab label="DETAILS FACTURATION" *ngIf="facture == true">
-            <h2 class="text-primary">Impression en cours...</h2>
+
+            <div class="d-flex justify-content-between">
+              <div class="col p-2">
+                <button class="mx-2 fw-bold" mat-stroked-button color="warn" (click)="actualiser()">
+                  <mat-icon>reply</mat-icon><span class="mtext mx-2"> Retour list</span>
+                </button>
+              </div>
+              <div class="col text-end p-2">
+                <button class="mx-2 fw-bold btn-secondary" mat-stroked-button color="" (click)="imprimerDiv()">
+                  <mat-icon>printer</mat-icon><span class="mtext mx-2"> Imprimer</span>
+                </button>
+                <button class="mx-2 fw-bold btn-secondary" mat-stroked-button color="" (click)="generatePDF()">
+                  <mat-icon>folder</mat-icon><span class="mtext mx-2"> Enregistrer (PDF)...</span>
+                </button>
+              </div>
+            </div>
             <!-- Export Datatable start -->
             <mat-card class="m-2">
               <!-- Facture entete -->
-              <div class="container-fluid">
+              <div class="container-fluid shadow-lg">
                 <!-- table LIST -->
-                <div class="col">
-                  <div class="entete">
-                    <div class="d-flex justify-content-between flex-wrap m-0 p-0 align-items-center">
-                      <div class="col-2 text-start">
-                        <!-- logo -->
-                        <div class="img-responsive">
-                          <img src="/assets/logo/coins.png" class="img-responsive w-100" alt="">
+                <div class="p-3" id="facture" #divToPrint>
+                  <div class="col">
+                    <div class="entete">
+                      <div class="d-flex justify-content-between flex-wrap m-0 p-0 align-items-center">
+                        <div class="col-2 text-start">
+                          <!-- logo -->
+                          <div class="img-responsive">
+                            <img src="/assets/logo/coins.png" class="img-responsive w-100" alt="">
+                          </div>
+                        </div>
+                        <div class="col offset-1  text-center">
+                          <h2 class="m-0 p-0">LIMANAYA BUSINESS</h2>
+                          <span class="small">Achateur et vendeur d'or en gros et details</span> <br>
+                          <span class="small">sis &#224; Mafanco Carrefour, centre commercial Bayo et frères au 2e
+                            étage</span>
+                          <br>
+                          <span class="fw-bold">Adresse : </span>
+                          <span class="text-primary"> 628-978-467 / 624-044-759 </span>
+                        </div>
+                        <div class="col-2 offset-1 text-end">
+                          <!-- logo -->
+                          <div class="img-responsive">
+                            <img src="/assets/logo/logo.png" class="img-responsive w-100" alt="">
+                          </div>
                         </div>
                       </div>
-                      <div class="col offset-1  text-center">
-                        <h2 class="m-0 p-0">LIMANAYA BUSINESS</h2>
-                        <span class="small">Achateur et vendeur d'or en gros et details</span> <br>
-                        <span class="small">sis &#224; Mafanco Carrefour, centre commercial Bayo et frères au 2e
-                          étage</span>
-                        <br>
-                        <span class="fw-bold">Adresse : </span>
-                        <span class="text-primary"> 628-978-467 / 624-044-759 </span>
-                      </div>
-                      <div class="col-2 offset-1 text-end">
-                        <!-- logo -->
-                        <div class="img-responsive">
-                          <img src="/assets/logo/logo.png" class="img-responsive w-100" alt="">
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between flex-wrap">
+                      <div class="col-7 mb-3">
+                        <div class="border border-2 border-dark rounded-3 p-2">
+                          <div class="border border-1 border-secondary p-3 text-center rounded-3 m-1">
+                            <h3>D&#233;tails</h3>
+                            <table class="table fw-bold">
+                              <tr>
+                                <th>Fournisseur</th>
+                                <th>:</th>
+                                <td *ngIf="objetItem.nom"><i>{{ objetItem.prenom + " " +
+                                    objetItem.nom }}</i></td>
+                                <td *ngIf="InfoFrsM.nom"><i>{{ InfoFrsM.prenom + " " +
+                                    InfoFrsM.nom }}</i></td>
+                              </tr>
+                            </table>
+                          </div>
+                          <div class="pt-1 fs-5">
+                            <table class="table p-0 m-0">
+                              <tr *ngIf="len < 1">
+                                <th>Fixing</th>
+                                <th>:</th>
+                                <td class="fs-6"><span class="">{{
+                                    objetItem.fixing_bourse
+                                    | number
+                                    }}</span>
+                                </td>
+                              </tr>
+                              <tr *ngFor="let k of objetItemM; let i = index">
+                                <th class="">Fixing {{ i+1 }} </th>
+                                <th>:</th>
+                                <td>$<span class="text-dark fs-6">{{ k.fixing_bourse | number }}</span></td>
+                              </tr>
+                              <tr>
+                                <th class="">Solde</th>
+                                <th>:</th>
+                                <td>
+                                  <span class="fs-6 fw-bold text-danger" *ngIf="SoldeUSD < 0">
+                                    {{ SoldeUSD | number: '2.2-2' }}</span>
+
+                                  <span class="fs-6 fw-bold text-success" *ngIf="SoldeUSD >= 0">$ {{ SoldeUSD| number: '2.2-2' }}</span>
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <hr>
-                  <div class="d-flex justify-content-between flex-wrap">
-                    <div class="col-5 mb-3">
-                      <div class="border border-2 border-dark rounded-3 p-2">
-                        <div class="border border-1 border-secondary p-3 text-center rounded-3 m-1">
-                          <h3>Complement</h3>
-                        </div>
-                        <div class="p-2 fs-5">
-                          <th>Base : <span class="mx-3 small">$ {{ infosFix.fixing_bourse | number }}</span></th>
-                          <th>Solde : <span class="mx-3 small">$ {{ 0 | number }}</span></th>
-                        </div>
-                      </div>
-                    </div>
+                  <div class="table-responsive m-0" id="bgTable">
+                    <h2 class="text-dark text-center fw-bold display-2">Facture N<sup>o</sup> : <span
+                        class="text-dark">{{
+                        objetItem.nb_valide }}</span></h2>
+                    <h4 class="text-dark text-end mx-4" *ngIf="len < 1">Date : {{ objetItem.created_at | date:
+                      'dd/MM/YYYY' }}</h4>
+                    <h4 class="text-dark text-end mx-4" *ngIf="len > 0">Date : {{ InfoFrsM.created_at | date:
+                      'dd/MM/YYYY'
+                      }}</h4>
+                    <!-- Table -->
+                    <!-- UNE SELECTION PAR ITEMS -->
+                    <table class="table printTable" *ngIf="poids_select == 0 && len != 1">
+                      <thead class="text-center">
+                        <th>Barres</th>
+                        <th>Poids</th>
+                        <th>Carrat</th>
+                        <th>Densite</th>
+                        <th>P.Uni</th>
+                        <th>Montant</th>
+                      </thead>
+                      <tbody class="text-center">
+                        <!-- Post par items et un element -->
+                        <tr *ngFor="let data of dataItem; let i = index">
+                          <td>{{ i+1 }}</td>
+                          <td>{{ data.poids }}</td>
+                          <!-- <td>{{ (data.carrat).toString().substring(0, 5) }}</td> -->
+                          <td>{{ (data.carrat.toString().substring(0,
+                            5) - data.manquant).toString().substring(0,
+                            5) }}</td>
+                          <td>{{ 22 }}</td>
+                          <td>{{ ((objetItem.fixing_bourse/34) -
+                            objetItem.fixing_discompte).toString().substring(0,
+                            5) }}</td>
+                          <td>{{
+                            calculPrice(((objetItem.fixing_bourse/34) -
+                            objetItem.fixing_discompte).toString().substring(0,
+                            5), data.poids, (data.carrat - data.manquant)) | number: '2.2-2'
+                            }}</td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr class="text-info">
+                          <th class="text-center text-uppercase text-danger">Total </th>
+                          <th class="text-center text-danger">{{ Poids_total | number: '2.2-2' }} g</th>
+                          <th class="text-center text-danger">{{ (carrat_somme/Poids_total).toString().substring(0,5) }}</th>
+                          <th class="text-center text-danger"> - </th>
+                          <th class="text-center text-danger"> {{ ((objetItem.fixing_bourse/34) -
+                            objetItem.fixing_discompte).toString().substring(0,
+                            5) | number: '2.2-2' }} </th>
+                          <th class="text-center text-danger"> {{ (MTotal_MItem) | number: '2.2-2' }}
+                          </th>
+                        </tr>
+                      </tfoot>
+                    </table>
+
+
+                    <!-- UNE SELECTION PAR POIDS -->
+                    <table class="table printTable" *ngIf="poids_select > 0 && len != 1">
+                      <thead class="text-center">
+                        <th>Barres</th>
+                        <th>Poids</th>
+                        <th>Carrat</th>
+                        <th>Densite</th>
+                        <th>P.Uni</th>
+                        <th>Montant</th>
+                      </thead>
+                      <tbody class="text-center">
+                        <!-- Post par poids et un element -->
+                        <tr>
+                          <td>1</td>
+                          <td>{{ objetItem.poids_select[0] | number: '2.2-2' }}</td>
+                          <td>{{ (objetItem.carrat_moyen_restant).toString().substring(0, 5) }}</td>
+                          <td>{{ 22 }}</td>
+                          <td>{{ ((objetItem.fixing_bourse/34) -
+                            objetItem.fixing_discompte).toString().substring(0,
+                            5) }}</td>
+                          <td>{{ MTotal_MPS | number: '2.2-2' }}
+                          </td>
+                        </tr>
+                      </tbody>
+
+                      <tfoot>
+                        <tr class="text-info">
+                          <th class="text-center text-uppercase text-danger">Total </th>
+                          <th class="text-center text-danger">{{ Poids_total | number: '2.2-2' }} g</th>
+                          <th class="text-center text-danger">{{ objetItem.carrat_moyen_restant }}</th>
+                          <th class="text-center text-danger"> - </th>
+                          <th class="text-center text-danger"> {{ ((objetItem.fixing_bourse/34) -
+                            objetItem.fixing_discompte).toString().substring(0,
+                            5) | number: '2.2-2' }} </th>
+                          <th class="text-center text-danger"> {{ (MTotal_MItem + MTotal_MPS) | number: '2.2-2' }}
+                          </th>
+                        </tr>
+                      </tfoot>
+                    </table>
+
+
+                    <table class="table printTable" *ngIf="len == 1">
+                      <thead class="text-center">
+                        <th>Barres </th>
+                        <th>Poids</th>
+                        <th>Carrat</th>
+                        <th>Densite</th>
+                        <th>P.Uni</th>
+                        <th>Montant</th>
+                      </thead>
+                      <!-- MULTIPLE SELECTION -->
+                      <!-- Post par poids et un element -->
+                      <tbody class="text-center">
+                        <tr *ngFor="let data of TableMultipleItem; let i = index">
+                          <td>{{ i+1 }}</td>
+                          <td>{{ PT_item }}</td>
+                          <td>{{ (Cm1/PT_item).toString().substring(0,5) }}</td>
+                          <td>{{ 22 }}</td>
+                          <td>{{ ((data.fixing_bourse/34) -
+                            data.fixing_discompte).toString().substring(0,
+                            5) }}</td>
+                          <td>{{
+                            calculPrice(((data.fixing_bourse/34) - data.fixing_discompte).toString().substring(0,5),
+                            PT_item, (Cm1/PT_item).toString().substring(0,5)).toLocaleString('fr-FR',
+                            {useGrouping: true})
+                            }}</td>
+                        </tr>
+
+                        <tr *ngFor="let data of TableMultiplePoidsSelect; let i = index">
+                          <td>{{ i+1 }}</td>
+                          <td>{{ data.poids_select[0] }}</td>
+                          <td>{{ (data.carrat_moyen_restant).toString().substring(0, 5) }}</td>
+                          <td>{{ 22 }}</td>
+                          <td>{{ ((data.fixing_bourse/34) -
+                            data.fixing_discompte).toString().substring(0,
+                            5) }}</td>
+                          <td>{{
+                            calculPrice(((data.fixing_bourse/34) -
+                            data.fixing_discompte).toString().substring(0,
+                            5), data.poids_select[0],
+                            data.carrat_moyen_restant.toString().substring(0,5)).toLocaleString('fr-FR',
+                            {useGrouping: true})
+                            }}</td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr class="text-info">
+                          <th class="text-center text-uppercase text-danger">Total </th>
+                          <th class="text-center text-danger">{{ PT_item + PT_Poids | number: '2.2-2' }} g</th>
+                          <th class="text-center text-danger">{{ ((Cm1 + Cm2) / Poids_total).toString().substring(0,5) }}</th>
+                          <th class="text-center text-danger"> - </th>
+                          <th class="text-center text-danger"> - </th>
+                          <th class="text-center text-danger"> {{ MTotal_MItem + MTotal_MPS | number: '2.2-2' }}
+                          </th>
+                        </tr>
+                      </tfoot>
+                    </table>
                   </div>
-                </div>
-                <div class="table-responsive m-0" id="bgTable">
-                  <h2 class="text-dark text-center fw-bold display-2">Facture N<sup>o</sup> : <span
-                      class="text-dark">#000-000-000{{ infosFix.id }}</span></h2>
-                  <h4 class="text-dark text-end mx-4">Date : {{ 0 | date: 'dd/MM/YYYY' }}</h4>
-                  <table class="table printTable">
-                    <thead class="text-center">
-                      <th>NB Barres</th>
-                      <th>Poids</th>
-                      <th>Carrat</th>
-                      <th>Densite</th>
-                      <th>P.Uni</th>
-                      <th>Montant</th>
-                    </thead>
-                    <tbody class="text-center" *ngIf="_TYPE_ == false">
-                      <tr>
-                        <td colspan="6" class="fs-5"><span class="fw-bold">{{ fournisseurName }}</span></td>
-                      </tr>
-                      <tr *ngFor="let data of TabItemsFix; let i = index">
-                        <td>{{ i+1 }}</td>
-                        <td>{{ data.achat_items.poids_achat | number }}</td>
-                        <td>{{ data.achat_items.carrat_achat | number }}</td>
-                        <td>{{ 22 }}</td>
-                        <td>{{ ((infosFix.fixing_bourse/34) - infosFix.discompte).toString().substring(0, 5) | number }}
-                        </td>
-                        <td>{{ calculPrice(((infosFix.fixing_bourse/34) - infosFix.discompte).toString().substring(0,
-                          5),
-                          data.achat_items.poids_achat, data.achat_items.carrat_achat).toLocaleString('fr-FR',
-                          {useGrouping: true}) }}</td>
-                      </tr>
-                    </tbody>
-                    <tbody class="text-center" *ngIf="_TYPE_ == true">
-                      <tr>
-                        <td colspan="6" class="fs-5"><span class="fw-bold">{{ fournisseurName }}</span></td>
-                      </tr>
-                      <tr *ngFor="let data of TabItemsFix; let i = index; ">
-                        <td>{{ i+1 }}</td>
-                        <td>{{ data.poids_achat | number }}</td>
-                        <td>{{ data.carrat_achat | number }}</td>
-                        <td>{{ 22 }}</td>
-                        <td>{{ ((infosFix.fixing_bourse/34) - infosFix.discompte).toString().substring(0, 5) | number }}
-                        </td>
-                        <td>{{ calculPrice(((infosFix.fixing_bourse/34) - infosFix.discompte).toString().substring(0,
-                          5),
-                          data.poids_achat, data.carrat_achat).toLocaleString('fr-FR', {useGrouping: true}) }}</td>
-                      </tr>
-                    </tbody>
-                    <tfoot class="border-0 fs-6" style="font-family: arial">
-                      <tr class="border-0">
-                        <th class="text-center text-dark text-uppercase">Total </th>
-                        <th class="text-center text-primary">{{ poidsTotal.toLocaleString('fr-FR', {useGrouping: true})
-                          }} g</th>
-                        <th class="text-center text-primary">{{ (carratMoyen / poidsTotal) | number }}</th>
-                        <th class="text-center text-primary"> --- </th>
-                        <th class="text-center text-primary"> --- </th>
-                        <th class="text-center text-primary"> {{ Total.toLocaleString('fr-FR', {useGrouping: true}) }}
-                        </th>
-                      </tr>
-                    </tfoot>
-                  </table>
                 </div>
               </div>
             </mat-card>

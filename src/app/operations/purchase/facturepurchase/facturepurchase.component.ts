@@ -3,7 +3,6 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { PurchaseService } from '../purchase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { map } from 'rxjs/operators';
 
 
 @Component({

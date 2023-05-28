@@ -8,12 +8,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'orpailleur';
-
+  title = 'Groupe - LIMANAYA _ BUSINESS';
+  loginUsername = localStorage.setItem("Username", "admin")
+  loginPassword = localStorage.setItem("Username", "admin")
+  public sessionUSER: any = ""
 
   constructor(
-    public location: Location
-  ){}
+    public location: Location,
+  ){
+    // console.log("LOG : ", this.sessionUSER);
+  }
 
 
 }

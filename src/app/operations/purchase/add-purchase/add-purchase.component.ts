@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiserviceService } from 'src/app/api_service/apiservice.service';
 import { PurchaseService } from '../purchase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DialogMessageComponent } from 'src/app/public/dialogs/dialog-message/dialog-message.component';
 import { Location } from '@angular/common';
 import { max } from 'rxjs';
 
@@ -14,6 +13,8 @@ import { max } from 'rxjs';
   templateUrl: './add-purchase.component.html',
   styleUrls: ['./add-purchase.component.css']
 })
+
+
 export class AddPurchaseComponent implements OnInit {
   DENSITE = 22;
   slug = ""
@@ -34,6 +35,7 @@ export class AddPurchaseComponent implements OnInit {
     // fournisseur: new FormControl(0),
     poids_total: new FormControl(0),
     carrat_moyen: new FormControl(0),
+    arrivage: new FormControl(),
     // created_by: new FormControl(1),
     status: new FormControl(2)
   });
@@ -73,6 +75,18 @@ export class AddPurchaseComponent implements OnInit {
     // Get
     this.getAchatList();
     this.getLot();
+  }
+
+  // options = [
+  //   { id: 1, name: 'Option 1' },
+  //   { id: 2, name: 'Option 2' },
+  //   { id: 3, name: 'Option 3' }
+  // ];
+
+  selectedOption: any;
+
+  onOptionSelected() {
+    console.log('Option selected:', this.selectedOption);
   }
 
   getAchatList(): void {
@@ -162,6 +176,8 @@ export class AddPurchaseComponent implements OnInit {
 
   // GET Arrivage
   listLot: any
+  archivesLot: any[] = []
+  lot: any[] = []
   getLot() {
     this.purchaseService.getList('api', 'arrivage').subscribe({
       next: (data) => {
@@ -173,7 +189,10 @@ export class AddPurchaseComponent implements OnInit {
           if (todayDate === dbDate) {
             // console.log("Egale");
             this.listLot = item
+          }else{
+            this.archivesLot.push(item)
           }
+          this.lot.push(item.designation)
         })
       }
     })
@@ -187,26 +206,30 @@ export class AddPurchaseComponent implements OnInit {
 
   updateAchat(form: FormGroup): void {
     if (form.valid) {
+      let lot = form.value.arrivage
       // console.log(this.Id_achat);
       this.validerAchatForm.controls.id.setValue(this.Id_achat)
       this.validerAchatForm.controls.poids_total.setValue(this.PTotal_this)
       this.validerAchatForm.controls.carrat_moyen.setValue((this.CAR_Total_this / this.PTotal_this))
+      if(form.value.poids_total < 1 || form.value.carrat_moyen < 10){
+        this.snackBar.open("Aucune barre , veillez entrer au moins une barre!", "Okay", {
+          duration: 5000,
+          horizontalPosition: "right",
+          verticalPosition: "bottom",
+          panelClass: ['bg-danger', 'text-white']
+        })
+        form.reset()
+        return
+      }
       // this.validerAchatForm.controls.fournisseur.setValue(this.ID)
       // console.log(form.value);
       this.purchaseService.mettreAJourRessource(form.value)
         .subscribe({
           next: (response) => {
-            // this.snackBar.open("Cet achat est maintenant valider avec succès!", "Okay", {
-            //   duration: 3000,
-            //   horizontalPosition: "right",
-            //   verticalPosition: "top",
-            //   panelClass: ['bg-success', 'text-white']
-
-            // })
             // AJout dans le lot ouvert
-            this.sendForm.controls.arrivage.setValue(this.listLot.id);
+            this.sendForm.controls.arrivage.setValue(lot);
             this.sendForm.controls.achat.setValue(this.Id_achat);
-            // console.log(this.sendForm);
+            // console.log("SEND : ", this.sendForm);
             this.purchaseService.PostElement('api', 'attribution', this.sendForm.value).subscribe({
               next: (response) => {
                 this.snackBar.open("Achat valider avec success !", "Okay", {
@@ -256,33 +279,33 @@ export class AddPurchaseComponent implements OnInit {
 
   deleteItems(id: any) {
     let tab: any[] = [];
-    this.dialog.open(DialogMessageComponent, {
-      disableClose: true,
-      data: {
-        title: "Suppression d'une barre",
-        message: "Voulez-vous vraiment supprimer cette barre? ",
-        messageNo: "Annuler",
-        messageYes: "Supprimer"
-      }
-    }).afterClosed().subscribe(data => {
-      if (data) {
-        this.purchaseService.deleteItems(id)
-          .subscribe({
-            next: (value) => {
-              this.dataItemsList.map((value, index) => {
-                if (value.id !== id) {
-                  tab.push(value)
-                }
-                this.Actualiser()
-              });
-              this.dataItemsList = tab;
-            },
-            error: (err) => {
-              console.error(err);
-            }
-          });
-      }
-    })
+    // this.dialog.open(DialogMessageComponent, {
+    //   disableClose: true,
+    //   data: {
+    //     title: "Suppression d'une barre",
+    //     message: "Voulez-vous vraiment supprimer cette barre? ",
+    //     messageNo: "Annuler",
+    //     messageYes: "Supprimer"
+    //   }
+    // }).afterClosed().subscribe(data => {
+    //   if (data) {
+    //     this.purchaseService.deleteItems(id)
+    //       .subscribe({
+    //         next: (value) => {
+    //           this.dataItemsList.map((value, index) => {
+    //             if (value.id !== id) {
+    //               tab.push(value)
+    //             }
+    //             this.Actualiser()
+    //           });
+    //           this.dataItemsList = tab;
+    //         },
+    //         error: (err) => {
+    //           console.error(err);
+    //         }
+    //       });
+    //   }
+    // })
     //Requete suppression sur la DB
   }
 

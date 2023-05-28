@@ -14,18 +14,29 @@ export class LotService {
     return this.http.get<any[]>(`${BASE_URL}${api}/${suffixUrl}/`);
   }
 
+
+  // /api/achat/id_lot/achat_by_lot/
+  getAchatOfLot(api: string, suffixUrl: string, id_lot: any) {
+    const url = `${BASE_URL}${api}/${suffixUrl}/${id_lot}/achat_by_lot/`;
+    return this.http.get<any[]>(url)
+  }
+
+  // Add Fournisseur
+  Add(api: string, suffixURL: string, data: any): Observable<any> {
+    // console.log(data);
+    return this.http.post(`${BASE_URL}${api}/${suffixURL}/`, data)
+  }
+
   getItemsOfAchat(api: string, suffixUrl: string, id_achat: any) {
     const url = `${BASE_URL}${api}/${suffixUrl}/${id_achat}/achat_items_by_achat/`;
     return this.http.get<any[]>(url)
   }
+
   getLotContentById(api: string, suffixUrl: string, id_lot: any) {
     const url = `${BASE_URL}${api}/${suffixUrl}/${id_lot}/get_achat_items/`;
     return this.http.get<any[]>(url)
   }
 
-  getDetailPurchaseItems(id_achat: any) {
-    return this.http.get<any[]>(BASE_URL.concat(LINK_BASE, "/", T_ITEMS, "/?id_achat=", id_achat))
-  }
 
   updateRowsPurchase(purchase: any) {
     return this.http.put<any[]>(BASE_URL.concat(LINK_BASE, `/achat_items/${purchase.id}/`), purchase)

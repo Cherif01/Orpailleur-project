@@ -5,22 +5,16 @@ import { FournisseurachatComponent } from "./purchase/fournisseurachat/fournisse
 import { ListPurchaseComponent } from "./purchase/list-purchase/list-purchase.component"
 import { AddSaleComponent } from "./sales/add-sale/add-sale.component"
 import { DetailSaleComponent } from "./sales/detail-sale/detail-sale.component"
-import { ListSaleComponent } from "./sales/list-sale/list-sale.component"
-import { ClientventeComponent } from "./sales/clientvente/clientvente.component"
-import { FactureclientComponent } from "./sales/factureclient/factureclient.component"
 import { FactureFournisseurComponent } from "./purchase/facture-fournisseur/facture-fournisseur.component"
 import { InitPurchaseComponent } from "./purchase/init-purchase/init-purchase.component"
 import { FacturepurchaseComponent } from "./purchase/facturepurchase/facturepurchase.component"
 import { CreateFactureFrsComponent } from "./purchase/create-facture-frs/create-facture-frs.component"
-import { FixingClientComponent } from "./sales/fixing/fixing-client/fixing-client.component"
-import { AddFixingClientComponent } from "./sales/fixing/add-fixing-client/add-fixing-client.component"
 
 
 const OperationRouting: Routes = [
   {
     path: '',
     children: [
-
       {
         path: '',
         redirectTo: '/notfound',
@@ -68,35 +62,15 @@ const OperationRouting: Routes = [
       },
       {
         path: 'sales',
-        component: ListSaleComponent,
-      },
-      {
-        path: 'add-sales',
         component: AddSaleComponent,
       },
       {
-        path: 'add-sales/:id',
+        path: 'sales/:id',
         component: AddSaleComponent,
       },
       {
         path: 'detail-sales/:id',
         component: DetailSaleComponent
-      },
-      {
-        path: 'client-vente',
-        component: ClientventeComponent
-      },
-      {
-        path: 'list-fixing-client',
-        component: FixingClientComponent
-      },
-      {
-        path: 'add-fixing-client',
-        component: AddFixingClientComponent
-      },
-      {
-        path: 'facture-client',
-        component: FactureclientComponent
       }
     ]
   },

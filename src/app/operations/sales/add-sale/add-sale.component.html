@@ -40,248 +40,225 @@
         <mat-divider></mat-divider>
         <mat-card-content>
           <!-- Contenu  -->
-          <div class="d-flex justify-content-between flex-wrap align-items-top">
-            <!-- Init sales -->
-            <div class="col">
-              <div class="table-responsive" *ngIf="!venteActif">
-                <h4 class="text-center fw-bold h5 p-3">Choissir un client pour commencer...</h4>
-                <form class="" [formGroup]="InitVente" (ngSubmit)="InitVentePost(InitVente)">
-                  <div class="col">
-                    <mat-form-field appearance="outline" class="w-100 mb-2">
-                      <mat-label>--- Choisir un client ---</mat-label>
-                      <mat-select (valueChange)="playSound()" formControlName="client">
-                        <mat-option>-- Aucun --</mat-option>
-                        <mat-option *ngFor="let c of listClient;" [value]="c.id">
-                          <strong>{{ c.raison_sociale }} | </strong> <span class="text-primary">{{ c.responsable }}</span>
-                        </mat-option>
-                      </mat-select>
-                      <mat-hint>Liste des clients</mat-hint>
-                    </mat-form-field>
-                  </div>
-
-                  <div class="col">
-                    <button type="submit" mat-raised-button class="w-100 p-2" color="accent"
-                      [disabled]="!InitVente.valid"><span class="mx-2">
-                        Initialiser la vente </span>
-                      <mat-icon>add</mat-icon>
-                    </button>
-                  </div>
-                </form>
-              </div>
-
-              <!-- SI LA VENTE EST INITIALISER -->
-              <div class="table-responsive" *ngIf="venteActif">
-                <form class="" [formGroup]="FactureClient" (ngSubmit)="FactureClientPOST(FactureClient, 0)">
-                  <div class="col">
-                    <h2 class="text-secondary">Ajout des elements a vendre</h2>
-                    <mat-divider></mat-divider>
-                    <mat-form-field appearance="outline" class="w-100 mb-2">
-                      <mat-label>--- Arrivage (LOT) ---</mat-label>
-                      <mat-select (selectionChange)="lotValue($event.value)" (valueChange)="playSound()">
-                        <mat-option>-- Aucun --</mat-option>
-                        <mat-option *ngFor="let data of listLot" [value]="data.id">
-                          {{data.designation }}
-                        </mat-option>
-                      </mat-select>
-                      <mat-hint>Liste des lots</mat-hint>
-                    </mat-form-field>
-                  </div>
-
-                  <div class="col" *ngIf="list">
-                    <!-- ACHAT -->
-                    <mat-form-field appearance="outline" class="w-100 mb-2">
-                      <mat-label>--- Achat (liste) ---</mat-label>
-                      <mat-select (selectionChange)="itemValue($event.value)"
-                        (valueChange)="playSound()">
-                        <mat-option>-- Aucun --</mat-option>
-                        <mat-option *ngFor="let data of AchatList; let i = index" [value]="data.achat.id">
-                          {{ i+1 }} : <span class="text-primary">{{ data.arrivage.designation }}
-                          </span> ==> Achat : 00{{data.achat.id}} >> Pds : {{ data.achat.poids_total }}g >>
-                          (Frs : <span class="small">{{ data.achat.fournisseur.prenom + " " + data.achat.fournisseur.nom
-                            }}</span> )
-                        </mat-option>
-                      </mat-select>
-                      <mat-hint>Liste des achats</mat-hint>
-                    </mat-form-field>
-                  </div>
-
-                  <div class="col" *ngIf="listItems">
-                    <mat-form-field appearance="outline" class="w-100 mb-2">
-                      <mat-label>--- Option d'envoie ---</mat-label>
-                      <mat-select (valueChange)="playSound()" formControlName="type" required (selectionChange)="optionValue($event.value)">
-                        <mat-option>-- Aucun --</mat-option>
-                        <mat-option [value]="1">Par barre</mat-option>
-                        <mat-option [value]="2">Global</mat-option>
-                      </mat-select>
-                      <mat-hint>Vendre par ?</mat-hint>
-                    </mat-form-field>
-                  </div>
-
-                  <div class="col" *ngIf="Global">
-                    <button type="submit" mat-flat-button class="w-100 p-2" color="primary"
-                      [disabled]="!FactureClient.valid"><span class="mx-2">
-                        Tout envoyer </span>
-                      <mat-icon>person</mat-icon>
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-            <!-- Info du lot -->
-            <div class="col">
-              <div class="img-responsive text-center p-3" *ngIf="!listItems;">
-                <div class="" *ngIf="!lotBoolean">
-                  <img src="/assets/image/or.png" class="img-responsive w-50" alt="">
+          <mat-tab-group>
+            <!-- AJOUT TABS -->
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="text-primary">add </mat-icon>
+                NOUVELLE EXPEDITION
+              </ng-template>
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="col">
+                  <h2 class="text-dark mx-0 m-3">D&#233;buter le proc&#233;ssus</h2>
+                </div>
+                <div class="col text-end">
+                  <button mat-raised-button color="accent" [disabled]="!btnSend" (click)="sendExpedition()">VALIDER </button>
                 </div>
               </div>
+              <hr>
 
-              <div class="col-12 text-center" *ngIf="!listItems;">
-                <div class="p-2 text-center card-body shadow" id="shadow-lot" *ngIf="lotBoolean">
-                  <div class="">
-                    <h2 class="shadow p-2 text-center fw-bold">Information du lot</h2>
-                    <img src="../../../assets/image/caisse.png" class="img-responsive w-25" alt="">
-                    <!-- <hr> -->
-                    <h4 class="fw-bold p-0 m-0">{{ LotUnique.designation }}</h4>
-                    <span class="text-secondary fs-6"><strong>Date - cr&#233;ation le : </strong> {{
-                      LotUnique.created_at
-                      | date: 'dd/MM/YYYY' }}</span>
-                  </div>
-                  <hr>
-                  <div class="text-start">
+              <!-- CONFIG -->
+              <div class="d-flex justify-content-start w-100">
+                <div class="col-12 col-lg-3">
+                  <mat-form-field class="w-100">
+                    <mat-label>--- CLIENT ---</mat-label>
+                    <mat-select (valueChange)="eventClient($event)">
+                      <mat-option *ngFor="let data of TabClient" value="{{ data.id }}"><i class="text-primary">Societe:
+                        </i> {{ data.raison_sociale }} | <i class="text-danger">Representant: </i> {{ data.responsable
+                        }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <!-- List Lot -->
+                <div class="col-12 col-lg-3">
+                  <mat-form-field class="w-100">
+                    <mat-label>--- LIST LOT ---</mat-label>
+                    <mat-select (valueChange)="eventLot($event)">
+                      <mat-option *ngFor="let data of TabLot" value="{{ data.id }}">
+                        <i class="text-primary">Date: </i> {{ data.created_at | date: 'dd/MM/YYY' }} ==>
+                        <i class="text-danger">Desig: </i> {{ data.designation }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <section class="example-section" *ngIf="selectLot">
+                    <mat-radio-group>
+                      <mat-radio-button (click)="checkedG()" class="example-margin w-50" value="1">Lot:
+                        Global</mat-radio-button>
+                      <mat-radio-button (click)="checkedD()" class="example-margin w-50" value="2">Lot:
+                        Detail</mat-radio-button>
+                    </mat-radio-group>
+                  </section>
+                </div>
+
+                <!-- DETAILS DE SELECTION -->
+                <div class="col-12 col-lg-6">
+                  <mat-card class="mat-elevation-z8" *ngIf="checkedGlobal">
                     <table class="table">
                       <tr>
-                        <th>Nb Barres</th>
+                        <th>Total Poids <br> Total Barres</th>
                         <th>:</th>
-                        <td>{{ nb_barre }} <span class="text-danger">Barres</span></td>
-                      </tr>
-                      <tr>
-                        <th>Poids Total</th>
-                        <th>:</th>
-                        <td>{{ PoidTotalLot | number }} g</td>
-                      </tr>
-                      <tr>
-                        <th>Vendu</th>
-                        <th>:</th>
-                        <td>{{ PoidVenduLot }} g</td>
-                      </tr>
-                      <tr>
-                        <th>Reste</th>
-                        <th>:</th>
-                        <td>{{ (PoidTotalLot - PoidVenduLot) | number }} g</td>
+                        <td>{{ PoidsTotalContenuLot }} g <br> {{ nbBarres }} barres</td>
                       </tr>
                     </table>
-                  </div>
+                  </mat-card>
+                  <mat-form-field class="w-100" *ngIf="checkedDetail">
+                    <mat-label>--- LIST ACHAT ---</mat-label>
+                    <mat-select (valueChange)="eventAchat($event)">
+                      <mat-option *ngFor="let data of TabAchat" value="{{ data.id }}">
+                        <i class="text-info">Le: </i> {{ data.created_at | date: 'dd/MM/YYYY' }} ==>
+                        <i class="text-info">Pds: </i> {{ data.poids_total }}
+                          /<i class="text-info"> Carrat: </i> {{ data.carrat_moyen.toString().substring(0, 5) }}
+                          / <i class="text-info">Frs: </i>{{ data.fournisseur.prenom+ ' '+ data.fournisseur.nom+' : '+data.fournisseur.telephone }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <!-- <section class="example-section" *ngIf="selectAchat">
+                    <mat-radio-group>
+                      <mat-radio-button (click)="checkedAchatG()" class="example-margin w-50" value="g">Achat :
+                        Global</mat-radio-button>
+                      <mat-radio-button (click)="checkedAchatD()" class="example-margin w-50" value="d">Achat :
+                        Par barre</mat-radio-button>
+                    </mat-radio-group>
+                  </section> -->
                 </div>
               </div>
 
-              <!-- Export Datatable start -->
-              <div class="...-box" *ngIf="listItems">
-                <!-- Facture Detail -->
-                <div class="p-2" *ngIf="Detail">
-                  <!-- table LIST -->
-                  <div class="col-12">
-                    <div class="table-responsive m-0">
-                      <h2 class="text-dark text-center fw-bold display-4">Liste Achat</h2>
-                      <table class="table table-light table-striped table-hover" id="table_shadow">
-                        <thead class="text-primary">
-                          <th>#</th>
-                          <th>Poids</th>
-                          <th>Carrat</th>
-                          <!-- <th>Manquant</th> -->
-                          <th>Action</th>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let data of ItemsList; let i = index">
-                            <td>{{ i+1 }}</td>
-                            <td>{{ data.poids_achat }}</td>
-                            <td>{{ data.carrat_achat }}</td>
-                            <!-- <td class="text-danger text-center fw-bold">- {{ data.manquant }}</td> -->
-                            <td>
-                              <form [formGroup]="FactureClient" (ngSubmit)="FactureClientPOST(FactureClient, data.id)">
-                                <input type="hidden" formControlName="type" [value]="1">
-                                <button type="submit" [disabled]="!FactureClient.valid" mat-raised-button color="primary">
-                                  <span class="dw dw-right-arrow"></span></button>
-                              </form>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <hr>
-                      <div class="col-8 m-0 p-0">
-                        <table class="table table-light">
-                          <tr>
-                            <th>Poids Total</th>
-                            <th>:</th>
-                            <td>{{ Poids_total | number }} g</td>
-                          </tr>
-                          <tr>
-                            <th>Carrat Moyenne</th>
-                            <th>:</th>
-                            <td>{{ (carrat_moyenne / nbBarres).toString().substring(0, 5) }}</td>
-                          </tr>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="p-2" *ngIf="selectAchat">
+                <!-- Tableau Tous les items du lot en details -->
+                <mat-form-field class="w-100">
+                  <mat-label>Rechercher</mat-label>
+                  <input matInput (keyup)="applyFilter($event)" class="w-100" placeholder="Ex. lot du 13xxx" #input>
+                </mat-form-field>
+                <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8 w-100" id="table_shadow">
+                  <!-- Checkbox Column -->
+                  <ng-container matColumnDef="Select">
+                    <th mat-header-cell *matHeaderCellDef>
+                      <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        [aria-label]="checkboxLabel()">
+                      </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                      <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                        [aria-label]="checkboxLabel(row)">
+                      </mat-checkbox>
+                    </td>
+                  </ng-container>
 
-                <!-- Facture GLOBAL -->
-                <div class="p-2" *ngIf="Global">
-                  <!-- table LIST -->
-                  <div class="col-12">
-                    <div class="table-responsive m-0">
-                      <h2 class="text-dark text-center fw-bold display-4">Liste Achat</h2>
-                      <table class="table table-light table-striped table-hover" id="table_shadow">
-                        <thead class="text-primary">
-                          <th>#</th>
-                          <th>Poids</th>
-                          <th>Carrat</th>
-                          <th>Manquant</th>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let data of ItemsList; let i = index">
-                            <td><input type="checkbox" checked mat-checkbox ></td>
-                            <td>{{ data.poids_achat }}</td>
-                            <td>{{ data.carrat_achat }}</td>
-                            <td class="text-danger text-center fw-bold">- {{ data.manquant }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <hr>
-                      <div class="col-8 m-0 p-0">
-                        <table class="table table-light">
-                          <tr>
-                            <th>Poids Total</th>
-                            <th>:</th>
-                            <td>{{ Poids_total | number }} g</td>
-                          </tr>
-                          <tr>
-                            <th>Carrat Moyenne</th>
-                            <th>:</th>
-                            <td>{{ (carrat_moyenne / nbBarres).toString().substring(0, 5) }}</td>
-                          </tr>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  <ng-container matColumnDef="Date">
+                    <th class="" mat-header-cell *matHeaderCellDef>Date</th>
+                    <td class="" mat-cell *matCellDef="let element">{{ element.achat.created_at | date: 'dd/MM/YYYY' }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Fournisseur">
+                    <th class="" mat-header-cell *matHeaderCellDef>Fournisseur</th>
+                    <td class="" mat-cell *matCellDef="let element">{{ element.achat.fournisseur.prenom +' '+element.achat.fournisseur.nom }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Achat">
+                    <th class="" mat-header-cell *matHeaderCellDef>Achat infos</th>
+                    <td class="" mat-cell *matCellDef="let element">{{ element.achat.id +' / '+element.achat.poids_total+'/'+(element.achat.carrat_moyen).toString().substring(0,5) }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Poids">
+                    <th class="" mat-header-cell *matHeaderCellDef>Poids</th>
+                    <td class="" mat-cell *matCellDef="let element">{{ element.poids_achat }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Carrat">
+                    <th class="" mat-header-cell *matHeaderCellDef>Carrat</th>
+                    <td class="" mat-cell *matCellDef="let element">{{
+                      element.carrat_achat }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Manquant">
+                    <th class="" mat-header-cell *matHeaderCellDef>Manquant</th>
+                    <td class="" mat-cell *matCellDef="let element">{{ element.manquant }}</td>
+                  </ng-container>
+
+
+                  <tr mat-header-row *matHeaderRowDef="displaysColums2;"></tr>
+                  <tr mat-row *matRowDef="let row; columns:displaysColums2" (click)="selection.toggle(row)">
+                  </tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 50, 100, 500]" showFirstLastButtons></mat-paginator>
               </div>
-              <!-- Export Datatable End -->
+            </mat-tab>
 
 
-            </div>
-          </div>
+            <!-- LIST TABS -->
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="text-primary"> list </mat-icon>
+                LISTE EXPEDITION
+              </ng-template>
+              <mat-card-title>
+                <h2 class="text-blue mt-2">Toutes les expeditions...</h2>
+              </mat-card-title>
+              <mat-card-content>
+                <mat-form-field class="w-100">
+                  <input [formControl]="search" placeholder="Rechercher" matInput>
+                  <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+                <table mat-table [dataSource]="dataSource" class="w-100">
+                  <ng-container matColumnDef="Date">
+                    <th mat-header-cell *matHeaderCellDef>Date</th>
+                    <td class="" mat-cell *matCellDef="let element">{{ element.created_at | date: 'dd/MM/YYYY' }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Client">
+                    <th mat-header-cell *matHeaderCellDef>Client</th>
+                    <td class="" mat-cell *matCellDef="let element">{{ element.raison_socile }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Lot">
+                    <th mat-header-cell *matHeaderCellDef>Arrivage</th>
+                    <td class="" mat-cell *matCellDef="let element">{{ element.lot }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Poids">
+                    <th mat-header-cell *matHeaderCellDef>Pds Total</th>
+                    <td class="" mat-cell *matCellDef="let element">{{ element.poidsTotal }} g</td>
+                  </ng-container>
+                  <ng-container matColumnDef="CarratMoyen">
+                    <th mat-header-cell *matHeaderCellDef>Carrat</th>
+                    <td class="" mat-cell *matCellDef="let element">{{ (element.carratMoyen/element.poidsTotal).toString().substring(0, 5) }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Status">
+                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                    <td class="" mat-cell *matCellDef="let element">
+                      <span *ngIf="element.status == 1" class="text-warning">En cours</span>
+                      <span *ngIf="element.status == 2" class="text-success">Validé</span>
+                      <span *ngIf="element.status == 3" class="text-danger">Annuler</span>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="Action">
+                    <th mat-header-cell *matHeaderCellDef class="text-center">Action</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                      <button mat-button color="warn" [matMenuTriggerFor]="menu">
+                        Voir + <span class="dw dw-down-chevron"></span></button>
+                      <mat-menu #menu="matMenu">
+                        <a mat-menu-item routerLink="/" class="text-start">
+                          <strong>
+                            <span class="dw dw-user-1 mx-3"></span>
+                            <span>Voir le profile</span>
+                          </strong>
+                        </a>
+                      </mat-menu>
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displaysColums;sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns:displaysColums"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5,10,15,100]" showFirstLastButtons></mat-paginator>
+              </mat-card-content>
+            </mat-tab>
+          </mat-tab-group>
           <!-- FIN - Contenu  -->
         </mat-card-content>
-        <mat-card-footer>
+        <!-- <mat-card-footer>
           <div class="text-center p-3 fs-6">
             <marquee behavior="" direction="">
               Commencer par param&#233;trer une vente pour voir le formulaire d'ajout
               des achats...
             </marquee>
           </div>
-        </mat-card-footer>
+        </mat-card-footer> -->
       </mat-card>
       <!-- Export Datatable End -->
     </div>

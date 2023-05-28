@@ -82,7 +82,8 @@
                     </mat-form-field>
                   </div>
 
-                  <button type="submit" mat-raised-button class="w-100" color="accent" (click)="Actualiser()" [disabled]="!Achat.valid">
+                  <button type="submit" mat-raised-button class="w-100" color="accent" (click)="Actualiser()"
+                    [disabled]="!Achat.valid">
                     <span class="mx-2"> Enregistrer </span>
                     <mat-icon>add</mat-icon>
                   </button>
@@ -93,20 +94,39 @@
             <!-- table LIST -->
             <div class="col">
               <div class="d-flex justify-content-between align-items-center">
-                <div class="col text-start">
-                  <button mat-raised-button colors="primary" (click)="Actualiser()"><span class="text-success fw-bold">Lot ouvert : </span> {{ listLot.designation }}</button>
-                </div>
-                <div class="col text-end">
+                <div class="col">
                   <form [formGroup]="validerAchatForm" (ngSubmit)="updateAchat(validerAchatForm)">
-                    <button type="submit" mat-raised-button color="primary" appareance="fill">
-                      <span class="">Valider achat </span>
-                      <mat-icon> check</mat-icon>
-                    </button>
+                    <div class="d-flex justify-content-between align-items-top">
+                      <div class="col">
+                        <mat-form-field appearance="fill" class="w-100 mb-2">
+                          <mat-label>--- Liste Lot ---</mat-label>
+                          <mat-select placeholder="" formControlName="arrivage" required>
+                            <mat-option selected="selected" class="text-success fw-bold" [value]="listLot.id">Aujourd'hui : {{
+                              listLot.designation}} </mat-option>
+                            <mat-option [value]="lot.id" *ngFor="let lot of archivesLot">
+                              {{ lot.designation}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <ngx-select [items]="lot" [(ngModel)]="selectedOption"
+                          [placeholder]="'Recherche...'" (select)="onOptionSelected()" [ngModelOptions]="{standalone: true}">
+                        </ngx-select>
+                      </div>
+                      <div class="col text-end w-100">
+                        <button type="submit" class="w-100" [disabled]="!validerAchatForm.valid" mat-flat-button
+                          color="accent" appareance="fill">
+                          <span class="">Valider achat </span>
+                          <mat-icon> check</mat-icon>
+                        </button>
+                      </div>
+                    </div>
                   </form>
                 </div>
               </div>
+              <!-- <hr> -->
               <div class="table-responsive-sm" style="height: 350px; overflow-y: scroll">
-                <hr>
                 <table class="table table-info" id="table_shadow">
                   <thead class="bg-secondary text-light">
                     <th class="text-center">Nb/Barres</th>
@@ -124,8 +144,7 @@
                       <td class="text-center">22</td>
                       <td class="text-danger fw-bold text-center">{{d.manquant}}</td>
                       <td class="text-center" style="cursor: pointer;" (click)="deleteItems(d.id)">
-                        <span class="micon dw dw-trash text-danger "
-                          ></span>
+                        <span class="micon dw dw-trash text-danger "></span>
                       </td>
                     </tr>
                   </tbody>
