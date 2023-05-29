@@ -1,4 +1,6 @@
-<app-navbar></app-navbar>
-<app-sidebar></app-sidebar>
+<ng-container *ngIf="canShowMenu">s
+  <app-navbar></app-navbar>
+  <app-sidebar></app-sidebar>
+</ng-container>
 <router-outlet></router-outlet>
 <div class="p-5 m-5"></div>

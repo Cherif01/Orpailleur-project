@@ -9,6 +9,7 @@ import { FactureFournisseurComponent } from "./purchase/facture-fournisseur/fact
 import { InitPurchaseComponent } from "./purchase/init-purchase/init-purchase.component"
 import { FacturepurchaseComponent } from "./purchase/facturepurchase/facturepurchase.component"
 import { CreateFactureFrsComponent } from "./purchase/create-facture-frs/create-facture-frs.component"
+import { AuthGuard } from "../user/auth.guard"
 
 
 const OperationRouting: Routes = [
@@ -23,54 +24,67 @@ const OperationRouting: Routes = [
       {
         path: 'purchase',
         component: ListPurchaseComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'init-purchase/:id',
         component: InitPurchaseComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'add-purchase',
         component: FournisseurachatComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'add-purchase/:id',
         component: AddPurchaseComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'detail-purchase/:id',
         component: DetailPurchaseComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'facturepurchase/:id',
         component: FacturepurchaseComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'facture-fournisseur',
-        component: FactureFournisseurComponent
+        component: FactureFournisseurComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'facture-fournisseur/:id',
         component: FactureFournisseurComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'create-facture',
         component: CreateFactureFrsComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'create-facture/:id',
         component: CreateFactureFrsComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'sales',
         component: AddSaleComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'sales/:id',
         component: AddSaleComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'detail-sales/:id',
-        component: DetailSaleComponent
+        component: DetailSaleComponent,
+        canActivate:[AuthGuard]
       }
     ]
   },

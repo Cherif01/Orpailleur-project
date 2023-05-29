@@ -11,7 +11,7 @@
             <div class="login-title">
               <h2 class="text-center text-primary">GROUP - LIMANAYA</h2>
             </div>
-            <form>
+            <form [formGroup]="userLogin">
               <div class="select-role">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn active">
@@ -29,13 +29,13 @@
                 </div>
               </div>
               <div class="input-group custom">
-                <input type="text" class="form-control form-control-lg" placeholder="Username">
+                <input type="text" class="form-control form-control-lg" placeholder="Username" formControlName="username">
                 <div class="input-group-append custom">
                   <span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
                 </div>
               </div>
               <div class="input-group custom">
-                <input type="password" class="form-control form-control-lg" placeholder="**********">
+                <input type="password" class="form-control form-control-lg" placeholder="**********" formControlName="password">
                 <div class="input-group-append custom">
                   <span class="input-group-text"><i class="dw dw-padlock1"></i></span>
                 </div>
@@ -43,7 +43,7 @@
               <div class="row">
                 <div class="col-sm-12">
                   <div class="input-group mb-0">
-                    <a class="btn btn-primary btn-lg btn-block" (click)="loginSET()">Connexion</a>
+                    <button mat-raised-button color="primary" (click)="loginSET()" [disabled]="userLogin.invalid" >Connexion</button>
                   </div>
                 </div>
               </div>

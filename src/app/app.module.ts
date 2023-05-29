@@ -24,6 +24,7 @@ import { DialogAddClientComponent } from './public/dialogs/dialog-add-client/dia
 import { DialogConvertMoneyComponent } from './public/dialogs/dialog-convert-money/dialog-convert-money.component';
 import { LoginComponent } from './user/login/login.component';
 import { LogoutComponent } from './user/logout/logout.component';
+import { AuthGuard } from './user/auth.guard';
 
 // DATA-TABLES
 
@@ -57,7 +58,9 @@ import { LogoutComponent } from './user/logout/logout.component';
     BrowserAnimationsModule,
     RouterModule.forRoot(AppRouting,{relativeLinkResolution:'legacy'}),
   ],
-  providers: [],
+  providers: [
+    AuthGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
