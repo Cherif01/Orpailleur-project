@@ -61,8 +61,8 @@
                             <span *ngIf="SoldeGNF < 0" class="text-danger">{{ SoldeGNF | number: '2.2-2'}} GNF</span>
                           </td>
                           <td>
-                            <span *ngIf="SoldeUSD >= 0">{{ SoldeUSD | number: '2.2-2'}} USD</span>
-                            <span *ngIf="SoldeUSD < 0" class="text-danger">{{ (SoldeUSD ) | number: '2.2-2'}} USD</span>
+                            <span *ngIf="SoldeUSD >= 0">{{format2Chart(SoldeUSD) | number: '2.2-2'}} USD</span>
+                            <span *ngIf="SoldeUSD < 0" class="text-danger">{{ format2Chart(SoldeUSD) | number: '2.2-2'}} USD</span>
                           </td>
                           <td>
                             <span *ngIf="SoldeGNF >= 0 && SoldeUSD >= 0" class="text-success fw-bold">Aucune dettes
@@ -94,20 +94,22 @@
                           </thead>
                           <tbody>
                             <tr *ngFor="let data of fusionTab">
-                              <td>{{ data.created_at | date: 'dd/MM/YYYY' }}</td>
+                              <td>{{ data.created_at | date: "dd/MM/YYYY 'a' HH:mm:ss" }}</td>
                               <td class="">
-                                <span class="text-dark" *ngIf="data.type == 1">Facturation - Poids {{ data.poids_item }}</span>
+                                <span class="text-dark" *ngIf="data.type == 1">Facturation - Poids {{ data.poids_item }} g</span>
                                 <span class="text-dark" *ngIf="data.type == 2">Paiement - <i *ngIf="data.representant != null" class="text-uppercase fw-bold">{{ data.representant }}</i> <i *ngIf="data.representant == null">{{ data.fournisseur }}</i> </span>
                               </td>
                               <td>
-                                <span *ngIf="data.type == 1">{{ data.montant | number: '2.2-2' }}</span>
+                                <span *ngIf="data.type == 1">{{ format2Chart(data.montant) | number: '2.2-2' }}</span>
                                 <span *ngIf="data.type == 2">---</span>
                               </td>
                               <td>
-                                <span *ngIf="data.type == 2">{{ data.montant | number: '2.2-2' }}</span>
+                                <span *ngIf="data.type == 2">{{ format2Chart(data.montant) | number: '2.2-2' }}</span>
                                 <span *ngIf="data.type == 1">---</span>
                               </td>
-                              <td class="fw-bold">$ {{ format2Chart(data.montant) | number }}</td>
+                              <td>
+                                <span [class]="'fw-bold text-' +(data.solde>0?'success':'danger')">$ {{ format2Chart(data.solde) | number }}</span>
+                              </td>
                             </tr>
                           </tbody>
                         </table>

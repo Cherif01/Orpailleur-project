@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { RapportService } from 'src/app/rapport.service';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+// import jsPDF from 'jspdf';
+// import html2canvas from 'html2canvas';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -209,20 +209,20 @@ export class RapportCaisseComponent implements OnInit {
     document.body.innerHTML = originalContents;
   }
 
-  generatePDF() {
-    const doc = new jsPDF();
-    const divElement: any = document.getElementById('recu'); // Remplacez 'divId' par l'ID de votre div
+  // generatePDF() {
+  //   const doc = new jsPDF();
+  //   const divElement: any = document.getElementById('recu'); // Remplacez 'divId' par l'ID de votre div
 
-    // Utilisez la méthode html2canvas pour capturer la div sous forme d'image
-    html2canvas(divElement).then((canvas) => {
-      const imageData = canvas.toDataURL('image/png');
+  //   // Utilisez la méthode html2canvas pour capturer la div sous forme d'image
+  //   html2canvas(divElement).then((canvas) => {
+  //     const imageData = canvas.toDataURL('image/png');
 
-      // Ajoutez l'image capturée au document PDF
-      doc.addImage(imageData, 'PNG', 10, 10, 190, 280); // Modifiez les coordonnées et la taille selon vos besoins
+  //     // Ajoutez l'image capturée au document PDF
+  //     doc.addImage(imageData, 'PNG', 10, 10, 190, 280); // Modifiez les coordonnées et la taille selon vos besoins
 
-      // Enregistrez le document PDF
-      doc.save('_recu_caisse_.pdf');
-    });
-  }
+  //     // Enregistrez le document PDF
+  //     doc.save('_recu_caisse_.pdf');
+  //   });
+  // }
 
 }
