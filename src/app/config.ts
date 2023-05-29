@@ -1,8 +1,9 @@
 // Environnement de developpement
 import { environment } from "src/environments/environment";
 
+
 // url de base
-export const BASE_URL = environment.production?"http://192.168.197.100:8000/":"http://192.168.127.100:8000/";
+export const BASE_URL = environment.production?"https://limanaya.pythonanywhere.com/":"http://127.0.0.1:8000/";
 // export const BASE_URL = environment.production?"http://192.168.197.100:8000/":"http://127.0.0.1:8000/";
 
 // application

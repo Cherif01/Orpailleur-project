@@ -14,7 +14,7 @@ import rapportRouting from "./rapport.routing";
 import { RouterModule } from "@angular/router";
 import { MatDialogModule } from "@angular/material/dialog";
 import { RapportFournisseurComponent } from './rapport-fournisseur/rapport-fournisseur.component';
-import { RapportClientComponent } from './rapport-fournisseur/rapport-client/rapport-client.component';
+import { RapportClientComponent } from './rapport-client/rapport-client.component';
 import { MatMenuModule } from "@angular/material/menu";
 import { RapportCaisseComponent } from './rapport-caisse/rapport-caisse.component';
 import { MatNativeDateModule } from "@angular/material/core";

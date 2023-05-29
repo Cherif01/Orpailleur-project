@@ -75,7 +75,7 @@ export class SituationFournisseurComponent implements OnInit {
           dataCaisse.concat(dataFixing);
           // console.log("after fusion",dataCaisse);
           this.fusionTab = dataCaisse.slice().concat(dataFixing.slice());
-          this.fusionTab.sort((a,b)=>b.dateNumber-a.dateNumber);
+          this.fusionTab.sort((a,b)=>a.dateNumber-b.dateNumber);
           let solde = 0;
           this.fusionTab.forEach(op => {
             if (op.type == this.TYPE_OPERATION.credit) {

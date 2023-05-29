@@ -54,7 +54,7 @@ const AppRouting: Routes = [
             },
             {
                 path: '',
-                redirectTo: 'login',
+                redirectTo: 'home',
                 pathMatch: 'full'
             }
         ]

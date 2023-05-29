@@ -11,7 +11,7 @@ export class AppComponent {
   title = 'Groupe - LIMANAYA _ BUSINESS';
   loginUsername = localStorage.setItem("Username", "admin")
   loginPassword = localStorage.setItem("Username", "admin")
-  public sessionUSER: any = ""
+  public sessionUSER: any = window.localStorage.setItem("USERNAME", "admin")
 
   constructor(
     public location: Location,

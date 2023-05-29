@@ -47,7 +47,6 @@ import { LogoutComponent } from './user/logout/logout.component';
     MatSidenavModule,
     MatToolbarModule,
     CdkAccordionModule,
-    RouterModule.forRoot(AppRouting,{relativeLinkResolution:'legacy'}),
     DemoMaterialModule,
     HttpClientModule,
     DataTablesModule,
@@ -56,6 +55,7 @@ import { LogoutComponent } from './user/logout/logout.component';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    RouterModule.forRoot(AppRouting,{relativeLinkResolution:'legacy'}),
   ],
   providers: [],
   bootstrap: [AppComponent]

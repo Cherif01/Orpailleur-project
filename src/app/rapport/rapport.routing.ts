@@ -1,6 +1,6 @@
 import { Routes } from "@angular/router";
 import { RapportFournisseurComponent } from "./rapport-fournisseur/rapport-fournisseur.component";
-import { RapportClientComponent } from "./rapport-fournisseur/rapport-client/rapport-client.component";
+import { RapportClientComponent } from "./rapport-client/rapport-client.component";
 import { RapportCaisseComponent } from "./rapport-caisse/rapport-caisse.component";
 
 const rapportRouting: Routes = [
