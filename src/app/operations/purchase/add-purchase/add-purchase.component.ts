@@ -7,6 +7,7 @@ import { PurchaseService } from '../purchase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 import { max } from 'rxjs';
+import { DialogMessageComponent } from 'src/app/public/dialogs/dialog-message/dialog-message.component';
 
 @Component({
   selector: 'app-add-purchase',
@@ -189,13 +190,20 @@ export class AddPurchaseComponent implements OnInit {
           if (todayDate === dbDate) {
             // console.log("Egale");
             this.listLot = item
-          }else{
+          } else {
             this.archivesLot.push(item)
           }
-          this.lot.push(item.designation)
+          this.lot.push(item)
         })
       }
     })
+  }
+
+  format2Chart(data: any) {
+    let tab = data.toString().split(".");
+    if (tab.length < 2)
+      return Number(data);
+    return Number(tab[0].concat('.', tab[1].substr(0, 2)));
   }
 
   // update Achat
@@ -211,7 +219,7 @@ export class AddPurchaseComponent implements OnInit {
       this.validerAchatForm.controls.id.setValue(this.Id_achat)
       this.validerAchatForm.controls.poids_total.setValue(this.PTotal_this)
       this.validerAchatForm.controls.carrat_moyen.setValue((this.CAR_Total_this / this.PTotal_this))
-      if(form.value.poids_total < 1 || form.value.carrat_moyen < 10){
+      if (form.value.poids_total < 1 || form.value.carrat_moyen < 10) {
         this.snackBar.open("Aucune barre , veillez entrer au moins une barre!", "Okay", {
           duration: 5000,
           horizontalPosition: "right",
@@ -279,33 +287,33 @@ export class AddPurchaseComponent implements OnInit {
 
   deleteItems(id: any) {
     let tab: any[] = [];
-    // this.dialog.open(DialogMessageComponent, {
-    //   disableClose: true,
-    //   data: {
-    //     title: "Suppression d'une barre",
-    //     message: "Voulez-vous vraiment supprimer cette barre? ",
-    //     messageNo: "Annuler",
-    //     messageYes: "Supprimer"
-    //   }
-    // }).afterClosed().subscribe(data => {
-    //   if (data) {
-    //     this.purchaseService.deleteItems(id)
-    //       .subscribe({
-    //         next: (value) => {
-    //           this.dataItemsList.map((value, index) => {
-    //             if (value.id !== id) {
-    //               tab.push(value)
-    //             }
-    //             this.Actualiser()
-    //           });
-    //           this.dataItemsList = tab;
-    //         },
-    //         error: (err) => {
-    //           console.error(err);
-    //         }
-    //       });
-    //   }
-    // })
+    this.dialog.open(DialogMessageComponent, {
+      disableClose: true,
+      data: {
+        title: "Supprimer la ligne",
+        message: "Voulez-vous vraiment supprimer cette barre? ",
+        messageNo: "Annuler",
+        messageYes: "Supprimer"
+      }
+    }).afterClosed().subscribe(data => {
+      if (data) {
+        this.purchaseService.deleteItems(id)
+          .subscribe({
+            next: (value) => {
+              this.dataItemsList.map((value, index) => {
+                if (value.id !== id) {
+                  tab.push(value)
+                }
+                this.Actualiser()
+              });
+              this.dataItemsList = tab;
+            },
+            error: (err) => {
+              console.error(err);
+            }
+          });
+      }
+    })
     //Requete suppression sur la DB
   }
 

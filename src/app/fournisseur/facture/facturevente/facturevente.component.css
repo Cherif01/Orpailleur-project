@@ -10,6 +10,9 @@ p {
 .dw{
   color: darkred;
 }
+.mdi{
+  color: darkred;
+}
 
 #divTable{
   height: 300px;
@@ -41,10 +44,6 @@ p {
   color: green;
 }
 
-/* #mat_card_table{
-  height: 00px;
-  overflow-y: scroll;
-} */
 #divTable_ th{
   font-size: 17px;
   color: rgb(8, 0, 84);

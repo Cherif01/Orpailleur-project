@@ -20,7 +20,6 @@ export class InitPurchaseComponent implements OnInit {
   dataItems: any = []
   dataItemsList: any = []
 
-
   // init
   initAchat = this.fb.group({
     fournisseur: [],
@@ -53,6 +52,7 @@ export class InitPurchaseComponent implements OnInit {
   ngOnInit(): void {
     this.ID = this.activeroute.snapshot.params['id'];
 
+    this.getLot()
     this.getLastPurchase()
   }
 
@@ -67,6 +67,15 @@ export class InitPurchaseComponent implements OnInit {
           this.router.navigate(['/operation/add-purchase/' + this.ID])
         }
       })
+    })
+  }
+
+  lotExist: boolean = false
+  getLot() {
+    this.service.getList('api', 'arrivage').subscribe({
+      next: (data) => {
+        this.lotExist = true
+      }
     })
   }
 

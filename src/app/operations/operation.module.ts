@@ -64,7 +64,6 @@ import { NgxSelectModule } from 'ngx-select-ex';
     MatButtonToggleModule,
     MatDividerModule,
     A11yModule,
-    MatIconModule,
     MatTabsModule,
     NgxMatSelectSearchModule,
     MatSelectModule,

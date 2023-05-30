@@ -3,31 +3,30 @@
   <div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
     <div class="container">
       <div class="row align-items-center">
-        <div class="col-md-6 col-lg-7">
-          <img src="../../../assets/vendors/images/login-page-img.png" alt="">
-        </div>
-        <div class="col-md-6 col-lg-5">
+        <div class="col">
           <div class="login-box bg-white box-shadow border-radius-10">
-            <div class="login-title">
-              <h2 class="text-center text-primary">GROUP - LIMANAYA</h2>
+            <div class="login-title text-center">
+              <h2 class="text-center text-dark">GROUP - LIMANAYA</h2>
+              <span class="text-center text-danger" *ngIf="noLogin">Information incorrect!</span>
             </div>
             <form [formGroup]="userLogin">
               <div class="select-role">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn active">
                     <input type="radio" name="options" id="admin">
-                    <div class="icon"><img src="../../../assets/vendors/images/briefcase.svg" class="svg" alt=""></div>
-                    <span>I'm</span>
+                    <div class="icon"><img src="../../../assets/image/or.png" class="svg" alt=""></div>
+                    <span>Je suis le </span>
                     Manager
                   </label>
                   <label class="btn">
                     <input type="radio" name="options" id="user">
-                    <div class="icon"><img src="../../../assets/vendors/images/person.svg" class="svg" alt=""></div>
-                    <span>I'm</span>
+                    <div class="icon"><img src="../../../assets/image/or.png" class="svg" alt=""></div>
+                    <span>Je suis</span>
                     Employee
                   </label>
                 </div>
               </div>
+
               <div class="input-group custom">
                 <input type="text" class="form-control form-control-lg" placeholder="Username" formControlName="username">
                 <div class="input-group-append custom">
@@ -43,7 +42,7 @@
               <div class="row">
                 <div class="col-sm-12">
                   <div class="input-group mb-0">
-                    <button mat-raised-button color="primary" (click)="loginSET()" [disabled]="userLogin.invalid" >Connexion</button>
+                    <button class="w-100" mat-raised-button color="primary" (click)="loginSET()" [disabled]="userLogin.invalid" >Connexion</button>
                   </div>
                 </div>
               </div>

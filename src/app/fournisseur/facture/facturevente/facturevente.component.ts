@@ -107,7 +107,6 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
   poidsEnvoie: number = 0
   EnvoieFixingDetail(selection: any) {
 
-    // if()
     this.serviceVendor.Add('api', 'fixing_detail/1/create_fixing_detail', selection).subscribe({
       next: (response) => {
         // console.log("RESPONSE : ", response);
@@ -118,7 +117,7 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
           panelClass: ['bg-success', 'text-white']
         })
         this.hideSelectedItem(selection);
-        // window.location.reload()
+        window.location.reload()
       },
       error: (err) => {
         this.snackBar.open("Erreur pendant l'envoie, Veuillez reessayer!", "D'accord !", {
@@ -366,7 +365,6 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
     }
   }
 
-
   // ADD FIXING FOR POIDS
   PFix(form: FormGroup, idAchat: number, cmr: any): void {
     if (form.valid) {
@@ -380,32 +378,43 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
       form.value.carrat_moyen_restant = Number(cmr)
       this.FactureFixing.controls.poids_select.setValue(form.value.poids_select)
       // this.FactureFixing.controls.carrat_moyen_achat.setValue(cmr)
-      console.log(form.value);
+      if (this.poids_fixer >= this.poidsAttribuer + form.value.poids_select) {
+        console.log(form.value);
+        // this.EnvoieFixingDetail(tab)
 
-      this.serviceVendor.Add('api', 'fixing_detail', form.value)
-        .subscribe({
-          next: (response) => {
-            console.log(response);
-            this.snackBar.open("Achat par poids ajouter avec succès!", "Okay", {
-              duration: 3000,
-              horizontalPosition: "right",
-              verticalPosition: "bottom",
-              panelClass: ['bg-success', 'text-white']
+        this.serviceVendor.Add('api', 'fixing_detail', form.value)
+          .subscribe({
+            next: (response) => {
+              console.log(response);
+              this.snackBar.open("Achat par poids ajouter avec succès!", "Okay", {
+                duration: 3000,
+                horizontalPosition: "right",
+                verticalPosition: "bottom",
+                panelClass: ['bg-success', 'text-white']
 
-            })
-            // this.router.navigate(['/fournisseur/facture-vente/' + this.ID_fournisseur])
-            window.location.reload()
-            form.reset()
-          },
-          error: (err) => {
-            this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
-              duration: 3000,
-              horizontalPosition: "right",
-              verticalPosition: "bottom",
-              panelClass: ['bg-danger', 'text-white']
-            })
-          }
+              })
+              // this.router.navigate(['/fournisseur/facture-vente/' + this.ID_fournisseur])
+              window.location.reload()
+              form.reset()
+            },
+            error: (err) => {
+              this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
+                duration: 3000,
+                horizontalPosition: "right",
+                verticalPosition: "bottom",
+                panelClass: ['bg-danger', 'text-white']
+              })
+            }
+          })
+
+      } else {
+        this.snackBar.open("Poids superieur au reste a valider !", "D'accord !", {
+          duration: 3000,
+          horizontalPosition: "right",
+          verticalPosition: "bottom",
+          panelClass: ['bg-danger', 'text-white']
         })
+      }
 
     }
   }

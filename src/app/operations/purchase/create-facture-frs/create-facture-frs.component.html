@@ -36,7 +36,7 @@
       <!-- CONFIG -->
       <mat-card class="mat-elevation-z8">
         <div class="d-flex justify-content-between flex-wrap">
-          <div class="col" [hidden]="selection.selected.length > 10 || selection.selected.length < 1">
+          <div class="col" [hidden]="selection.selected.length > 1 || selection.selected.length < 1">
             <button mat-flat-button color="primary" (click)="factureElement()" class="mx-2">
               <mat-icon>folder</mat-icon> Voir la facture</button>
           </div>

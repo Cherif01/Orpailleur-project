@@ -22,14 +22,14 @@
             </div>
             <div class="col-btn">
               <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
-                <span class="micon dw dw-add"></span><span class="mtext mx-2"> Placer un achat </span>
+                <span class="micon mdi mdi-plus-thick"></span><span class="mtext mx-2"> Placer un achat </span>
               </button>
               <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/purchase">
-                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Liste achat</span>
+                <span class="micon mdi mdi-format-list-numbered-rtl"></span><span class="mtext mx-2"> Liste achat</span>
               </button>
-              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
+              <!-- <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
                 <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
-              </button>
+              </button> -->
             </div>
           </div>
         </div>
@@ -94,31 +94,35 @@
             <!-- table LIST -->
             <div class="col">
               <div class="d-flex justify-content-between align-items-center">
+                <div class="col-4">
+                  <span class="text-dark">Poids : <i class="text-primary">{{ format2Chart(PTotal_this) | number }} g</i></span> <br>
+                  <span class="text-dark">Carrat : <i class="text-primary">{{ format2Chart(CAR_Total_this/PTotal_this) }}</i></span> <br>
+                </div>
                 <div class="col">
                   <form [formGroup]="validerAchatForm" (ngSubmit)="updateAchat(validerAchatForm)">
-                    <div class="d-flex justify-content-between align-items-top">
+                    <div class="d-flex justify-content-start align-items-top">
                       <div class="col">
-                        <mat-form-field appearance="fill" class="w-100 mb-2">
-                          <mat-label>--- Liste Lot ---</mat-label>
+                        <mat-form-field appearance="outline" class="w-100 mb-2">
+                          <mat-label>--- Placer dans un Lot ---</mat-label>
                           <mat-select placeholder="" formControlName="arrivage" required>
-                            <mat-option selected="selected" class="text-success fw-bold" [value]="listLot.id">Aujourd'hui : {{
+                            <mat-option selected="true" class="text-success" [value]="listLot.id">Aujourd'hui : {{
                               listLot.designation}} </mat-option>
-                            <mat-option [value]="lot.id" *ngFor="let lot of archivesLot">
-                              {{ lot.designation}}
+                            <mat-option [value]="l.id" *ngFor="let l of archivesLot">
+                              {{ l.designation}}
                             </mat-option>
                           </mat-select>
                         </mat-form-field>
                       </div>
-                      <div class="col">
+                      <!-- <div class="col">
                         <ngx-select [items]="lot" [(ngModel)]="selectedOption"
                           [placeholder]="'Recherche...'" (select)="onOptionSelected()" [ngModelOptions]="{standalone: true}">
                         </ngx-select>
-                      </div>
-                      <div class="col text-end w-100">
-                        <button type="submit" class="w-100" [disabled]="!validerAchatForm.valid" mat-flat-button
+                      </div> -->
+                      <div class="col">
+                        <button type="submit" class="w-100 p-2" [hidden]="!validerAchatForm.valid" mat-flat-button
                           color="accent" appareance="fill">
-                          <span class="">Valider achat </span>
-                          <mat-icon> check</mat-icon>
+                          <span class="">Terminer & Valider </span>
+                          <i class="micon mdi mdi-check-bold"></i>
                         </button>
                       </div>
                     </div>

@@ -22,14 +22,14 @@
             </div>
             <div class="col-btn">
               <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
-                <span class="micon dw dw-add"></span><span class="mtext mx-2"> commencer un achat </span>
+                <span class="micon mdi mdi-plus-thick"></span><span class="mtext mx-2"> commencer un achat </span>
               </button>
               <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/purchase">
-                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Liste achat</span>
+                <span class="micon mdi mdi-format-list-numbered-rtl"></span><span class="mtext mx-2"> Liste achat</span>
               </button>
-              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
+              <!-- <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
                 <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
-              </button>
+              </button> -->
             </div>
           </div>
         </div>
@@ -42,7 +42,7 @@
             <div class="arrow">
               <img src="./assets/gif/arrow-down-blue.gif" class="img-responsive" id="img-gif" alt="" srcset="">
             </div>
-            <div class="col p-3">
+            <div class="col p-3" *ngIf="lotExist">
               <form [formGroup]="initAchat" (ngSubmit)="InitAchatForm(initAchat)">
                 <button type="submit" [disabled]="LastAchat" mat-flat-button color="accent"
                   [disabled]="!initAchat.valid"><span class="mx-2 p-3">Initialiser un achat</span>
@@ -51,6 +51,10 @@
               <div class="text-center pt-3">
                 <span>Aucun achat en cours... <br> cliquer sur ce button pour initialiser un achat...</span>
               </div>
+            </div>
+            <div class="text-center p-3" *ngIf="!lotExist">
+              <p>Aucun lot trouver, allez-y cr&#233;er un lot d'abord</p>
+              <button mat-flat-button color="warn" routerLink="/lot/add-lot">cliquez ici</button>
             </div>
           </div>
         </mat-card>

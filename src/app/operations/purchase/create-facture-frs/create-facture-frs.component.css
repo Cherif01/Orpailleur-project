@@ -1,15 +1,3 @@
-
-
-/* #bgTable{
-  padding: 20px;
-  background-image: url('../../../../assets/image/fixing_client.png');
-  filter: blur;
-  opacity: 0.158;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-} */
-
 .printTable{
   border: 1px solid black;
 }

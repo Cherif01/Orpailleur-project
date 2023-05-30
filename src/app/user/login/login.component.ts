@@ -29,16 +29,17 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log("SESSION : ", this.varSession.sessionUSER);
-
   }
 
 
+  noLogin: boolean = false
   loginSET() {
     let values = this.userLogin.value
     if(this.userLogin.valid && this.infoLgin.username === values.username! && this.infoLgin.password === values.password!){
       localStorage.setItem('session',this.infoLgin.username+this.infoLgin.password);
       this.router.navigate(['/home']);
+    }else{
+      this.noLogin = true
     }
   }
 

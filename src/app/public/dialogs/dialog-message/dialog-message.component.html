@@ -1,10 +1,13 @@
-<h1 matDialogTitle>{{title}}</h1>
+<h1 class="text-center text-dark fw-bold text-uppercase" matDialogTitle>{{title}}</h1>
 
 <!-- <mat-dialog-content>
     {{message}}
-</mat-dialog-content>
+</mat-dialog-content> -->
 
-<mat-dialog-actions>
-    <button mat-stroked-button (click)="closeDialog(false)" color="primary">{{messageNo}}</button>
-    <button mat-stroked-button (click)="closeDialog(true)" color="warn">{{messageYes}}</button>
-</mat-dialog-actions> -->
+<p class="p-3 text-dark fw-bold">
+  <i>{{message}}</i>
+</p>
+<div class="card-footer">
+  <button class="btn btn-primary w-100 mb-1" mat-flat-button (click)="closeDialog(false)" color="primary">{{messageNo}}</button>
+  <button class="btn btn-danger w-100" mat-flat-button (click)="closeDialog(true)" color="warn">{{messageYes}}</button>
+</div>

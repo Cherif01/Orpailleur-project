@@ -11,8 +11,6 @@ import { PurchaseService } from '../purchase.service';
 import { Location } from '@angular/common';
 
 
-
-
 @Component({
   selector: 'app-list-purchase',
   templateUrl: './list-purchase.component.html',

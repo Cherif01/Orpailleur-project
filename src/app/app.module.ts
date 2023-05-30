@@ -25,6 +25,7 @@ import { DialogConvertMoneyComponent } from './public/dialogs/dialog-convert-mon
 import { LoginComponent } from './user/login/login.component';
 import { LogoutComponent } from './user/logout/logout.component';
 import { AuthGuard } from './user/auth.guard';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // DATA-TABLES
 
@@ -54,7 +55,9 @@ import { AuthGuard } from './user/auth.guard';
     CommonModule,
     MatCardModule,
     FormsModule,
+    MatIconModule,
     ReactiveFormsModule,
+    MatDialogModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(AppRouting,{relativeLinkResolution:'legacy'}),
   ],
