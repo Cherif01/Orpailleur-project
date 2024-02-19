@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VendorServiceService } from '../vendor-service.service';
 import { ApiserviceService } from 'src/app/api_service/apiservice.service';
-import { map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogConvertMoneyComponent } from 'src/app/public/dialogs/dialog-convert-money/dialog-convert-money.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Location } from '@angular/common';
+import { MatTableDataSource } from '@angular/material/table';
+import { convertObjectInFormData } from 'src/app/etat-entreprise/caisse-principale/caisse-principale.component';
+import { imprimerDiv } from 'src/app/app.component';
 
 @Component({
   selector: 'app-detail-fournisseur',
@@ -16,223 +18,197 @@ import { Location } from '@angular/common';
 })
 export class DetailFournisseurComponent implements OnInit {
 
+  @ViewChild('divToPrint') divToPrint: ElementRef | any;
+  @ViewChild('head') head: ElementRef | any;
+
+  displaysColums = ["created_at", "Poids", "Carrat", "NFixer", "Fixing", "Discompte", "VPayer"];
+  dataSource: MatTableDataSource<any> = new MatTableDataSource();
+  TabRapportProvisoir: any[] = []
+
   constructor(
     private activeroute: ActivatedRoute,
-    private service_vendor: VendorServiceService,
     private service: ApiserviceService,
-    private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
+    private router: Router,
     public location: Location
   ) { }
 
   title = "Detail du compte fournisseur"
-  FournisseurGet: any = []
+  listProvision: any[] = []
+  FournisseurGet: any = {}
   ID_F: any;
-
-  accountFournisseurGNF = this.fb.group({
-    numero_compte_fournis: [0, Validators.required],
-    devise: [1, Validators.required],
-    fournisseur: [0, Validators.required],
-    created_by: [1, Validators.required],
-  })
-
-  accountFournisseurUSD = this.fb.group({
-    numero_compte_fournis: [0, Validators.required],
-    devise: [2, Validators.required],
-    fournisseur: [0, Validators.required],
-    created_by: [1, Validators.required],
-  })
 
   ngOnInit(): void {
     // ID ACHAT EN GET
     this.ID_F = this.activeroute.snapshot.params['id'];
     this.getFournisseur()
     this.getCompteFournisseur()
-    this.stockFournisseur()
-    this.getInfoSolde()
+    this.getProvision()
   }
 
   // Recup fournisseur
   // GET Fournisseur
   getFournisseur() {
-    this.service.getFournisseur().subscribe({
-      next: (data) => {
+    this.service.getUnique('fournisseur', 'getInfoOne.php', this.ID_F).subscribe({
+      next: (data: any) => {
+        // console.log("F : ", data);
         this.FournisseurGet = data;
       }
     })
   }
 
-  // GET ACHAT FOURNISSEUR
-  TabItems: any = []
-  Poids_total_compte_fournisseur: number = 0
-  Poids_total_compte_fournisseur_fixer: number = 0
-  Disponible_stock: number = 0
-  stockFournisseur(): void {
-    this.service_vendor.getAllByClause('api', 'achat', 'fournisseur', this.ID_F)
-    .subscribe({
-      next: (data) => {
-        data.forEach((item: any) => {
-          if(item.fournisseur.id == this.ID_F) {
-            this.Poids_total_compte_fournisseur += Number(item.poids_total)
-          }
-        })
-      }
-    })
+  // GET SITUATION FOURNISSEUR
+  situationRedirect() {
+    this.router.navigate(['/fournisseur/situation-monetaire/', this.ID_F])
   }
-
 
   // GET COMPTE Fournisseur
-  TabCompteGNF: any = []
-  NumberGNF: any
-  cGNF: any = false
-  TabCompteUSD: any = []
-  NumberUSD: any
-  cUSD: any = false
+  SoldeUSD: number = 0
+  SoldeGNF: number = 0
   getCompteFournisseur() {
-    this.service_vendor.getByClause(this.ID_F).subscribe({
-      next: (data) => {
-        data.forEach(item => {
-          if (item.fournisseur.id == this.ID_F) {
-            // console.log(item);
-            if (item.devise == 1) {
-              this.cGNF = true
-              this.TabCompteGNF.push(item)
-              this.NumberGNF = item.numero_compte_fournis
-            } else {
-              this.cUSD = true
-              this.TabCompteUSD.push(item)
-              this.NumberUSD = item.numero_compte_fournis
-            }
-          }
+    if (this.ID_F) {
+      this.service.getUnique('fournisseur', 'operation.php', this.ID_F)
+        .subscribe({
+          next: (data: any) => {
+            // console.log("DATA : ", data);
+            // console.log("Operation : ", data);
+            let u = 0
+            let g = 0
+            data[2].forEach((e: any) => {
+              u = parseFloat(e.soldeUSD_)
+              g = parseFloat(e.soldeGNF_)
+            })
+            let solde = 0;
+            data[0].forEach((op: any) => {
+              // console.log("Echo USD : ", op)
+              if (op.type_operation == "credit") {
+                // fixing
+                solde += parseFloat(op.montant);
+                // op['solde'] = amount;
+              } else if (op.type_operation == "debit") {
+                //caisse
+                if (op.devise == '2')
+                  solde -= parseFloat(op.montant);
+              } else if (op.type_operation == "Conversion") {
+                //caisse
+                if (op.source == '2') {
+                  solde += parseFloat(op.montant);
+                  this.SoldeGNF += parseFloat(op.on)
+                }
+              }
+              op['solde'] = solde;
+            })
+            // console.log("FUSION : ", this.fusionTab);
+            this.SoldeUSD = solde
+
+            // SOLDE GNF
+            let soldegnf = 0;
+            data[1].forEach((op: any) => {
+              if (op.type_operation == "debit") {
+                //caisse
+                if (op.devise == '1')
+                soldegnf -= parseFloat(op.montant);
+              } else if (op.type_operation == "Conversion") {
+                //caisse
+                if (op.source == '1')
+                  solde -= parseFloat(op.montant);
+                if (op.source == '2')
+                  solde += parseFloat(op.montant);
+              }
+              op['solde'] = soldegnf;
+            })
+            // console.log("FUSION : ", this.fusionTab);
+            this.SoldeGNF += soldegnf
+          },
+          error: (err: any) => console.log(err)
         })
-        // console.log(this.TabCompteGNF);
-      },
-      // error: (err) => console.log(err),
-    })
+    }
   }
 
-  // Req USD
-  accountFournisseurFormUSD(form: FormGroup, devise: any) {
-    if (form.valid) {
-      //Envoyer dans la Base
-      this.accountFournisseurUSD.controls.numero_compte_fournis.setValue(this.ID_F + Math.round(Math.random() * 100) + Math.round(Math.random() * 10000000));
-      this.accountFournisseurUSD.controls.fournisseur.setValue(this.ID_F);
-      // console.log(this.accountFournisseurUSD.value);
-      let value = {
-        numero_compte_fournis: this.ID_F + "" + Math.round(Math.random() * 100) + "" + Math.round(Math.random() * 10000000),
-        fournisseur: this.ID_F,
-        devise
-      };
-      this.service_vendor.addCompteUSD_FR(value).subscribe({
-        next: (reponse: any) => {
-          if (devise == 1) {
-            // gnf
-            this.NumberGNF = value.numero_compte_fournis;
-            this.cGNF = true;
-          } else if (devise == 2) {
-            this.NumberUSD = value.numero_compte_fournis;
-            this.cUSD = true;
-          }
-          this.snackBar.open("Compte créer avec succès !", "Okay", {
-            duration: 3000,
-            horizontalPosition: "right",
-            verticalPosition: "bottom",
-            panelClass: ['bg-success', 'text-white']
+  // Tous les achats du fournisseur
+  MontantFixing = 0;
+  MontantProvisoire = 0;
+  getProvision() {
+    this.service.getUnique('fournisseur', 'provision.php', this.ID_F)
+      .subscribe({
+        next: (data: any) => {
+          // console.log("List Achat Provision : ", data);
+          this.dataSource.data = data[0]
+          data[0].forEach((elem: any) => {
+            this.TabRapportProvisoir.push(elem)
+            this.MontantProvisoire += parseFloat(elem.valeur_payer)
           })
-          // this.router.navigate(['fournisseur/list-fournisseur/']);
+          data[1].forEach((item: any) => {
+            this.MontantFixing += item.MONTANT
+          })
         },
-        error: (err: any) => {
-          this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
-            duration: 4000,
-            horizontalPosition: "right",
-            verticalPosition: "bottom",
-            panelClass: ['bg-danger', 'text-white']
-          })
-        }
+        error: (err: any) => console.log(err)
       })
-    }
   }
 
 
   openDialog() {
+    // console.log("GNF : ", this.SoldeGNF);
+    // console.log("USD : ", this.SoldeUSD);
     this.dialog.open(DialogConvertMoneyComponent, {
     }).afterClosed()
       .subscribe((result) => {
         if (result?.event && result.event === "convertir") {
-          // console.log(result.data);
+          let data = result.data
+          if (data.deviseSource == 1) {
+            if (data.montant <= this.SoldeGNF)
+              data.destinationDevise = 2
+            else {
+              this.snackBar.open("Solde insuffisant!", "Okay", {
+                duration: 3000,
+                horizontalPosition: "center",
+                verticalPosition: "bottom",
+                panelClass: ['bg-danger', 'text-white']
+              })
+              return
+            }
+          } else if (data.deviseSource == 2) {
+            if (data.montant <= this.SoldeUSD)
+              data.destinationDevise = 1
+            else {
+              this.snackBar.open("Solde insuffisant!", "Okay", {
+                duration: 3000,
+                horizontalPosition: "center",
+                verticalPosition: "bottom",
+                panelClass: ['bg-danger', 'text-white']
+              })
+              return
+            }
+          } else { }
+          data.idFournisseur = parseInt(this.ID_F)
+          console.log(data);
           //Envoyer dans la Base
-        }
-      })
-  }
-
-
-
-
-
-
-
-
-
-
-  TabCaisseOpts: any[] = []
-  TabFixingOpts: any[] = []
-  baseSoldeUSD: number = 0
-  baseSoldeGNF: number = 0
-  SoldeGNF: number = 0;
-  SoldeUSD: number = 0;
-  soldeRetourGNF: number = 0;
-  soldeRetourUSD: number = 0;
-  soldeDecaissementGNF: number = 0;
-  soldeDecaissementUSD: number = 0;
-  infoElem: any = {}
-  PoidsValider: number = 0;
-  getInfoSolde(): void {
-    this.service_vendor.situationMonetaire('api', 'caisse', this.ID_F)
-      .subscribe({
-        next: (response: any) => {
-          console.log(response);
-          let dataCaisse:any = response.caisse_fournisseur
-          let dataFixing:any = response.fixing_detail
-          // console.log(response.caisse_fournisseur);
-
-          // 1 : Parcours du tableau de caisse
-          dataCaisse.forEach((itemCaisse: any) => {
-            this.TabCaisseOpts.push(itemCaisse);
-            if(itemCaisse.devise == 1){
-              if(itemCaisse.operation == 3){
-                this.soldeRetourGNF += Number(itemCaisse.montant)
-              }else if(itemCaisse.operation == 4){
-                this.soldeDecaissementGNF += Number(itemCaisse.montant)
+          let objetForm = convertObjectInFormData(data)
+          this.service.create('caisse', 'conversion.php', objetForm)
+            .subscribe({
+              next: (reponse: any) => {
+                console.log("Res : ", reponse);
+                this.snackBar.open("Montant convertie avec succès !", "Okay", {
+                  duration: 3000,
+                  horizontalPosition: "center",
+                  verticalPosition: "top",
+                  panelClass: ['bg-success', 'text-white']
+                })
+                this.SoldeGNF = 0
+                this.SoldeUSD = 0
+                this.getCompteFournisseur()
+              },
+              error: (err: any) => {
+                console.log("ERREUR : ", err),
+                  this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
+                    duration: 3000,
+                    horizontalPosition: "center",
+                    verticalPosition: "bottom",
+                    panelClass: ['bg-danger', 'text-white']
+                  })
               }
-            }else if(itemCaisse.devise == 2){
-              if(itemCaisse.operation == 3){
-                this.soldeRetourUSD += Number(itemCaisse.montant)
-              }else if(itemCaisse.operation == 4){
-                this.soldeDecaissementUSD += parseFloat(itemCaisse.montant)
-              }
-            }else{}
-          })
-
-          // 2 : Parcours du tableau de fixing detail
-          // console.log(response.fixing_detail);
-          dataFixing.forEach((elem: any) => {
-            let pu_ = ''
-            pu_ = (elem.prix_unit).toString().substring(0, 5)
-            this.TabFixingOpts.push(elem)
-            // console.log(pu_);
-            this.baseSoldeUSD += this.calculMontant(pu_, elem.poids_item, ((elem.carrat).toString().substring(0, 5) - elem.manquant))
-            // console.log(elem);
-            this.infoElem = elem;
-            this.PoidsValider += elem.poids_item
-          })
-          // console.log("Decaissement : ", this.soldeDecaissementUSD);
-          console.log("POIDS : ", this.PoidsValider);
-
-          let soldeUSD_ = this.baseSoldeUSD + this.soldeRetourUSD // USD
-          let soldeGNF_ = this.soldeRetourGNF - this.soldeDecaissementGNF // GNF
-          this.SoldeGNF = soldeGNF_
-          this.SoldeUSD = soldeUSD_ - this.soldeDecaissementUSD;
+            })
         }
       })
   }
@@ -241,11 +217,92 @@ export class DetailFournisseurComponent implements OnInit {
   MontantTotalFixing: number = 0
   calculMontant(pu: any, poids: any, carrat: any): any {
     let Montant = 0
-    Montant = ((pu/22) * poids * carrat)
+    Montant = ((pu / 22) * poids * carrat)
     this.MontantTotalFixing += Montant
     return Montant
   }
 
 
+  // Mise a jour du fixing
+  saveTableData(element: any) {
+    // console.log("Row : ", element);
+    let table_fixing_provisoire = {
+      idFournisseur: this.ID_F,
+      idAchat: element.idAchat,
+      poidsFixer: element.ResteAfixer,
+      fixingBourse: element.Fixing,
+      discompte: element.Discompte,
+      valeur_payer: element.valeur_payer,
+    }
+    // console.log("Table : ", table_fixing_provisoire);
+
+    const objetForm = convertObjectInFormData(table_fixing_provisoire)
+
+
+    // Verification de l'existence
+    this.service.LIST_BY_ID('fixing', 'get_elem.php', element.idAchat)
+      .subscribe({
+        next: (d) => {
+          // console.log("rowCount : ", d);
+          if (d != null) {
+            this.service.Update('fixing', 'updateProvisoire.php', objetForm)
+              .subscribe({
+                next: (response) => {
+                  // console.log("res : ", response);
+                  this.snackBar.open("Fixing Provisoire modifier avec succès!", undefined, {
+                    duration: 2000,
+                    horizontalPosition: "right",
+                    verticalPosition: "top",
+                    panelClass: ['bg-success', 'text-white']
+                  });
+                },
+                error: (err) => {
+                  console.error("err : ", err);
+                  this.snackBar.open("Echec, Veuillez reessayer!", undefined, {
+                    duration: 1000,
+                    horizontalPosition: "right",
+                    verticalPosition: "bottom",
+                    panelClass: ['bg-danger', 'text-white']
+                  })
+                }
+              })
+          } else {
+            // console.log("NULL");
+            this.service.create('fixing', 'addProvisoire.php', objetForm)
+              .subscribe({
+                next: (reponse: any) => {
+                  this.snackBar.open("Enregistrer avec succès !", "Okay", {
+                    duration: 3000,
+                    horizontalPosition: "center",
+                    verticalPosition: "top",
+                    panelClass: ['bg-success', 'text-white']
+                  })
+                },
+                error: (err: any) => {
+                  console.log("ERREUR : ", err),
+                    this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
+                      duration: 4000,
+                      horizontalPosition: "center",
+                      verticalPosition: "bottom",
+                      panelClass: ['bg-danger', 'text-white']
+                    })
+                }
+              })
+
+          }
+
+          // Traitez les données modifiées ici
+        },
+        error: (err) => {
+        }
+      })
+  }
+
+
+  imprimerDiv(): void {
+    imprimerDiv(this.divToPrint.nativeElement.innerHTML)
+  }
+
 
 }
+

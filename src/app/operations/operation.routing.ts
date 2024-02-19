@@ -10,6 +10,7 @@ import { InitPurchaseComponent } from "./purchase/init-purchase/init-purchase.co
 import { FacturepurchaseComponent } from "./purchase/facturepurchase/facturepurchase.component"
 import { CreateFactureFrsComponent } from "./purchase/create-facture-frs/create-facture-frs.component"
 import { AuthGuard } from "../user/auth.guard"
+import { ViewFactureComponent } from "./purchase/view-facture/view-facture.component"
 
 
 const OperationRouting: Routes = [
@@ -64,6 +65,11 @@ const OperationRouting: Routes = [
       {
         path: 'create-facture',
         component: CreateFactureFrsComponent,
+        canActivate:[AuthGuard]
+      },
+      {
+        path: 'create-facture/:id',
+        component: ViewFactureComponent,
         canActivate:[AuthGuard]
       },
       {

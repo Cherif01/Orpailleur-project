@@ -3,6 +3,8 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { PurchaseService } from '../purchase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ApiserviceService } from 'src/app/api_service/apiservice.service';
+import { generatePDF, imprimerDiv } from 'src/app/app.component';
 
 
 @Component({
@@ -17,8 +19,7 @@ export class FacturepurchaseComponent implements OnInit {
 
   constructor(
     private activeroute: ActivatedRoute,
-    private purchaseService: PurchaseService,
-    private snackBar: MatSnackBar,
+    private service: ApiserviceService,
     public location: Location,
   ) { }
 
@@ -36,6 +37,7 @@ export class FacturepurchaseComponent implements OnInit {
 
   onSubscribePurchage: any
   InfoAchat: any = {}
+  InfoAchat2: any = {}
   NameF: string = ""
   AdresseF: string = ""
 
@@ -43,30 +45,49 @@ export class FacturepurchaseComponent implements OnInit {
   carrat_moyenne: number = 0
   nbBarres: number = 0
   getItemAchat() {
-    this.purchaseService.getItemsOfAchat('api', 'achat_items', this.ID_ACHAT_GET)
+    this.service.getUnique('achat', 'getItem.php', this.ID_ACHAT_GET).subscribe({
+      next: (data) => {
+        if (data.length > 0) {
+          console.log("item ", data);
+          this.ACHAT_TAB = data
+          this.Poids_total = 0
+          this.carrat_moyenne = 0
+          this.InfoAchat = data[0];
+          data.forEach((item) => {
+            this.nbBarres += 1
+            // this.Poids_total += item.poidsItem
+            // this._MANQUANT_ += item.manquantItem
+            // this.carrat_moyenne += (item.poidsItem * (item.carratItem - item.manquantItem))
+          })
+        }
+      }
+    })
+
+    this.service.getUnique('achat', 'getOne.php', this.ID_ACHAT_GET)
       .subscribe({
         next: (data) => {
-          this.ACHAT_TAB = data
-          data.forEach(item => {
-            this.InfoAchat = item.achat;
-            this.Poids_total += parseFloat(item.poids_achat)
-            this.carrat_moyenne += (parseFloat(item.poids_achat) * (parseFloat(item.carrat_achat) - parseFloat(item.manquant)))
-            this.nbBarres += 1
-            this.NameF = item.achat.fournisseur.prenom + " " + item.achat.fournisseur.nom
-              this.AdresseF = item.achat.fournisseur.adresse + " / " + item.achat.fournisseur.telephone
-          })
-          // console.log("Achat items list : ", data);
-        }
+          // console.log("Donnees : ", data);
+          this.InfoAchat2 = data;
+        },
+        error: (err) => console.error("Erreur : ", err)
+
       })
   }
 
 
   imprimerDiv(): void {
-    let printContents = this.divToPrint.nativeElement.innerHTML;
-    let originalContents = document.body.innerHTML;
-    document.body.innerHTML = printContents;
-    window.print();
-    document.body.innerHTML = originalContents;
+    imprimerDiv(this.divToPrint.nativeElement.innerHTML)
+  }
+
+  generatePDF(nameFournisseur? : string) {
+    generatePDF(nameFournisseur);
+  }
+
+  format2Chart(data: any) {
+    let tab = data.toString().split(".");
+    if (tab.length < 2)
+      return Number(data);
+    return Number(tab[0].concat('.', tab[1].substr(0, 2)));
   }
 
 

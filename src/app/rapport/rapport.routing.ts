@@ -3,6 +3,7 @@ import { RapportFournisseurComponent } from "./rapport-fournisseur/rapport-fourn
 import { RapportClientComponent } from "./rapport-client/rapport-client.component";
 import { RapportCaisseComponent } from "./rapport-caisse/rapport-caisse.component";
 import { AuthGuard } from "../user/auth.guard";
+import { RapportAchatComponent } from "./rapport-achat/rapport-achat.component";
 
 const rapportRouting: Routes = [
   {
@@ -12,6 +13,16 @@ const rapportRouting: Routes = [
         path: '',
         redirectTo: '/notfound',
         pathMatch: 'full'
+      },
+      {
+        path: 'rapport-achat',
+        component: RapportAchatComponent,
+        canActivate:[AuthGuard]
+      },
+      {
+        path: 'rapport-achat/:id',
+        component: RapportAchatComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'rapport-frs',

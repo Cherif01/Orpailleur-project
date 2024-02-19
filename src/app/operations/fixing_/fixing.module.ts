@@ -23,6 +23,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { BourseViewComponent } from './bourse-view/bourse-view.component';
 import { MatSortModule } from '@angular/material/sort';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { MatSortModule } from '@angular/material/sort';
     FormsModule,
     MatInputModule,
     CommonModule,
+    MatAutocompleteModule,
     MatButtonModule,
     MatFormFieldModule,
     MatTableModule,

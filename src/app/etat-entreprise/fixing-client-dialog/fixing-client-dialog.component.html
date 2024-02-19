@@ -1,0 +1,27 @@
+<h1 matDialogTitle class="text-primary" id="text">Op&#233;ration Client</h1>
+
+<mat-dialog-content>
+  <form action="" [formGroup]="fixingClient">
+    <div class="pt-3 pb-3 d-flex justify-content-start flex-wrap align-items-center">
+      <!-- Poids -->
+      <mat-form-field class="w-100 mb-2">
+        <mat-label>Poids</mat-label>
+        <input matInput type="number" formControlName="poidsFixer" required>
+      </mat-form-field>
+      <!-- Bourse -->
+      <mat-form-field class="w-100 mb-2">
+        <mat-label>Bourse</mat-label>
+        <input matInput type="number" formControlName="fixingBourse" required>
+      </mat-form-field>
+      <!-- Discompte -->
+      <mat-form-field class="w-100 mb-2">
+        <mat-label>Discompte(0.1 - 1.00)</mat-label>
+        <input matInput type="number" formControlName="discompte" required>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" [disabled]="fixingClient.invalid || fixingClient.value.fixingBourse == 0 " (click)="saveData()">Valider</button>
+  <button mat-raised-button color="warn" matDialogClose>Fermer</button>
+</mat-dialog-actions>

@@ -6,7 +6,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .title {
@@ -24,13 +24,14 @@
   animation-duration: 2s;
 } */
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
 
 .menu-spacer {
   flex: 1 1 auto;
 }
+
 
 #table_shadow thead, #matTable thead {
   background-color: rgb(6, 5, 33);
@@ -66,4 +67,35 @@
 
 table .dw{
   color: white;
+}
+
+
+
+/* MEDIA QUERY */
+@media screen and (max-width: 600px) {
+  /* Styles à appliquer */
+  .mtext{
+    display: none;
+  }
+  .img-responsive, #col-none{
+    display: none;
+  }
+
+  #dataTableColumnNone{
+    display: none;
+  }
+
+  .text-long{
+    font-size: 10px;
+  }
+  h4{
+    font-size: 10px;
+  }
+
+  .card-separate{
+    margin-top: 20px;
+  }
+  .soldeTitle, #text{
+    font-size: 14px;
+  }
 }

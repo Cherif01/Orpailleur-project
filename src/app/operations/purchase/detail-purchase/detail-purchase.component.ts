@@ -1,8 +1,7 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApiserviceService } from 'src/app/api_service/apiservice.service';
 import { ActivatedRoute } from '@angular/router';
-import { LINK_BASE, T_FOURNISSEUR } from 'src/app/config';
 import { PurchaseService } from '../purchase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
@@ -18,7 +17,6 @@ export class DetailPurchaseComponent implements OnInit {
     private activeroute: ActivatedRoute,
     private service: ApiserviceService,
     private fb: FormBuilder,
-    private purchaseService: PurchaseService,
     private snackBar: MatSnackBar,
     public location: Location
 
@@ -34,21 +32,18 @@ export class DetailPurchaseComponent implements OnInit {
   title = "Details d'achat..."
   items: any = []
   ID_ACHAT_GET: any = 0
-  ID_FOURNISSEUR_GET: any = 0
-
-  FournisseurGet: any;
 
   ngOnInit(): void {
     // ID ACHAT EN GET
     this.ID_ACHAT_GET = this.activeroute.snapshot.params['id'];
     // console.log(this.ID_ACHAT_GET);
-    this.getOneFournisseurAchat();
+    // this.getOneFournisseurAchat();
     this.getItemAchat();
   }
 
 
   getItemAchat() {
-    this.purchaseService.getItemsOfAchat('api', 'achat_items', this.ID_ACHAT_GET)
+    this.service.getUnique('achat', 'getItem.php', this.ID_ACHAT_GET)
       .subscribe({
         next: (data) => {
           data.forEach(item => {
@@ -58,28 +53,12 @@ export class DetailPurchaseComponent implements OnInit {
       })
   }
 
-  // GET Fournisseur
-  getOneFournisseurAchat() {
-    this.service.getList(LINK_BASE, T_FOURNISSEUR).subscribe({
-      next: (data) => {
-        this.FournisseurGet = data;
-        // console.log(data)
-      }
-    })
-
-  }
-
   createItemFormGroup(item: any): FormGroup {
-    let montant = item.poids_achat * item.prix_unit_achat;
     return this.fb.group({
       id: new FormControl<number>(item.id,),
-      // slug: new FormControl<number>(item.slug, [Validators.required,]),
-      poids_achat: new FormControl<number>(item.poids_achat, [Validators.required,]),
-      // date_achat: new FormControl<Date>(item.created_at, [Validators.required,]),
-      // montant_achat: new FormControl<number>(montant, [Validators.required,]),
-      carrat_achat: new FormControl<number>(item.carrat_achat, [Validators.required,]),
-      // prix_unit_achat: new FormControl<number>(item.prix_unit_achat, [Validators.required,]),
-      manquant: new FormControl<number>(item.manquant, [Validators.required,]),
+      poidsItem: new FormControl<number>(item.poidsItem, [Validators.required,]),
+      carratItem: new FormControl<number>(item.e, [Validators.required,]),
+      manquantItem: new FormControl<number>(item.manquantItem, [Validators.required,]),
     })
   }
 
@@ -89,17 +68,19 @@ export class DetailPurchaseComponent implements OnInit {
 
   updateDirectRow(row: any) {
     // console.log("row",row,"oM",this.oldValueM,"oP",this.oldValueP);
-    if (row.valid && (row.value.manquant !== this.oldValueM || row.value.poids_achat !== this.oldValueP)) {
+    if (row.valid && (row.value.manquantItem !== this.oldValueM || row.value.poidsItem !== this.oldValueP)) {
       this.updateRowsPurchase(row.value);
     }
   }
 
   setOldValues(row: any) {
-    this.oldValueM = row.value.manquant;
-    this.oldValueP = row.value.poids_achat;
+    this.oldValueM = row.value.manquantItem;
+    this.oldValueP = row.value.poidsItem;
   }
   updateRowsPurchase(value: any) {
-    this.purchaseService.updateRowsPurchase(value)
+    // console.log(value);
+
+    this.service.UpdateItem('achat', 'updateItem.php',value)
       .subscribe({
         next: (response) => {
           this.snackBar.open("Mise à jour effctuée avec succès!", undefined, {

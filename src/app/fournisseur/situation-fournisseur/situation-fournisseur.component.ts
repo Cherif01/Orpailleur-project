@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { VendorServiceService } from '../vendor-service.service';
 import { Location } from '@angular/common';
+import { ApiserviceService } from 'src/app/api_service/apiservice.service';
 
 @Component({
   selector: 'app-situation-fournisseur',
@@ -20,8 +20,8 @@ export class SituationFournisseurComponent implements OnInit {
   }
   constructor(
     private activeroute: ActivatedRoute,
-    private serviceVendor: VendorServiceService,
-    public location: Location
+    public location: Location,
+    private service: ApiserviceService
   ) { }
 
   ID_F: any
@@ -29,7 +29,7 @@ export class SituationFournisseurComponent implements OnInit {
     // ID ACHAT EN GET
     this.ID_F = this.activeroute.snapshot.params['id'];
     this.getOneFournisseur()
-    this.getInfoSolde()
+    this.getSituation()
   }
 
 
@@ -38,14 +38,17 @@ export class SituationFournisseurComponent implements OnInit {
   getOneFournisseur(): void {
     // this.objetFRS = {}
     if (this.ID_F) {
-      this.serviceVendor.getElementById('api', 'fournisseur', this.ID_F).subscribe({
-        next: (data) => {
+      this.service.getOneById('public', 'getOne.php', this.ID_F, 'table_fournisseur').subscribe({
+        next: (data: any) => {
+          // console.log(data),
           this.objetFRS = data
-        }
+        },
+        error: (err: any) => console.log(err)
       })
     }
   }
   fusionTab: any[] = [];
+  fusionTab2: any[] = [];
   TabCaisseOpts: any[] = []
   TabFixingOpts: any[] = []
   baseSoldeUSD: number = 0
@@ -57,85 +60,82 @@ export class SituationFournisseurComponent implements OnInit {
   soldeDecaissementGNF: number = 0;
   soldeDecaissementUSD: number = 0;
   infoElem: any = {}
-  getInfoSolde(): void {
-    this.serviceVendor.situationMonetaire('api', 'caisse', this.ID_F)
-      .subscribe({
-        next: (response: any) => {
-          console.log("response", response);
-          let dataCaisse: any[] = response.caisse_fournisseur
-          let dataFixing: any[] = response.fixing_detail;
-          dataCaisse.forEach(v => {
-            v['type'] = this.TYPE_OPERATION.debit;
-            v['dateNumber'] = new Date(v['created_at']).getTime();
-          });
-          dataFixing.forEach(v => {
-            v['type'] = this.TYPE_OPERATION.credit;
-            v['dateNumber'] = new Date(v['created_at']).getTime();
-          });
-          dataCaisse.concat(dataFixing);
-          // console.log("after fusion",dataCaisse);
-          this.fusionTab = dataCaisse.slice().concat(dataFixing.slice());
-          this.fusionTab.sort((a,b)=>a.dateNumber-b.dateNumber);
-          let solde = 0;
-          this.fusionTab.forEach(op => {
-            if (op.type == this.TYPE_OPERATION.credit) {
-              // fixing
-              let amount: number = this.calculMontant(this.format2Chart(op.prix_unit), op.poids_item, this.format2Chart(op.carrat));
-              solde+=amount;
-              op['montant']=amount;
-            }else if(op.type ==this.TYPE_OPERATION.debit){
-              //caisse
-              solde-=op.montant;
-            }
-            op['solde']=solde;
-          });
-          console.log("after all operations",this.fusionTab);
 
-          // console.log(response.caisse_fournisseur);
+  getSituation(): void {
+    if (this.ID_F) {
+      this.service.getUnique('fournisseur', 'operation.php', this.ID_F)
+        .subscribe({
+          next: (data: any) => {
+            // console.log("Operation : ", data);
+            let u = 0
+            let g = 0
+            data[2].forEach((e: any) => {
+              u = e.soldeUSD_
+              g = e.soldeGNF_
+            })
+            // console.log(data[2]);
+            // FIN....
+            this.fusionTab = data[0]
+            let solde = 0;
+            this.fusionTab.forEach((op: any) => {
+              // console.log("Echo USD : ", op)
+              if (op.type_operation == "credit") {
+                // fixing
+                solde += parseFloat(op.montant);
+                // op['solde'] = amount;
+              } else if (op.type_operation == "debit") {
+                //caisse
+                if (op.devise == '2')
+                  solde -= parseFloat(op.montant);
+              } else if (op.type_operation == "Conversion") {
+                //caisse
+                if (op.source == '2') {
+                  solde += parseFloat(op.montant);
+                  this.SoldeGNF += op.on
+                }
+                if (op.source == '1') {
+                  solde -= parseFloat(op.montant);
+                  this.SoldeGNF += op.on
+                }
 
-          // 1 : Parcours du tableau de caisse
-          dataCaisse.forEach((itemCaisse: any) => {
-            this.TabCaisseOpts.push(itemCaisse);
-            if (itemCaisse.devise == 1) {
-              if (itemCaisse.operation == 3) {
-                this.soldeRetourGNF += parseFloat(itemCaisse.montant)
-              } else if (itemCaisse.operation == 4) {
-                this.soldeDecaissementGNF += parseFloat(itemCaisse.montant)
               }
-            } else if (itemCaisse.devise == 2) {
-              if (itemCaisse.operation == 3) {
-                this.soldeRetourUSD += parseFloat(itemCaisse.montant)
-              } else if (itemCaisse.operation == 4) {
-                this.soldeDecaissementUSD += parseFloat(itemCaisse.montant)
+              op['solde'] = solde;
+            })
+            // console.log("FUSION : ", this.fusionTab);
+            this.SoldeUSD = solde
+            // GNF
+            this.fusionTab2 = data[1]
+            let solde_gnf = 0;
+            this.fusionTab2.forEach((op: any) => {
+              // console.log("Echo  GNF : ", op)
+              if (op.type_operation == "debit") {
+                //caisse
+                if (op.devise == '1')
+                  solde_gnf -= parseFloat(op.montant);
+              } else if (op.type_operation == "Conversion") {
+                //caisse
+                if (op.source == '1')
+                  solde -= parseFloat(op.montant);
+                if (op.source == '2')
+                  solde += parseFloat(op.montant);
               }
-            } else { }
-          })
+              op['solde'] = solde_gnf;
+            })
+            // console.log("FUSION : ", this.fusionTab);
+            this.SoldeGNF += solde_gnf
 
-          // console.log("soldeRetourGNF => ", this.soldeRetourGNF)
-          // console.log("soldeDecaisGNF => ", this.soldeDecaissementGNF)
-          // console.log("soldeRetourUSD => ", this.soldeRetourUSD)
-          // console.log("soldeDecaisUSD => ", this.soldeDecaissementUSD)
+            // SEND MESSAGE
+            // this.service.GetAllByName('public', 'sendmessage.php', this.SoldeUSD)
+            //   .subscribe({
+            //     next: (data: any) => {
+            //       console.log("DATA : ", data);
+            //     }
+            //   })
 
-          // 2 : Parcours du tableau de fixing detail
-          // console.log(response.fixing_detail);
-          dataFixing.forEach((elem: any) => {
-            let pu_ = ''
-            pu_ = (elem.prix_unit).toString().substring(0, 5)
-            this.TabFixingOpts.push(elem)
-            // console.log(pu_);
-
-            this.baseSoldeUSD += this.calculMontant(pu_, elem.poids_item, ((elem.carrat).toString().substring(0, 5) - elem.manquant))
-            // console.log(elem);
-            this.infoElem = elem;
-          })
-          // console.log("Decaissement : ", this.soldeDecaissementUSD);
-          let soldeUSD_ = this.baseSoldeUSD + this.soldeRetourUSD // USD
-          let soldeGNF_ = this.soldeRetourGNF - this.soldeDecaissementGNF // GNF
-          this.SoldeGNF = soldeGNF_
-          this.SoldeUSD = soldeUSD_ - this.soldeDecaissementUSD;
-
-        }
-      })
+          },
+          error: (err: any) => console.log(err)
+        })
+    }
   }
 
   // Historique des operations
@@ -145,6 +145,20 @@ export class SituationFournisseurComponent implements OnInit {
     Montant = ((pu / 22) * poids * carrat)
     this.MontantTotalFixing += Montant
     return Montant
+  }
+
+
+  numberVal(numbers: any): any {
+    switch (numbers) {
+      case '1':
+        return 'GNF';
+        break;
+      case '2':
+        return 'USD';
+        break;
+      default:
+        break;
+    }
   }
 
   format2Chart(data: any) {

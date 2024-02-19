@@ -19,7 +19,9 @@ import { CaisseOptDialogComponent } from './caisse-principale/caisse-opt-dialog-
 import { CaisseOptDialogSortieComponent } from './caisse-principale/caisse-opt-dialog-sortie/caisse-opt-dialog-sortie.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
-
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { OperationClientComponent } from './caisse-principale/operation-client/operation-client.component';
+import { FixingClientDialogComponent } from './fixing-client-dialog/fixing-client-dialog.component';
 @NgModule({
   declarations: [
     StockComponent,
@@ -28,7 +30,9 @@ import { MatIconModule } from '@angular/material/icon';
     EntrerCaisseComponent,
     SortieCaisseComponent,
     CaisseOptDialogComponent,
-    CaisseOptDialogSortieComponent
+    CaisseOptDialogSortieComponent,
+    OperationClientComponent,
+    FixingClientDialogComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +46,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatPaginatorModule,
     MatTabsModule,
-    MatIconModule
+    MatIconModule,
+    MatAutocompleteModule
   ]
 })
 export class EntrepriseStateModule { }

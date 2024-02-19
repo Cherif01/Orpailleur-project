@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Input } from '@angular/core';
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ApiserviceService } from '../../api_service/apiservice.service'
-import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { VendorServiceService } from '../vendor-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -16,7 +15,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./list-fournisseur.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 
 export class ListFournisseurComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true })
@@ -38,7 +36,7 @@ export class ListFournisseurComponent implements OnInit {
   listFournisseur: any;
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
-  displaysColums = ["nom", "prenom", "pays", "ville", "adresse", "tel", "action"];
+  displaysColums = ["Nom-complet", "pays", "ville", "adresse", "tel", "action"];
 
   ngOnInit() {
     // Datatables
@@ -47,7 +45,7 @@ export class ListFournisseurComponent implements OnInit {
 
   // GET Fournisseur
   getFournisseur() {
-    this.service.getFournisseur().subscribe({
+    this.service.LIST('public', 'read.php', 'table_fournisseur').subscribe({
       next: (data) => {
         this.dataSource.data = data;
         this.dataSource.paginator = this.paginator;

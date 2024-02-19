@@ -23,20 +23,20 @@
       <div class="p-2"></div>
       <mat-form-field class="w-100">
         <mat-label class="text-uppercase">MONTANT A CONVERTIR</mat-label>
-        <input type="number" matInput placeholder="1 000" formControlName="montant">
+        <input type="number" matInput min="1" placeholder="1 000" formControlName="montant">
       </mat-form-field>
 
       <!-- TAUX -->
       <div class="p-2"></div>
       <mat-form-field class="w-100">
         <mat-label class="text-uppercase">TAUX DE CONVERSION</mat-label>
-        <input type="number" matInput placeholder="1 450" formControlName="taux">
+        <input type="number" min="1" required matInput formControlName="taux">
       </mat-form-field>
 
       <div class="p-2"></div>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-flat-button color="warn" matDialogClose>Abandonner</button>
   <button mat-flat-button color="primary" [disabled]="convertisseur.invalid" (click)="convertir()">Valider</button>
+  <button mat-flat-button color="warn" matDialogClose>Abandonner</button>
 </mat-dialog-actions>

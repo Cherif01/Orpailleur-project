@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { ApiserviceService } from '../../api_service/apiservice.service'
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { LotService } from '../lot.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-lot',
@@ -16,34 +17,41 @@ export class AddLotComponent implements OnInit {
   })
 
   constructor(
-    private service: ApiserviceService,
+    private service: LotService,
     private fb: FormBuilder,
     private router: Router,
-    public location: Location
-    ) { }
+    public location: Location,
+    private snackBar: MatSnackBar
+  ) { }
 
-  Lot = this.fb.group({
-    designation: ['', Validators.required],
-    created_by: [1, Validators.required]
-  })
   title = "Add lot "
 
   ngOnInit(): void {
   }
 
   // Req
-  LotAddForm(form: FormGroup) {
+  AddLot(form: FormGroup) {
     if (form.valid) {
       //Envoyer dans la Base
-      this.service.lotPost(form.value).subscribe({
-        next: (reponse: any) => console.log("Lot creer " + reponse),
-        error: (err: any) => console.log("error " + err)
-      })
-      form.reset()
+      const formData = new FormData()
+      formData.append('designation', form.value.designation)
+      this.service.create('lot', 'create.php', formData)
+        .subscribe({
+          next: (reponse: any) => {
+            // console.log("response ", reponse);
+            this.snackBar.open("Lot créer avec succès!", undefined, {
+              duration: 3000,
+              horizontalPosition: "center",
+              verticalPosition: "top",
+              panelClass: ['bg-success', 'text-white']
+
+            });
+          },
+          error: (err: any) => console.log("error " + err)
+        })
       this.router.navigate(['/lot/list-lot'])
     } else {
       console.log("Formulaire inconnus, creation du lot");
-
     }
   }
 

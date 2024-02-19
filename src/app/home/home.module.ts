@@ -15,7 +15,7 @@ import { MatCardModule } from '@angular/material/card';
   imports: [
     CommonModule,
     MatCardModule,
-  RouterModule.forChild(homeRouting),
+    RouterModule.forChild(homeRouting),
     DemoMaterialModule
   ]
 })

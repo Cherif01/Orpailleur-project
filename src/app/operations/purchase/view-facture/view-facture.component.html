@@ -1,0 +1,211 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+          </div>
+          <div
+            class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button
+                color="warn"><mat-icon
+                  class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIG -->
+      <mat-card class="mat-elevation-z0">
+
+        <mat-tab-group>
+          <!-- F/Achat -->
+          <mat-tab label="DETAILS FACTURATION">
+            <div class="d-flex p-2">
+              <div class="col text-end">
+                <button mat-flat-button
+                  color="primary" class="m-1" (click)="imprimerDiv()">
+                  <mat-icon>printer</mat-icon><span class="mtext mx-2">
+                    Imprimer</span>
+                </button>
+                <button mat-flat-button
+                  color="warn" class="m-1"
+                  (click)="generatePDF('fournisseur' +' - fixing:$'+'bourse')">
+                  <mat-icon>folder</mat-icon><span class="mtext mx-2">
+                    Enregistrer (PDF)...</span>
+                </button>
+                <hr>
+              </div>
+            </div>
+            <!-- Export Datatable start -->
+            <!-- <mat-card class="m-2"> -->
+            <!-- Facture entete -->
+            <div class="container-fluid">
+              <!-- table LIST -->
+              <div class="p-1" id="facture" #divToPrint>
+                <div class="col">
+                  <div class="entete">
+                    <div
+                      class="d-flex justify-content-between flex-wrap m-0 p-0 align-items-center">
+                      <div class="col-2 text-start">
+                        <!-- logo -->
+                        <div class="img-responsive">
+                          <img
+                            src="https://static.vecteezy.com/system/resources/previews/019/766/315/non_2x/closeup-shiny-a-gold-bullion-bar-png.png"
+                            class="img-responsive w-100" alt>
+                        </div>
+                      </div>
+                      <div class="col text-center">
+                        <h2 class="m-0 p-0">LIMANAYA BUSINESS</h2>
+                        <span class="small">Acheteur et vendeur d'or en gros
+                          et details</span> <br>
+                        <span class="small">sis &#224; Mafanco Carrefour,
+                          centre commercial Bayo et frères au 2e
+                          étage</span>
+                        <br>
+                        <span class="fw-bold">Contact : </span>
+                        <span class="text-primary"> 628-978-467 / 624-044-759
+                          / 622-339-503 </span>
+                      </div>
+                      <div class="col-2 text-end">
+                        <!-- logo -->
+                        <div class="img-responsive">
+                          <img src="/assets/logo/logo.png"
+                            class="img-responsive w-100" alt>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="d-flex justify-content-between flex-wrap">
+                    <div class="col-7 mb-3">
+                      <div class="border border-2 border-dark rounded-3 p-2">
+                        <div
+                          class="border border-1 border-secondary p-3 text-center rounded-3 m-1">
+                          <h3>Complement</h3>
+                          <table class="table fw-bold">
+                            <tr>
+                              <th>Fournisseur</th>
+                              <th>:</th>
+                              <td>{{fournisseur}}</td>
+                            </tr>
+                          </table>
+                        </div>
+                        <div class="pt-1 fs-5">
+                          <table class="table p-0 m-0">
+                            <tr>
+                              <th>Fixing</th>
+                              <th>:</th>
+                              <td>$ {{ bourse | number}}</td>
+                            </tr>
+                            <tr>
+                              <th>SOLDE</th>
+                              <th>:</th>
+                              <td
+                                [class]="SoldeUSD >= 0?'text-success':'text-danger'">$
+                                {{ SoldeUSD | number}}</td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-responsive m-0" id="bgTable">
+                  <h4 class="text-dark text-center p-2 border">
+                    Facture N<sup>o</sup> : <span class="text-danger">{{
+                      code_facture }}</span>
+                  </h4>
+                  <div class="text-end">
+                    <h4 class="text-dark">
+                      <strong>Date : </strong> <span class="text-dark">{{
+                        created_at_in_facture | date: 'dd/MM/YYYY - HH:mm' }}</span>
+                      <br>
+                      <strong>Difference</strong><span class="text-success"> :
+                        $ {{ mManquant | number:
+                        '2.2-2' }}</span>
+                    </h4>
+                  </div>
+                  <!-- Table -->
+                  <!-- UNE SELECTION PAR ITEMS -->
+                  <table class="table printTable">
+                    <thead class="text-center">
+                      <th>Barres</th>
+                      <th>Poids barre</th>
+                      <th>Carrat</th>
+                      <th>Densite</th>
+                      <th>P.Uni</th>
+                      <th>Montant</th>
+                    </thead>
+                    <tbody class="text-center">
+                      <!-- Post par items et un element -->
+                      <tr *ngFor="let data of dataItemOneFacture; let i=index">
+                        <td>{{ i+1 }}</td>
+                        <td *ngIf="data.poids">{{ data.poids }}</td>
+                        <td *ngIf="data.carrat">
+                          {{ (data.carrat) | number: '2.2-2' }}
+                          (<i class="text-danger small">{{ (data.manquant) |
+                            number }}</i>)
+                        </td>
+                        <td *ngIf="data.poids">{{ 22 }}</td>
+                        <td *ngIf="data.poids">{{ format2Chart((data.bourse/34)
+                          -
+                          data.discount) | number }}</td>
+                        <td *ngIf="data.poids">
+                          {{ (calculPrice(format2Chart((data.bourse/34) -
+                          data.discount),
+                          data.poids, (data.carrat))) | number: '2.2-2' }}
+                        </td>
+                      </tr>
+
+                      <!-- ENvoyer par poids -->
+                      <tr
+                        *ngFor="let data of dataItemOneFacturePoids; let i=index">
+                        <td>{{ i+1 }}</td>
+                        <td *ngIf="data.poids">{{ data.poids }}</td>
+                        <td *ngIf="data.carrat">
+                          {{ data.carrat }}
+                          (<i class="text-danger small">{{
+                            (data.carrat_manquant) | number }}</i>)
+                        </td>
+                        <td *ngIf="data.poids">{{ 22 }}</td>
+                        <td *ngIf="data.poids">{{
+                          format2Chart((data.bourse/34) - data.discount) |
+                          number }}</td>
+                        <td *ngIf="data.poids">{{ (MontantFacturePoids) |
+                          number: '2.2-2' }}</td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr class="text-info">
+                        <th class="text-center text-uppercase text-danger">Total
+                        </th>
+                        <th class="text-center text-danger">{{ poids_total |
+                          number: '2.2-2' }} g</th>
+                        <th class="text-center text-danger">{{
+                          format2Chart(carra_moyen) }}</th>
+                        <th class="text-center text-danger"> - </th>
+                        <th class="text-center text-danger"> {{ pu }} </th>
+                        <th class="text-center text-danger"> {{
+                          (MontantFacture + MontantFacturePoids) | number:
+                          '2.2-2' }}
+                        </th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- </mat-card> -->
+            <!-- Export Datatable End -->
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card>
+      <!-- CONFIG -->
+    </div>
+  </div>

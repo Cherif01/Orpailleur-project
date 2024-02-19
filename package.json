@@ -33,7 +33,7 @@
     "jszip": "^3.10.1",
     "moment": "^2.29.4",
     "ngx-mat-select-search": "^4.2.1",
-    "ngx-select-ex": "^8.0.1",
+    "puppeteer": "^20.5.0",
     "qrcode": "^1.5.3",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

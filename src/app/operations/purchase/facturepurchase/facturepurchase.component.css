@@ -5,15 +5,14 @@
   background-repeat: no-repeat;
   background-size: cover; */
   margin: 0 5% 0 5%;
-  border: 1px solid black;
+  border: 2px solid black;
+}
+
+.entete{
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
 .printTable{
-  border: 1px solid black;
-}
-
-.printTable thead th{
-  color: rgb(255, 228, 50);
   border: 1px solid black;
 }
 
@@ -21,16 +20,38 @@
   color: rgb(21, 21, 21);
   border: 0.5px solid black;
 }
-.printTable tbody td{
-  color: rgb(21, 21, 21);
-  border: 0.5px solid black;
-}
 
+#table_shadow thead th{
+  color: #fff;
+}
 
 #table_shadow thead th, #table_shadow tbody tr td{
   border: 1.6px solid black;
 }
-#table_shadow tfoot tr th{
-  border: 1.6px solid black;
+
+#table_shadow tbody tr td{
+  font-weight: bold;
 }
 
+#table_shadow tfoot tr th{
+  border: 1.6px solid black;
+  color: crimson;
+  font-weight: bold;
+}
+
+#enteteFacture th{
+  color: black;
+}
+
+
+
+#bgTable{
+  position: relative;
+}
+
+.overlay{
+  background: url('https://assets.stickpng.com/images/580b585b2edbce24c47b2877.png');
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-position: center bottom;
+}

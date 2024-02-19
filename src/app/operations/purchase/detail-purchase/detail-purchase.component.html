@@ -7,12 +7,6 @@
             <div class="title">
               <h4 class="text-capitalize fs-3">{{title}}</h4>
             </div>
-            <nav aria-label="breadcrumb" role="navigation">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
-              </ol>
-            </nav>
           </div>
           <div class="text-right d-flex justify-content-between align-items-center">
             <div class="col-reply">
@@ -69,18 +63,18 @@
                     <td>{{index+1}}</td>
                     <td>
                       <mat-form-field>
-                        <input [formControl]='row.get("poids_achat")' (focus)="setOldValues(row)"
+                        <input [formControl]='row.get("poidsItem")' (focus)="setOldValues(row)"
                           (blur)="updateDirectRow(row)" matInput>
                       </mat-form-field>
                     </td>
                     <td>
                       <mat-form-field>
-                        <input [formControl]='row.get("carrat_achat")' readonly matInput>
+                        <input [formControl]='row.get("carratItem")' readonly matInput>
                       </mat-form-field>
                     </td>
                     <td>
                       <mat-form-field>
-                        <input [formControl]='row.get("manquant")' (focus)="setOldValues(row)"
+                        <input [formControl]='row.get("manquantItem")' (focus)="setOldValues(row)"
                           (blur)="updateDirectRow(row)" matInput>
                       </mat-form-field>
                     </td>

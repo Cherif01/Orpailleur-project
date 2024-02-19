@@ -1,0 +1,9 @@
+#divTable_ th{
+  font-size: small;
+  color: midnightblue;
+  text-align: center;
+}
+#divTable_ td{
+  font-size: small;
+  text-align: center;
+}

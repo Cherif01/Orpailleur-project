@@ -49,6 +49,10 @@ const AppRouting: Routes = [
                 loadChildren: () => import('./user/user.module').then(m => m.UserModule)
             },
             {
+                path: 'settings',
+                loadChildren: () => import('./settings/settings.module').then(m => m.settingsModule)
+            },
+            {
                 path: 'notfound',
                 loadChildren: () => import('./error/error.module').then(m => m.ErrorModule)
             },

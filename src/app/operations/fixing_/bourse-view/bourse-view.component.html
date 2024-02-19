@@ -7,12 +7,6 @@
             <div class="title">
               <h4 class="text-capitalize fs-3">{{title}}</h4>
             </div>
-            <nav aria-label="breadcrumb" role="navigation">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
-              </ol>
-            </nav>
           </div>
           <div class="text-right d-flex justify-content-between align-items-center">
             <div class="col-reply">
@@ -36,24 +30,16 @@
       </div>
       <!-- Export Datatable start -->
       <div class="...-box mb-30">
-        <div class="pb-10 p-2">
-          <mat-card class="mat-elevation-z8 bg-transparent" id="matTable">
-            <mat-card-title>
-              <h2 class="text-blue">Cours de l'or du jour</h2>
-            </mat-card-title>
-            <mat-card-content>
-              <!-- <p>Le cours de l'or est de {{ goldPrice }} USD/oz</p> -->
-              <!-- <hr> -->
-              <iframe src="https://goldbroker.com/widget/live/XAU?currency=EUR&height=320" scrolling="no"
-                frameborder="0" width="100%" height="320" style="border: 0; overflow: hidden;"></iframe><br>La bourse en
-              : <a href="https://goldbroker.com/" style="text-transform: uppercase">TEMPS REEL</a>
-              <!-- <iframe src="https://goldbroker.com/widget/live-price/XAU?currency=EUR" width="100%" height="30"
-                style="border: 0; overflow: hidden;"></iframe> -->
-            </mat-card-content>
-          </mat-card>
-        </div>
-
-
+        <mat-card class="mat-elevation-z8 bg-transparent">
+          <mat-card-title>
+            <h2 class="text-warning">TEMPS REEL</h2>
+          </mat-card-title>
+          <mat-card-content>
+            <iframe src="https://goldbroker.com/widget/live/XAU?currency=USD&height=320" scrolling="no" frameborder="0"
+              width="100%" height="320" style="border: 0; overflow: hidden;"></iframe><br>Prix de l'or
+            par : <a href="https://goldbroker.com/" style="text-transform: uppercase"> GoldBroker.com</a>
+          </mat-card-content>
+        </mat-card>
       </div>
       <!-- Export Datatable End -->
     </div>

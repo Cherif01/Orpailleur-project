@@ -1,0 +1,34 @@
+.printTable{
+  border: 1px solid black;
+}
+
+#divTable_ th{
+  color: rgb(33, 32, 81);
+  font-size: 16px;
+}
+
+.printTable thead th{
+  color: rgb(41, 40, 40);
+  border: 1.6px solid black;
+}
+
+.printTable tbody tr{
+  color: rgb(21, 21, 21);
+  border: 1.6px solid black;
+}
+.printTable tbody td{
+  color: rgb(21, 21, 21);
+  border: 1.6px solid black;
+}
+.printTable tfoot tr{
+  color: rgb(21, 21, 21);
+  border: 1.6px solid black;
+}
+.printTable tfoot th{
+  color: rgb(21, 21, 21);
+  border: 1.6px solid black;
+}
+
+#card-fixing{
+  height: 80vh;
+}

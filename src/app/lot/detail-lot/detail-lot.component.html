@@ -17,19 +17,26 @@
           <div class="text-right">
             <div class="d-flex justify-content-between flex-wrap">
               <div class="col-2 text-start">
-                <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon
+                <button (click)="this.location.back()" mat-icon-button
+                  color="warn"><mat-icon
                     class="mat-24">reply</mat-icon>
                 </button>
               </div>
               <div class="col">
-                <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/lot/list-lot">
-                  <span class="micon dw dw-list"></span><span class="mtext mx-2"> Liste des lots</span>
+                <button class="mx-2 fw-bold" mat-flat-button color="primary"
+                  routerLink="/lot/list-lot">
+                  <span class="micon dw dw-list"></span><span class="mtext mx-2">
+                    Liste des lots</span>
                 </button>
-                <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/lot/add-lot">
-                  <span class="micon dw dw-list"></span><span class="mtext mx-2"> Cr&#233;er un lot</span>
+                <button class="mx-2 fw-bold" mat-flat-button color="primary"
+                  routerLink="/lot/add-lot">
+                  <span class="micon dw dw-list"></span><span class="mtext mx-2">
+                    Cr&#233;er un lot</span>
                 </button>
-                <button class="mx-2 fw-bold" mat-flat-button color="accent" routerLink="/operation/add-purchase">
-                  <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
+                <button class="mx-2 fw-bold" mat-flat-button color="accent"
+                  routerLink="/operation/add-purchase">
+                  <span class="micon dw dw-up-arrow"></span><span
+                    class="mtext mx-2"> Autres</span>
                 </button>
               </div>
             </div>
@@ -38,73 +45,178 @@
       </div>
       <!-- Add -->
       <!-- Export Datatable start -->
-      <div class="main-box mb-10">
+      <div class="card-box pd-20 mb-10">
 
-        <mat-card style="height: 450px">
-
-          <div class="row">
-            <div class="col-12 col-lg-3">
-              <div class="p-2 text-center " id="shadow-lot">
-                <div class="">
-                  <img src="../../../assets/image/caisse.png" class="img-responsive w-25" alt="">
-                  <!-- <hr> -->
-                  <h4 class="fw-bold p-0 m-0">{{ LotUnique.designation }}</h4>
-                  <span class="text-secondary fs-6"><strong>Cr&#233;er le : </strong> {{ LotUnique.created_at
-                    | date: 'dd/MM/YYYY' }}</span> <br> <br>
-                </div>
+        <!-- <mat-card> -->
+        <div class="d-flex justify-content-between flex-wrap" id="box">
+          <div class="col-12 col-md-4">
+            <div class="p-2 text-center border border-2 border-primary mb-3" id>
+              <div class>
+                <img
+                  src="https://becotad.com/wp-content/uploads/2017/12/stock.jpg"
+                  class="img-responsive w-25 p-3" alt>
                 <!-- <hr> -->
-                <div class="text-start">
-                  <table class="table">
-                    <tr>
-                      <th>Nb Barres</th>
-                      <th>:</th>
-                      <td>{{ nb_barre }} <span class="text-danger">Barres</span></td>
-                    </tr>
-                    <tr>
-                      <th>Poids Total</th>
-                      <th>:</th>
-                      <td>{{ PoidTotalLot | number }} g</td>
-                    </tr>
-                    <tr>
-                      <th>Vendu</th>
-                      <th>:</th>
-                      <td>{{ PoidVenduLot }} g</td>
-                    </tr>
-                    <tr>
-                      <th>Reste</th>
-                      <th>:</th>
-                      <td>{{ (PoidTotalLot - PoidVenduLot) | number }} g</td>
-                    </tr>
-                  </table>
-                </div>
+                <h4 class="fw-bold p-0 m-0">{{ LotUnique.designation }}</h4>
+                <span class="text-secondary fs-6"><strong>Cr&#233;er le :
+                  </strong> {{ LotUnique.dateCreate
+                  | date: 'dd/MM/YYYY' }}</span> <br> <br>
               </div>
-            </div>
-
-            <div class="col">
-              <div class="container p-3 d-flex justify-content-center flex-wrap" id="espace-card">
-
-                <div class="col-12 col-lg-4 card" id="shadow-card" *ngFor="let data of List_Achat">
-                  <div class="card-header text-center">
-                    <h4 class="text-dark fw-bold">D&#233;tail de l'achat</h4>
-                    <strong>N<sup>o</sup>Achat : 00{{ data.achat.id }}</strong>
-                  </div>
-                  <div class="card-body">
-                    <span class="dw dw-edit-file" id="dw_icon"></span>
-                    <h4>{{ data.achat.fournisseur.prenom + " " + data.achat.fournisseur.nom }}</h4>
-                  </div>
-                  <div class="bar">
-                    <div class="emptybar"></div>
-                    <div class="filledbar"></div>
-                  </div>
-                  <div class="card-footer">
-                    <a routerLink="/operation/facturepurchase/{{ data.achat.id }}" mat-button color="primary"> Voir la
-                      facture</a>
-                  </div>
-                </div>
+              <!-- <hr> -->
+              <div class="text-start">
+                <table class="table">
+                  <tr>
+                    <th>Enregistrement</th>
+                    <th>:</th>
+                    <td>{{ LotUnique.nbBarre }} <span class="text-danger">achats</span></td>
+                  </tr>
+                  <tr>
+                    <th>Poids Total</th>
+                    <th>:</th>
+                    <td>{{ LotUnique.PoidsTotal | number }} <span
+                        class="text-danger fw-bold"> g</span></td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
-        </mat-card>
+
+          <div class="col mb-3">
+            <div class="container" id="table-list-lot">
+              <table class="table">
+                <thead>
+                  <th>N<sup>o</sup></th>
+                  <th>Enregistrer le</th>
+                  <th>Poids Total</th>
+                  <th>Carrat Moyen</th>
+                  <th>Fournisseur</th>
+                  <th class="text-center">Statut</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of List_Achat; let i = index">
+                    <td>{{ i+1 }}</td>
+                    <td>{{ data.created_at_achat | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ data.poidsTotal | number }} g</td>
+                    <td>{{ data.carratMoyen }}</td>
+                    <td><a class="text-primary"
+                        routerLink="/fournisseur/detail-fournisseur/{{data.idFournisseur}}">{{
+                        data.nomComplet }}</a></td>
+                    <td class="text-center"
+                      [class]="data.statut_achat==2?'text-success' : 'text-danger'">
+                      <a routerLink="/operation/facturepurchase/{{data.id}}"
+                        *ngIf="data.statut_achat==2"><span class="text-success"><u>Facture</u></span></a>
+                      <span *ngIf="data.statut_achat==1">En cours</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- </mat-card> -->
+
+        <hr>
+
+        <button class="fw-bold" mat-flat-button color="warn" (click)="imprimerDiv()">
+          <span class="micon mdi mdi-printer"></span><span class="mtext mx-2"> Imprimer</span>
+        </button>
+        <h2 class="text-primary fw-bold">Imprimer les factures</h2>
+        <hr>
+        <div class="p-2" #divToPrint id="table-list-lot2">
+          <div class="facture-de-tous-les-achts"
+            *ngFor="let facture of facture;">
+            <!-- Facture -->
+            <!-- table LIST -->
+            <div class="col">
+              <div class="entete">
+                <div
+                  class="d-flex justify-content-between flex-wrap m-0 p-0 align-items-center">
+                  <div class="col-2 text-start">
+                    <!-- logo -->
+                    <div class="img-responsive">
+                      <img
+                        src="https://static.vecteezy.com/system/resources/previews/019/766/315/non_2x/closeup-shiny-a-gold-bullion-bar-png.png"
+                        class="img-responsive w-100" alt>
+                    </div>
+                  </div>
+                  <div class="col offset-1  text-center">
+                    <h2 class="m-0 p-0 fw-bold">FACTURE D'ACHAT</h2>
+                    <span class="small">Groupe - Limanayah BUSINESS, Achat et vente d'or en gros et d&#233;tails</span> <br>
+                    <span class="small">sis &#224; Mafanco Carrefour, centre
+                      commercial Bayo et frères au 2e
+                      étage</span>
+                    <br>
+                    <span class="fw-bold">Contact : </span>
+                    <span class="text-primary fw-bold"> <i class="small">628-978-467
+                        / 624-044-759 / 622-339-503</i> </span>
+                  </div>
+                  <div class="col-2 text-end">
+                    <!-- logo -->
+                    <div class="img-responsive">
+                      <img src="/assets/logo/logo.png"
+                        class="img-responsive w-100" alt>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between flex-wrap">
+                <div class="col-6">
+                  <div class>
+                    <table class="table" *ngIf="facture[0]">
+                      <tr>
+                        <th>Fournisseur</th>
+                        <th>:</th>
+                        <th class><i>{{ facture[0].fournisseur }}</i></th>
+                      </tr>
+                      <tr>
+                        <th>Adresse</th>
+                        <th>:</th>
+                        <th class><i>{{ facture[0].adresse }}</i></th>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive m-0" id="bgTable">
+              <h2 class="text-dark text-center fw-bold display-3">Facture N<sup>o</sup>
+                : {{ facture[0].Numero }}</h2>
+              <h2 class="text-dark text-end me-2"
+                style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Date
+                : <u class="small">Conakry le, {{ facture[0].created_at | date:
+                  'dd/MM/YYYY' }}</u> </h2>
+              <table class="table table-striped" id="table_shadow">
+                <thead class="text-center bg-success" id="enteteFacture">
+                  <th>Barres</th>
+                  <th>Poids</th>
+                  <th>Carrat</th>
+                  <th>Densite</th>
+                  <th>Manquant</th>
+                </thead>
+                <tbody class="text-center">
+                  <tr *ngFor="let data of facture[0].Items; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ data.poidsItem }}</td>
+                    <td>{{ data.carratItem }} </td>
+                    <td class="text-center">{{ 22 }}</td>
+                    <td class="text-danger fw-bold"> {{ (data.manquantItem) }}</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr class="bg-success fw-normal">
+                    <th>Total</th>
+                    <th class>{{ facture[0].poidsTotal }} g</th>
+                    <th class>{{ facture[0].carratMoyen }}</th>
+                    <th>-</th>
+                    <th>-</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <!-- END PRINT -->
+        </div>
+
       </div>
       <!-- Export Datatable End -->
       <!-- Fin ajout -->

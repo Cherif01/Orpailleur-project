@@ -1,85 +1,53 @@
-#attribution, #shadow-lot{
+#attribution, #shadow-lot {
   box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
 }
 
-#shadow-col{
+#shadow-col {
   box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
 }
 
-#shadow-card{
+#shadow-card {
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.9) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
-#dw_icon{
+#dw_icon {
   font-size: 50px;
   color: rgb(152, 152, 152);
 }
 
-.container {
-  position: absolute;
-  top: 10px;
-  display: flex;
-  justify-content: center;
-}
-
-.card {
-  text-align: center;
-  display: flex;
-  /* height: 280px; */
-  width: 300px;
-  /* background-color: #868686; */
-  border-radius: 10px;
-  /* box-shadow: -1rem 0 3rem #000; */
-/*   margin-left: -50px; */
-  transition: 0.4s;
-  position: relative;
-  left: 0px;
-}
-
-.card:not(:first-child) {
-    margin-left: -50px;
-}
-
-.card:hover {
-  transform: translateY(-20px);
-  transition: 0.4s ease-out;
-  cursor: pointer;
-}
-
-.card:hover ~ .card {
-  position: relative;
-  left: 50px;
-  transition: 0.4s ease-out;
-}
-
-.bar {
-  position: absolute;
-  padding: 5px;
-  top: 100px;
-  left: 20px;
-  height: 5px;
-  width: 80%;
-}
-
-
-.filledbar {
-  position: absolute;
-  top: 0px;
-  z-index: 3;
-  width: 0px;
-  height: 100%;
-  background: rgb(0, 124, 173);
-  background: linear-gradient(90deg, rgb(0, 95, 133) 0%, rgba(217,147,0,1) 65%, rgba(255,186,0,1) 100%);
-  transition: 0.6s ease-out;
-}
-
-.card:hover .filledbar {
-  width: 100%;
-  transition: 0.4s ease-out;
-}
-
-#espace-card{
+#espace-card {
   width: 98%;
   height: 390px;
   overflow: scroll;
+}
+
+#table-list-lot{
+  height: 320px;
+  overflow: scroll;
+}
+#table-list-lot2{
+  height: 520px;
+  overflow: scroll;
+}
+
+#table-list-lot table thead{
+  background-color: black;
+  color: aliceblue;
+}
+
+.facture-de-tous-les-achts{
+  /* background-color: aqua; */
+  border: 1px solid black;
+  margin-bottom: 5%;
+}
+
+#table_shadow thead th{
+  border: 1px solid black;
+}
+#table_shadow tbody tr td{
+  border: 1px solid black;
+}
+#table_shadow tfoot tr th{
+  text-align: center;
+  border: 1px solid black;
 }

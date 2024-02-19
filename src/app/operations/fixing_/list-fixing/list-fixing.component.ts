@@ -5,14 +5,19 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Location } from '@angular/common';
-import {MatSort} from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
+import { ApiserviceService } from 'src/app/api_service/apiservice.service';
+import { convertObjectInFormData } from 'src/app/etat-entreprise/caisse-principale/caisse-principale.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DialogMessageComponent } from 'src/app/public/dialogs/dialog-message/dialog-message.component';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-list-fixing',
   templateUrl: './list-fixing.component.html',
   styleUrls: ['./list-fixing.component.css']
 })
-
 
 
 export class ListFixingComponent implements OnInit, AfterViewInit {
@@ -24,7 +29,11 @@ export class ListFixingComponent implements OnInit, AfterViewInit {
 
   constructor(
     private serviceOperation: OperationsService,
-    public location: Location
+    private service: ApiserviceService,
+    private router: Router,
+    private dialog: MatDialog,
+    public location: Location,
+    private snackBar: MatSnackBar
   ) {
     this.search.valueChanges.subscribe(v => {
       this.filterTable(v)
@@ -32,7 +41,7 @@ export class ListFixingComponent implements OnInit, AfterViewInit {
   }
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
-  displaysColums: string[] = ["select", "date", "reference", "fournisseur", "fixing", "discounte", "p_unit", "pds_fixe", "pds_vendu", "pds_restant"];
+  displaysColums: string[] = ["date", "fournisseur", "fixing", "discounte", "p_unit", "pds_fixe", "pds_vendu", "pds_restant", "action"];
   selection = new SelectionModel<any>(true, []);
 
 
@@ -42,48 +51,18 @@ export class ListFixingComponent implements OnInit, AfterViewInit {
     this.getAllFixing()
   }
 
-   /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  toggleAllRows() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
-    }
-
-    this.selection.select(...this.dataSource.data);
-  }
-
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: any): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
-  }
-
-
-
-
   // GET FIxing
   TabFixing: any = []
   getAllFixing() {
-    this.serviceOperation.getList('api', 'fixing').subscribe({
+    this.service.LIST('fixing', 'read.php', 'table_fixing').subscribe({
       next: (data: any) => {
         // console.log(data),
-        // this.TabFixing = data;
-        this.dataSource.data = data;
+          // this.TabFixing = data;
+          this.dataSource.data = data;
         this.dataSource.paginator = this.paginator;
       },
       error: (err: any) => console.log(err)
     })
-
   }
 
   ngAfterViewInit() {
@@ -98,6 +77,76 @@ export class ListFixingComponent implements OnInit, AfterViewInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  // Mise a jour du fixing
+  saveTableData(element: any) {
+    // console.log("Row : ", element);
+    let table_fixing = {
+      id: element.id,
+      poidsFixer: element.poidsFixer,
+      discompte: element.discompte,
+      fixingBourse: element.fixingBourse,
+    }
+    const objetForm = convertObjectInFormData(table_fixing)
+    // console.log("NEW OBJET : ", table_fixing);
+    // console.log("NEW OBJET : ", objetForm);
+
+    this.service.Update('fixing', 'updateFixing.php', objetForm)
+      .subscribe({
+        next: (response) => {
+          // console.log("res : ", response);
+          this.snackBar.open("fixing modifier avec succès!", undefined, {
+            duration: 2000,
+            horizontalPosition: "right",
+            verticalPosition: "top",
+            panelClass: ['bg-success', 'text-white']
+
+          });
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000)
+        },
+        error: (err) => {
+          console.error("err : ", err);
+          this.snackBar.open("Echec, Veuillez reessayer!", undefined, {
+            duration: 1000,
+            horizontalPosition: "right",
+            verticalPosition: "bottom",
+            panelClass: ['bg-danger', 'text-white']
+          })
+        }
+      })
+
+    // Traitez les données modifiées ici
+  }
+
+  deleteFixing(idFixing: any) {
+    // console.log('id:', this.Id_achat);
+    this.dialog.open(DialogMessageComponent, {
+      disableClose: true,
+      data: {
+        title: "Suppression demander!",
+        message: "Voulez-vous vraiment supprimer cet fixing? ",
+        messageNo: "Annuler",
+        messageYes: "Supprimer"
+      }
+    }).afterClosed().subscribe(data => {
+      if (data) {
+        // console.log(data);
+        this.service.delete('public', 'delete.php', 'table_fixing', idFixing)
+          .subscribe({
+            next: (value) => {
+              // console.log("res : ", value);
+              window.location.reload()
+            },
+            error: (err) => {
+              console.error(err);
+            }
+          });
+      }
+    })
+    //Requete suppression sur la DB
   }
 
 

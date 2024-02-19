@@ -13,10 +13,11 @@ export class DialogConvertMoneyComponent implements OnInit {
 
   // MISE A JOUR FIxiNG
   convertisseur = new FormGroup({
+    idFournisseur: new FormControl(),
     deviseSource: new FormControl([Validators.required]),
     destinationDevise: new FormControl(),
-    montant: new FormControl(Validators.required),
-    taux: new FormControl(Validators.required),
+    montant: new FormControl(0,Validators.required),
+    taux: new FormControl(1,[Validators.required]),
     created_by: new FormControl(1)
   })
 

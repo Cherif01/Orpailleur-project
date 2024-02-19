@@ -10,12 +10,16 @@
             <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+                <li class="breadcrumb-item active"
+                  aria-current="page">{{title}}</li>
               </ol>
             </nav>
           </div>
           <div class="text-right">
-            <button mat-raised-button color="primary" (click)="openDialog()" class="mx-2">Nouvelle operation</button>
+            <button mat-raised-button color="primary" (click)="openDialog()"
+              class="mx-2"><i
+                class="dw dw-add text-light mx-2"></i> <span class="mtext">
+                Nouvelle operation</span></button>
             <button mat-raised-button color="warn">Autres</button>
           </div>
         </div>
@@ -26,17 +30,25 @@
           <div class="col">
             <div class="card mb-4 shadow border-0">
               <div class="card-body text-center">
-                <h4 class="my-3 text-primary" id="text">𝐒𝐨𝐥𝐝𝐞 𝐚𝐜𝐭𝐢𝐟 (𝖆𝖈𝖙𝖎𝖋 <span
+                <h4 class="my-3 text-primary" id="text">𝐒𝐨𝐥𝐝𝐞 𝐚𝐜𝐭𝐢𝐟
+                  (𝖆𝖈𝖙𝖎𝖋 <span
                     class="dw dw-inbox text-success"></span> )</h4>
-                <button mat-button color="primary" (click)="showSolde()" *ngIf="!viewSOLDE">Voir le solde !</button>
-                <button mat-button color="warn" (click)="hideSolde()" *ngIf="viewSOLDE">cacher le solde !</button>
+                <button mat-button color="primary" (click)="showSolde()"
+                  *ngIf="!viewSOLDE">Voir le solde !</button>
+                <button mat-button color="warn" (click)="hideSolde()"
+                  *ngIf="viewSOLDE">cacher le solde !</button>
                 <!-- <hr> -->
-                <div class="p-2 d-flex justify-content-between align-items-center">
-                  <h2 id="text" class="text-dark" *ngIf="viewSOLDE">{{ GNFAmount | number: '2.0-2'}} GNF</h2>
-                  <h2 id="text" class="text-dark" *ngIf="!viewSOLDE">..... GNF</h2>
+                <div
+                  class="p-2 d-flex justify-content-between align-items-center">
+                  <h2 id="text" class="text-dark" *ngIf="viewSOLDE">{{ solde_GNF
+                    | number: '2.0-2'}} GNF</h2>
+                  <h2 id="text" class="text-dark" *ngIf="!viewSOLDE">.....
+                    GNF</h2>
                   <span> | </span>
-                  <h2 id="text" class="text-success" *ngIf="viewSOLDE">{{ USDAmount | number: '2.0-2'}} USD</h2>
-                  <h2 id="text" class="text-success" *ngIf="!viewSOLDE">..... USD</h2>
+                  <h2 id="text" class="text-success" *ngIf="viewSOLDE">{{
+                    solde_USD | number: '2.0-2'}} USD</h2>
+                  <h2 id="text" class="text-success" *ngIf="!viewSOLDE">.....
+                    USD</h2>
                 </div>
               </div>
             </div>
@@ -47,110 +59,202 @@
         <div class="table-responsive bg-white">
           <mat-card class="p-2 bg-white">
             <mat-tab-group class="bg-white">
-
-              <mat-tab label="Historique caisse USD" *ngIf="infosLine.id == null">
+              <mat-tab label="Historique $ (USD)" *ngIf="infosLine.id == null">
                 <mat-card class="mat-elevation-z8" id="table_shadow">
                   <mat-card-title>
                     <h2 class="text-blue">Historique des op&#233;rations</h2>
                   </mat-card-title>
                   <mat-card-content>
-                    <mat-form-field class="w-100">
-                      <input [formControl]="search" placeholder="Rechercher une oper&#233;tion..." matInput>
-                      <mat-icon matSuffix>Limanaya Business</mat-icon>
-                    </mat-form-field>
-                    <table mat-table class="table table-responsive-md">
-                      <thead>
-                        <th>#</th>
-                        <th>Date Operation</th>
-                        <th>Op&#233;ration</th>
-                        <th>Devise</th>
-                        <th>Motif</th>
-                        <th>Entrer</th>
-                        <th>Sortie</th>
-                        <th>Solde A</th>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let data of historique; let i = index">
-                          <td *ngIf="data.devise == 2"><a style="cursor: pointer" (click)="getInfo(data.id)"
-                              class="border rounded-circle btn-info fs-3"><span class="dw dw-print"></span></a></td>
-                          <td *ngIf="data.devise == 2">Le : {{ data.created_at | date: "dd/MM/YYYY - H:m" }}</td>
-                          <td *ngIf="data.devise == 2" class="m-0 p-0 text-start">
-                            <span class="text-dark" *ngIf="data.operation == 1"><span class="dw dw-down-arrow2"></span>
-                              Entrer</span>
-                            <span class="text-danger" *ngIf="data.operation == 2">Sortie <span
-                                class="dw dw-share-2"></span></span>
-                            <span class="text-dark" *ngIf="data.operation == 3">Retour Fournisseur <span
-                                class="dw dw-share-2"></span></span>
-                            <span class="text-danger" *ngIf="data.operation == 4">D&#233;caissement <span
-                                class="dw dw-share-2"></span></span>
-                          </td>
-                          <td *ngIf="data.devise == 2" class="text-secondary">USD</td>
-                          <td *ngIf="data.devise == 2">{{ data.motif }}</td>
-                          <td *ngIf="data.devise == 2">
-                            <span *ngIf="data.operation == 1 || data.operation == 3">{{ data.montant | number }}</span>
-                          </td>
-                          <td *ngIf="data.devise == 2">
-                            <span *ngIf="data.operation == 2 || data.operation == 4">{{ data.montant | number }}</span>
-                          </td>
-                          <td *ngIf="data.devise == 2">{{ (data.montant_anterieur) | number }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <mat-paginator [pageSizeOptions]="[10,15,100]" showFirstLastButtons></mat-paginator>
+                    <div
+                      class="d-flex justify-content-between align-items-center flex-wrap">
+                      <div class="col mb-1 text-end">
+                        <form action [formGroup]="rechercheIntervalleForm"
+                          class="w-100">
+                          <div class="d-flex input-group m-0 p-0">
+                            <input type="date" formControlName="dateStart"
+                              class="p-2 border-primary fw-bold">
+                            <input type="date" formControlName="dateEnd"
+                              class="mx-1 p-2 border-primary fw-bold">
+                            <button mat-flat-button color="primary"
+                              class="border-dark" (click)="getCaisse()">
+                              Rechercher
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+
+                      <div class="col-12 col-md-3 col-lg-3 mb-1">
+                        <mat-form-field class="w-100">
+                          <input [formControl]="search"
+                            placeholder="Rechercher une oper&#233;tion..."
+                            matInput>
+                          <mat-icon matSuffix>search</mat-icon>
+                        </mat-form-field>
+                      </div>
+
+                    </div>
+
+                    <div class="table-responsive">
+                      <table mat-table class="table table-responsive-md">
+                        <thead>
+                          <th>#</th>
+                          <th>Date Operation</th>
+                          <th>Op&#233;ration</th>
+                          <!-- <th>Devise</th> -->
+                          <th>Credit</th>
+                          <th>Debit</th>
+                          <th>Solde A</th>
+                          <th>Utilisateur</th>
+                          <th class="text-center">Action</th>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let data of historique; let i = index">
+                            <td *ngIf="data.devise == 2"><a
+                                style="cursor: pointer"
+                                (click)="getInfo(data.id)"
+                                class="border rounded-circle btn-info fs-3"><span
+                                  class="dw dw-print"></span></a></td>
+                            <td *ngIf="data.devise == 2">Le : {{ data.created_at
+                              | date: "dd/MM/YYYY 'à' HH:mm:ss" }}</td>
+                            <td *ngIf="data.devise == 2"
+                              class="m-0 p-0 text-start">
+                              <span class="text-dark"
+                                *ngIf="data.operation == 1"><span
+                                  class="dw dw-down-arrow2"></span>
+                                Entrer</span>
+                              <span class="text-danger"
+                                *ngIf="data.operation == 2">Sortie <span
+                                  class="dw dw-share-2"></span></span>
+                              <span class="text-dark"
+                                *ngIf="data.operation == 3">Retour Fournisseur
+                                <span
+                                  class="dw dw-share-2"></span></span>
+                              <span class="text-danger"
+                                *ngIf="data.operation == 4">D&#233;caissement
+                                <span
+                                  class="dw dw-share-2"></span></span>
+                              <span class="text-primary"
+                                *ngIf="data.operation == 5"><span
+                                  class="dw dw-down-arrow2"></span>
+                                Avance client</span>
+                              <span class="text-danger"
+                                *ngIf="data.operation == 6">Reglement client
+                                <span
+                                  class="dw dw-share-2"></span></span>
+                            </td>
+                            <!-- <td *ngIf="data.devise == 2" class="text-secondary">USD</td> -->
+                            <!-- <td *ngIf="data.devise == 2">{{ data.motif }}</td> -->
+                            <td *ngIf="data.devise == 2">
+                              <span
+                                *ngIf="data.operation == 1 || data.operation == 3 || data.operation == 5">{{
+                                data.montant | number }}</span>
+                            </td>
+                            <td *ngIf="data.devise == 2">
+                              <span
+                                *ngIf="data.operation == 2 || data.operation == 4 || data.operation == 6">{{
+                                data.montant | number }}</span>
+                            </td>
+                            <td *ngIf="data.devise == 2">{{
+                              (data.montant_anterieur) | number }}</td>
+                            <td *ngIf="data.devise == 2"
+                              class="text-primary fw-bold text-uppercase">{{users}}</td>
+                            <td class="text-center" *ngIf="data.devise == 2">
+                              <button mat-stroked-button color="warn"
+                                (click)="deleteFunction(data.id)"><span
+                                  class="mdi mdi-close-thick"></span></button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <mat-paginator [pageSizeOptions]="[10,15,100]"
+                      showFirstLastButtons></mat-paginator>
                   </mat-card-content>
                 </mat-card>
               </mat-tab>
 
-
-              <mat-tab label="Historique caisse GNF" *ngIf="infosLine.id == null">
+              <mat-tab label="Historique caisse GNF"
+                *ngIf="infosLine.id == null">
                 <mat-card class="mat-elevation-z8" id="table_shadow">
                   <mat-card-title>
                     <h2 class="text-blue">Historique des op&#233;rations</h2>
                   </mat-card-title>
                   <mat-card-content>
                     <mat-form-field class="w-100">
-                      <input [formControl]="search" placeholder="Rechercher une oper&#233;tion..." matInput>
+                      <input [formControl]="search"
+                        placeholder="Rechercher une oper&#233;tion..." matInput>
                       <mat-icon matSuffix>Limanaya Business</mat-icon>
                     </mat-form-field>
-                    <table mat-table class="table table-responsive-md">
-                      <thead>
-                        <th>#</th>
-                        <th>Date Operation</th>
-                        <th>Op&#233;ration</th>
-                        <th>Devise</th>
-                        <th>Motif</th>
-                        <th>Entrer</th>
-                        <th>Sortie</th>
-                        <th>Solde A</th>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let data of historique; let i = index">
-                          <td *ngIf="data.devise == 1"><a style="cursor: pointer" (click)="getInfo(data.id)"
-                              class="border rounded-circle btn-info fs-3"><span class="dw dw-print"></span></a></td>
-                          <td *ngIf="data.devise == 1">Le : {{ data.created_at | date: "dd/MM/YYYY - H:m" }}</td>
-                          <td *ngIf="data.devise == 1" class="m-0 p-0 text-start">
-                            <span class="text-dark" *ngIf="data.operation == 1"><span class="dw dw-down-arrow2"></span>
-                              Entrer</span>
-                            <span class="text-danger" *ngIf="data.operation == 2">Sortie <span
-                                class="dw dw-share-2"></span></span>
-                            <span class="text-dark" *ngIf="data.operation == 3">Retour Fournisseur <span
-                                class="dw dw-share-2"></span></span>
-                            <span class="text-danger" *ngIf="data.operation == 4">D&#233;caissement <span
-                                class="dw dw-share-2"></span></span>
-                          </td>
-                          <td *ngIf="data.devise == 1" class="text-secondary">GNF</td>
-                          <td *ngIf="data.devise == 1">{{ data.motif }}</td>
-                          <td *ngIf="data.devise == 1">
-                            <span *ngIf="data.operation == 1 || data.operation == 3">{{ data.montant | number }}</span>
-                          </td>
-                          <td *ngIf="data.devise == 1">
-                            <span *ngIf="data.operation == 2 || data.operation == 4">{{ data.montant | number }}</span>
-                          </td>
-                          <td *ngIf="data.devise == 1">{{ (data.montant_anterieur) | number }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <mat-paginator [pageSizeOptions]="[10,15,100]" showFirstLastButtons></mat-paginator>
+                    <div class="table-responsive">
+                      <table mat-table class="table table-responsive-md">
+                        <thead>
+                          <th>#</th>
+                          <th>Date Operation</th>
+                          <th>Op&#233;ration</th>
+                          <!-- <th>Devise</th> -->
+                          <th>Credit</th>
+                          <th>Debit</th>
+                          <th>Solde A</th>
+                          <th>Utilisateur</th>
+                          <th class="text-center">Action</th>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let data of historique; let i = index">
+                            <!-- GNF -->
+                            <td *ngIf="data.devise == 1"><a
+                                style="cursor: pointer"
+                                (click)="getInfo(data.id)"
+                                class="border rounded-circle btn-info fs-3"><span
+                                  class="dw dw-print"></span></a></td>
+                            <td *ngIf="data.devise == 1">Le : {{ data.created_at
+                              |
+                              date: "dd/MM/YYYY - H:m" }}</td>
+                            <td *ngIf="data.devise == 1"
+                              class="m-0 p-0 text-start">
+                              <span class="text-dark"
+                                *ngIf="data.operation == 1"><span
+                                  class="dw dw-down-arrow2"></span>
+                                Entrer</span>
+                              <span class="text-danger"
+                                *ngIf="data.operation == 2">Sortie <span
+                                  class="dw dw-share-2"></span></span>
+                              <span class="text-dark"
+                                *ngIf="data.operation == 3">Retour Fournisseur
+                                <span
+                                  class="dw dw-share-2"></span></span>
+                              <span class="text-danger"
+                                *ngIf="data.operation == 4">D&#233;caissement
+                                <span
+                                  class="dw dw-share-2"></span></span>
+                            </td>
+                            <!-- <td *ngIf="data.devise == 1" class="text-secondary">GNF</td> -->
+                            <!-- <td *ngIf="data.devise == 1">{{ data.motif }}</td> -->
+                            <td *ngIf="data.devise == 1">
+                              <span
+                                *ngIf="data.operation == 1 || data.operation == 3">{{
+                                data.montant | number }}</span>
+                            </td>
+                            <td *ngIf="data.devise == 1">
+                              <span
+                                *ngIf="data.operation == 2 || data.operation == 4">{{
+                                data.montant | number }}</span>
+                            </td>
+                            <td *ngIf="data.devise == 1">{{
+                              (data.montant_anterieur) | number }}</td>
+                            <td *ngIf="data.devise == 1"
+                              class="text-primary fw-bold text-uppercase">{{users}}</td>
+                            <td class="text-center" *ngIf="data.devise == 1">
+                              <button mat-stroked-button color="warn"
+                                (click)="deleteFunction(data.id)"><span
+                                  class="mdi mdi-close-thick"></span></button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <mat-paginator [pageSizeOptions]="[10,15,100]"
+                      showFirstLastButtons></mat-paginator>
                   </mat-card-content>
                 </mat-card>
               </mat-tab>
@@ -158,42 +262,62 @@
               <mat-tab label="Reçu d'opération" *ngIf="infosLine.id != null">
                 <div class="d-felx justity-content-end mt-2">
                   <div class="col text-end">
-                    <button class="mx-2 mb-3 fw-bold" mat-stroked-button color="warn" (click)="generatePDF()">
-                      <mat-icon>folder</mat-icon><span class="mtext mx-2"> Telecharger au format (PDF)...</span>
+                    <button class="mx-2 mb-3 fw-bold" mat-stroked-button
+                      color="primary" (click)="reply()">
+                      <mat-icon>reply</mat-icon><span class="mtext mx-2">
+                        Retour</span>
                     </button>
-                    <button class="mx-2 fw-bold" mat-stroked-button color="primary" (click)="imprimerDiv()">
-                      <mat-icon>printer</mat-icon><span class="mtext mx-2"> Imprimer ici...</span>
+                    <button class="mx-2 mb-3 fw-bold" mat-stroked-button
+                      color="warn" (click)="generatePDF()">
+                      <mat-icon>folder</mat-icon><span class="mtext mx-2">
+                        Telecharger au format (PDF)...</span>
+                    </button>
+                    <button class="mx-2 fw-bold" mat-stroked-button
+                      color="primary" (click)="imprimerDiv()">
+                      <mat-icon>printer</mat-icon><span class="mtext mx-2">
+                        Imprimer ici...</span>
+                    </button>
+                    <button class="mx-2 fw-bold" mat-stroked-button color="warn"
+                      (click)="dupliquerElement()">
+                      <mat-icon>home</mat-icon><span class="mtext mx-2"> COPIER
+                        L'ELEMENT</span>
                     </button>
                   </div>
                 </div>
                 <hr>
 
                 <!-- RECU DE CAISSE -->
-                <div class="d-flex justify-content-center align-items-center bg-white">
-                  <div class="col-12 col-lg-10 bg-white" id="recu" #divToPrint>
-                    <div class="row d-flex align-items-center bg-white" id="entete">
-                      <div class="col-3 text-start" id="cendterRecu">
+                <div
+                  class="d-flex justify-content-center align-items-center m-4"
+                  style="margin-bottom: 100px;" #elementADupliquer>
+                  <div class="col-12 bg-white duplication " id="recu">
+
+                    <div
+                      class="d-flex align-items-center justify-content-between flex-wrap"
+                      id="entete">
+                      <div class="col text-start" id="centerRecu">
                         <img
-                          src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=Date réçu:{{infosLine.created_at+'/ Fournisseur:'+FounisseurName+'/ Operation:'+getTypeOperation(infosLine.operation)}}">
+                          src="https://api.qrserver.com/v1/create-qr-code/?size=75x75&data=Date réçu:{{infosLine.created_at+'/ Fournisseur:'+FounisseurName+'/ Operation:'+getTypeOperation(infosLine.operation)+' / '+ ' MONTANT : ' + infosLine.montant }}">
                       </div>
-                      <div class="col-5 text-center" id="leftRecu">
-                        <h1 class="text-uppercase">Réçu de CAISSE N<sup>o</sup>: {{ infosLine.id }} <br> <span
-                            class="small text-uppercase text-dark fw-bold">{{ getTypeOperation(infosLine.operation)
-                            }}</span> </h1>
+                      <div class="col text-center" id="leftRecu">
+                        <h3 class="text-uppercase">Réçu N<sup>o</sup>: {{
+                          infosLine.id }} <br> <span
+                            class="small text-uppercase text-dark fw-bold">{{
+                            getTypeOperation(infosLine.operation)
+                            }}</span> | du {{ infosLine.created_at | date:
+                          'dd/MM/YYYY' }}</h3>
                       </div>
-                      <div class="col" id="rightRecu">
-                        <h4 class="p-0 m-0"><u class="mx-2 text-primary">Compte :</u> {{ FounisseurName }}</h4>
-                        <h4 class="p-0 m-0"><u class="mx-2 text-primary">Montant :</u> {{ infosLine.montant | number:
-                          '2.0-2' }} <span *ngIf="infosLine.devise == 1">GNF</span><span
-                            *ngIf="infosLine.devise == 2">USD</span></h4>
-                        <h4 class="p-0 m-0"><u class="mx-2 text-primary">Type :</u> {{
-                          getTypeOperation(infosLine.operation) }}</h4>
-                        <h4 class="p-0 m-0"><u class="mx-2 text-primary">Date :</u> {{ infosLine.created_at | date:
-                          'dd/MM/YYYY' }}</h4>
+                      <div class="col-md-3" id="rightRecu">
+                        <!-- logo -->
+                        <div class="img-responsive text-end">
+                          <img src="/assets/logo/logo.png"
+                            class="img-responsive w-50" alt="Logo Limanaya">
+                        </div>
                       </div>
                     </div>
                     <!-- FIN ENTETE -->
-                    <!-- <hr> -->
+
+                    <!-- 3 / 4 -->
                     <table class="table m-0 table-recu"
                       *ngIf="infosLine.operation == 3 || infosLine.operation == 4">
                       <tr>
@@ -206,127 +330,81 @@
                       </tr>
                       <tr>
                         <th>Nom du r&#233;presentant</th>
-                        <td><i>{{ infosLine.representant }}</i></td>
+                        <td>{{ infosLine.representant }}</td>
                       </tr>
                       <tr>
                         <th>Montant</th>
-                        <td>{{ infosLine.montant | number: '2.0-2' }} <span
-                            *ngIf="infosLine.devise == 1">GNF</span><span *ngIf="infosLine.devise == 2">USD</span></td>
-                      </tr>
-                      <tr>
-                        <th>Montant en lettres</th>
-                        <td>...</td>
-                      </tr>
-                      <tr>
-                        <th>Motif</th>
-                        <td>{{ infosLine.motif }}</td>
-                      </tr>
-                    </table>
-
-                    <table class="table fs-5 table-recu"
-                      *ngIf="infosLine.operation == 1 || infosLine.operation == 2">
-                      <tr>
-                        <th>Client</th>
-                        <td>...</td>
-                      </tr>
-                      <tr>
-                        <th>Montant</th>
-                        <td>{{ infosLine.montant }} <span *ngIf="infosLine.devise == 1">GNF</span><span
+                        <td>{{ infosLine.montant | number: '2.2-2' }} <span
+                            *ngIf="infosLine.devise == 1">GNF</span><span
                             *ngIf="infosLine.devise == 2">USD</span></td>
                       </tr>
-                      <tr>
+                      <!-- <tr>
                         <th>Montant en lettres</th>
                         <td>...</td>
-                      </tr>
+                      </tr> -->
                       <tr>
                         <th>Motif</th>
                         <td>{{ infosLine.motif }}</td>
                       </tr>
+                      <tfoot class="border-0 border-light">
+                        <th class="text-start fs-5 pb-3 p-3 text-secondary">Le
+                          caissier</th>
+                        <th class="text-center fs-5 pb-3 p-3 text-secondary">Le
+                          client</th>
+                      </tfoot>
                     </table>
-                    <div class="p-3 bg-dark d-flex justify-content-between mb-2">
-                      <h1 class="text-center fw-bold text-white text-center"><i>Caissier</i></h1>
-                      <h1 class="text-center fw-bold text-white text-center"><i>Client</i></h1>
-                    </div>
 
-                    <div id="entete"></div>
+                    <!-- 1 / 2 -->
+                    <table class="table fs-5 table-recu"
+                      *ngIf="infosLine.operation == 1 || infosLine.operation == 2">
+                      <!-- <tr>
+                        <th>Client</th>
+                        <td>...</td>
+                      </tr> -->
+                      <tr>
+                        <th>Montant</th>
+                        <td>{{ infosLine.montant | number: '2.2-2' }} <span
+                            *ngIf="infosLine.devise == 1">GNF</span><span
+                            *ngIf="infosLine.devise == 2">USD</span></td>
+                      </tr>
+                      <!-- <tr>
+                        <th>Montant en lettres</th>
+                        <td>...</td>
+                      </tr> -->
+                      <tr>
+                        <th>Motif</th>
+                        <td>{{ infosLine.motif }}</td>
+                      </tr>
+                      <tfoot class="border-light">
+                        <th class="text-start fs-5 pb-5 p-3">Le caissier</th>
+                        <th class="text-center fs-5 pb-5 p-3">Le client</th>
+                      </tfoot>
+                    </table>
 
-                    <div class="mt-5 row d-flex align-items-center bg-white" id="entete">
-                      <div class="col-3 text-start" id="cendterRecu">
-                        <img
-                          src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=Date réçu:{{infosLine.created_at+'/ Fournisseur:'+FounisseurName+'/ Operation:'+getTypeOperation(infosLine.operation)}}">
-                      </div>
-                      <div class="col-5 text-center" id="leftRecu">
-                        <h1 class="text-uppercase">Réçu de CAISSE N<sup>o</sup>: {{ infosLine.id }} <br> <span
-                            class="small text-uppercase text-dark fw-bold">{{ getTypeOperation(infosLine.operation)
-                            }}</span> </h1>
-                      </div>
-                      <div class="col" id="rightRecu">
-                        <h4 class="p-0 m-0"><u class="mx-2 text-primary">Compte :</u> {{ FounisseurName }}</h4>
-                        <h4 class="p-0 m-0"><u class="mx-2 text-primary">Montant :</u> {{ infosLine.montant | number:
-                          '2.0-2' }} <span *ngIf="infosLine.devise == 1">GNF</span><span
-                            *ngIf="infosLine.devise == 2">USD</span></h4>
-                        <h4 class="p-0 m-0"><u class="mx-2 text-primary">Type :</u> {{
-                          getTypeOperation(infosLine.operation) }}</h4>
-                        <h4 class="p-0 m-0"><u class="mx-2 text-primary">Date :</u> {{ infosLine.created_at | date:
-                          'dd/MM/YYYY' }}</h4>
-                      </div>
-                    </div>
-                    <!-- FIN ENTETE -->
+                    <!-- PIED DE RECU -->
                     <!-- <hr> -->
-                    <table class="table m-0 table-recu"
-                      *ngIf="infosLine.operation == 3 || infosLine.operation == 4">
-                      <tr>
-                        <th>Fournisseur</th>
-                        <td class="fw-bold text-dark">{{ FounisseurName }}</td>
-                      </tr>
-                      <tr>
-                        <th>Mode de r&#233;gl&#233;ment</th>
-                        <td>CASH</td>
-                      </tr>
-                      <tr>
-                        <th>Nom du r&#233;presentant</th>
-                        <td><i>{{ infosLine.representant }}</i></td>
-                      </tr>
-                      <tr>
-                        <th>Montant</th>
-                        <td>{{ infosLine.montant | number: '2.0-2' }} <span
-                            *ngIf="infosLine.devise == 1">GNF</span><span *ngIf="infosLine.devise == 2">USD</span></td>
-                      </tr>
-                      <tr>
-                        <th>Montant en lettres</th>
-                        <td>...</td>
-                      </tr>
-                      <tr>
-                        <th>Motif</th>
-                        <td>{{ infosLine.motif }}</td>
-                      </tr>
-                    </table>
-
-                    <table class="table fs-5 table-recu"
-                      *ngIf="infosLine.operation == 1 || infosLine.operation == 2">
-                      <tr>
-                        <th>Client</th>
-                        <td>...</td>
-                      </tr>
-                      <tr>
-                        <th>Montant</th>
-                        <td>{{ infosLine.montant }} <span *ngIf="infosLine.devise == 1">GNF</span><span
-                            *ngIf="infosLine.devise == 2">USD</span></td>
-                      </tr>
-                      <tr>
-                        <th>Montant en lettres</th>
-                        <td>...</td>
-                      </tr>
-                      <tr>
-                        <th>Motif</th>
-                        <td>{{ infosLine.motif }}</td>
-                      </tr>
-                    </table>
-                    <div class="p-3 bg-dark d-flex justify-content-between mb-2">
-                      <h1 class="text-center fw-bold text-white text-center"><i>Caissier</i></h1>
-                      <h1 class="text-center fw-bold text-white text-center"><i>Client</i></h1>
+                    <div class="infoLimanaya mt-5 mb-3">
+                      <div
+                        class="row d-flex justify-content-between align-items-center">
+                        <div class="col">
+                          <h5 class="m-0 p-0 fw-bold">LIMANAYA BUSINESS</h5>
+                          <span class>Acheteur et vendeur d'or en gros et
+                            details</span> <br>
+                          <span class="text-dark">Mafanco Carrefour, centre
+                            commercial Bayo et frères (2<sup>e</sup>E)</span>
+                        </div>
+                        <div class="col text-end">
+                          <span class="text-dark fw-bold">Line 1 : +224 628 978
+                            467 </span> <br>
+                          <span class="text-dark fw-bold">Line 2 : +224 624 044
+                            759 </span> <br>
+                          <span class="text-dark fw-bold">Line 3 : +224
+                            622-339-503 </span> <br>
+                        </div>
+                      </div>
                     </div>
                   </div>
+
                 </div>
               </mat-tab>
             </mat-tab-group>
