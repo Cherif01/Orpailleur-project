@@ -59,7 +59,7 @@ export class AddSaleComponent implements OnInit {
     public location: Location
   ) {}
 
-  title = "Ajout d'une vente"
+  title = "Bienvenu dans l'expedition"
   ngOnInit (): void {
     this.getCusters()
     this.getLot()

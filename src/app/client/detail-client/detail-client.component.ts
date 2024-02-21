@@ -79,9 +79,9 @@ export class DetailClientComponent implements OnInit {
   getListExpedition(): void {
     this.service.LIST_BY_ID('client', 'get_by_client.php', this.Id_client)
       .subscribe({
-        next: (response: any) => {
-          // console.log('Liste expedition : ', response);
-          this.dataSource.data = response
+        next: (data: any) => {
+          console.log('Liste expedition : ', data);
+          this.dataSource.data = data
         },
         error: (err: any) => console.log("erreur : ", err)
       })

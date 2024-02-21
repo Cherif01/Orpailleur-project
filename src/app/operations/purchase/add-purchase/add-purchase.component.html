@@ -37,7 +37,7 @@
                   <div id="app" class="col-12 col-lg-12 mb-3 p-1">
                     <mat-form-field appearance="outline" class="w-100">
                       <mat-label>Poids</mat-label>
-                      <input type="number" formControlName="poidsItem" matInput placeholder="Ex : 00.00" />
+                      <input type="number" formControlName="poidsItem" class="fs-3 fw-bold" matInput placeholder="Ex : 00.00" />
                       <mat-hint>Exemple : 157.12</mat-hint>
                       <mat-error *ngIf="Achat.controls.poidsItem.errors">
                         Le poids est obliatoire
@@ -49,7 +49,7 @@
                   <div id="app" class="col-12 col-lg-12 mb-3 p-1">
                     <mat-form-field appearance="outline" class="w-100">
                       <mat-label>Carrat</mat-label>
-                      <input type="number" formControlName="carratItem" [min]="10" [max]="24" step="0.01" matInput
+                      <input type="number" formControlName="carratItem" class="fs-3 fw-bold" [min]="10" [max]="24" step="0.01" matInput
                         placeholder="Ex : 20.12" />
                       <mat-hint>Exemple : 21.04</mat-hint>
                       <mat-error *ngIf="Achat.controls.carratItem.hasError('required')">
@@ -65,7 +65,7 @@
                   <div id="app" class="col-12 col-lg-12 mb-3 p-1">
                     <mat-form-field appearance="outline" class="w-100">
                       <mat-label>Manquant Achat</mat-label>
-                      <input type="number" formControlName="manquantItem" matInput placeholder="Ex : 0.1" />
+                      <input type="number" formControlName="manquantItem" class="fs-3 fw-bold" matInput placeholder="Ex : 0.1" />
                       <mat-hint>Ex : 0.1</mat-hint>
                       <!-- <mat-error *ngIf="Achat.controls.manquant.errors">
                         Renseigner un manquant si existant...

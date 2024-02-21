@@ -120,7 +120,7 @@
                           <mat-select formControlName="idFixing">
                             <mat-option value="">---- CHOISIR ----</mat-option>
                             <mat-option *ngFor="let data of ListFixing" [value]="data.id">
-                              {{ 'Le: '+data.created_at +' - $'+data.fixingBourse+' - poids: '+data.poidsFixer }}
+                              {{ 'Le: '+(data.created_at | date: 'dd/MM/Y') +' - FIX: $'+data.fixingBourse+' - poids: '+data.poidsFixer }}
                             </mat-option>
                           </mat-select>
                         </mat-form-field>
@@ -131,7 +131,9 @@
                     </div>
                   </div>
 
-                  <table mat-table [dataSource]="dataSource" class="table w-100" id="divTable_">
+                  <hr>
+                  <h1 class="p-2 shadow">GESTION DES EXPEDITIONS</h1>
+                  <table mat-table [dataSource]="dataSource" class="table w-100 table-hover table-striped maTable" id="divTable_">
                     <!-- Checkbox Column -->
                     <ng-container matColumnDef="select">
                       <th mat-header-cell *matHeaderCellDef>
@@ -163,11 +165,11 @@
                     </ng-container>
                     <ng-container matColumnDef="Poids">
                       <th mat-header-cell *matHeaderCellDef>Pds barre</th>
-                      <td class="" mat-cell *matCellDef="let element">{{ element.poidsItem }} g</td>
+                      <td class="" mat-cell *matCellDef="let element">{{ element.poids }} g</td>
                     </ng-container>
-                    <ng-container matColumnDef="CarratMoyen">
+                    <ng-container matColumnDef="CarratMoyen" class="text-start">
                       <th mat-header-cell *matHeaderCellDef>Carrat</th>
-                      <td class="" mat-cell *matCellDef="let element">{{ element.carratItem }}</td>
+                      <td class="" mat-cell *matCellDef="let element">{{ element.carrat }}</td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displaysColums;"></tr>
