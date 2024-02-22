@@ -52,7 +52,7 @@ export class DetailFournisseurComponent implements OnInit {
   getFournisseur() {
     this.service.getUnique('fournisseur', 'getInfoOne.php', this.ID_F).subscribe({
       next: (data: any) => {
-        // console.log("F : ", data);
+        console.log("F : ", data);
         this.FournisseurGet = data;
       }
     })

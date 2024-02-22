@@ -1,9 +1,18 @@
-<h1 matDialogTitle class="text-primary" id="text">Nouvelle Opération</h1>
+<h1 matDialogTitle class="text-danger fw-bold text-uppercase" id="text">Nouvelle Opération</h1>
+<hr>
 <mat-dialog-content style="width: 400px">
   <form [formGroup]="form">
+
+
+    <!-- DATE DE L'OPERATION -->
+    <label class="text-primary fw-bold"> DATE DE L'OPERATION</label>
+    <input type="datetime-local" class="form-control fs-5 fw-bold" formControlName="created_at">
+    <!-- <input type="text"> -->
+    <br>
+
     <!-- Type -->
     <mat-form-field appearance="outline" class="w-100 mb-2">
-      <mat-label>--- Type de l'op&#233;ration ---</mat-label>
+      <mat-label class="text-primary fw-bold">--- Type de l'op&#233;ration ---</mat-label>
       <mat-select formControlName="operation" required
         (selectionChange)="vendorChoice($event.value)">
         <mat-option>-- Ne rien faire ---</mat-option>
@@ -16,22 +25,10 @@
     </mat-form-field>
     <br>
 
-    <!-- Fournisseur -->
-    <!-- <mat-form-field appearance="outline" class="w-100 mb-2" *ngIf="isTrue">
-      <mat-label>--- Liste des fournisseur ---</mat-label>
-      <mat-select formControlName="fournisseur">
-        <mat-option>--</mat-option>
-        <mat-option *ngFor="let data of ListFrs" [value]="data.id">
-          {{data.nomComplet }}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="form.hasError('required')">Selectionnez un fournisseur</mat-error>
-      <mat-hint>Liste des fournisseur</mat-hint>
-    </mat-form-field> -->
 
     <mat-form-field class="example-full-width w-100 mb-2"
       appearance="outline"  *ngIf="isTrue">
-      <mat-label>Fournisseur</mat-label>
+      <mat-label class="text-primary fw-bold">Fournisseur</mat-label>
       <input type="text"
         placeholder="Choisir un fournisseur"
         aria-label="Number"
@@ -51,7 +48,7 @@
 
     <!-- Representant -->
     <mat-form-field appearance="outline" class="w-100" *ngIf="isTrue">
-      <mat-label>Representant</mat-label>
+      <mat-label class="text-primary fw-bold">Representant</mat-label>
       <input matInput type="text" formControlName="representant" class="w-100"
         placeholder="Representant">
       <mat-hint>Payer a :</mat-hint>
@@ -59,7 +56,7 @@
 
     <!-- Devise -->
     <mat-form-field appearance="outline" class="w-100 mb-2">
-      <mat-label>--- Devise de l'op&#233;ration ---</mat-label>
+      <mat-label class="text-primary fw-bold">--- Devise de l'op&#233;ration ---</mat-label>
       <mat-select formControlName="devise">
         <mat-option>-- Ne rien faire ---</mat-option>
         <mat-option [value]="1">GNF</mat-option>
@@ -71,7 +68,7 @@
 
     <!-- Montant -->
     <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Montant de l'op&#233;ration</mat-label>
+      <mat-label class="text-primary fw-bold">Montant de l'op&#233;ration</mat-label>
       <input matInput type="number" formControlName="montant" class="w-100"
         placeholder="Montant de l'op&#233;ration">
       <mat-hint>Entrer le montant de l'op&#233;ration</mat-hint>
@@ -80,7 +77,7 @@
 
     <!-- Motif -->
     <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Motif</mat-label>
+      <mat-label class="text-primary fw-bold">Motif</mat-label>
       <textarea matInput matTextareaAutosize required placeholder="Motif"
         formControlName="motif"></textarea>
       <mat-hint>Saisissez un motif</mat-hint>
@@ -89,7 +86,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-raised-button color="warn" matDialogClose>Fermer</button>
   <button mat-raised-button color="primary" [disabled]="form.invalid"
-    (click)="saveData()">Valider</button>
+  (click)="saveData()">Valider</button>
+  <button mat-raised-button color="warn" matDialogClose>Fermer</button>
 </mat-dialog-actions>

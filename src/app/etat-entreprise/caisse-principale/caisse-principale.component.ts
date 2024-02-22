@@ -22,6 +22,7 @@ export class CaissePrincipaleComponent implements OnInit {
 
   title = 'Caisse Principale'
 
+  usersID: any = localStorage.getItem('id')
   users = localStorage.getItem('username')
 
   // DUPLICATION
@@ -75,6 +76,9 @@ export class CaissePrincipaleComponent implements OnInit {
       .subscribe((result) => {
         if (result?.event && result.event === "insert") {
           let form: caisseData = result.data;
+          form.created_by = this.usersID
+          console.log("Data : ", form);
+
           switch (form.operation) {
             case 1:
             case 3:
@@ -261,7 +265,7 @@ export class CaissePrincipaleComponent implements OnInit {
       })
         .subscribe({
           next: ((data: any) => {
-            // console.log("Caisse : ", data);
+            console.log("Caisse : ", data);
             this.historique = data;
           })
         })
@@ -328,6 +332,7 @@ export class CaissePrincipaleComponent implements OnInit {
 
 }
 export interface caisseData {
+  created_at: any;
   operation: number;
   fournisseur: number;
   representant: string;
@@ -335,6 +340,7 @@ export interface caisseData {
   montant: number;
   montant_anterieur: number;
   motif: string;
+  created_by: string;
 }
 
 export function convertObjectInFormData(tab: any) {

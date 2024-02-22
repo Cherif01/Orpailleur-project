@@ -61,7 +61,7 @@
                         [matAutocomplete]="auto"
                         formControlName="idFournisseur">
                       <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option *ngFor="let data of Finaldata | async" class="fs-3 fw-bold"
+                        <mat-option *ngFor="let data of Finaldata | async"
                           (onSelectionChange)="selectCustomer(data.id+'-'+data.nomComplet)">
                           {{data.nomComplet}}
                         </mat-option>
@@ -69,7 +69,7 @@
                     </mat-form-field>
 
                     <!-- POIDS -->
-                    <mat-form-field appearance="outline" class="w-100 mb-2 fs-3 fw-bold">
+                    <mat-form-field appearance="outline" class="w-100 mb-2 fs-5">
                       <mat-label>Poids fixing</mat-label>
                       <input required formControlName="poidsFixer" matInput
                         placeholder="Ex : 157.12">
@@ -78,14 +78,14 @@
 
                     <div class="d-flex justify-content-between flex-wrap">
                       <!-- FIXING BOURSE -->
-                      <mat-form-field appearance="outline" class="mb-2 w-100 fs-3 fw-bold">
+                      <mat-form-field appearance="outline" class="mb-2 w-100 fs-5">
                         <mat-label>FIXING</mat-label>
                         <input required formControlName="fixingBourse" matInput
                           placeholder="Ex : 1905">
                         <mat-hint>Exemple : 1 905</mat-hint>
                       </mat-form-field>
                       <!-- DISCOUNT -->
-                      <mat-form-field appearance="outline" class="mb-2 w-100 fs-3 fw-bold">
+                      <mat-form-field appearance="outline" class="mb-2 w-100 fs-5">
                         <mat-label>DISCOMPTE</mat-label>
                         <input required formControlName="discompte" matInput
                           placeholder="Ex : 0.6" min="0" max="1">

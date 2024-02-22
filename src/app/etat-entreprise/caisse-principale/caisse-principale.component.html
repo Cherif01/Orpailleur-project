@@ -30,9 +30,9 @@
           <div class="col">
             <div class="card mb-4 shadow border-0">
               <div class="card-body text-center">
-                <h4 class="my-3 text-primary" id="text">𝐒𝐨𝐥𝐝𝐞 𝐚𝐜𝐭𝐢𝐟
+                <h2 class="my-3 text-success fw-bold" id="text">𝐒𝐨𝐥𝐝𝐞 𝐚𝐜𝐭𝐢𝐟
                   (𝖆𝖈𝖙𝖎𝖋 <span
-                    class="dw dw-inbox text-success"></span> )</h4>
+                    class="dw dw-inbox text-success"></span> )</h2>
                 <button mat-button color="primary" (click)="showSolde()"
                   *ngIf="!viewSOLDE">Voir le solde !</button>
                 <button mat-button color="warn" (click)="hideSolde()"
@@ -157,7 +157,7 @@
                             <td *ngIf="data.devise == 2">{{
                               (data.montant_anterieur) | number }}</td>
                             <td *ngIf="data.devise == 2"
-                              class="text-primary fw-bold text-uppercase">{{users}}</td>
+                              class="text-danger fw-bold text-capitalize">{{users}}</td>
                             <td class="text-center" *ngIf="data.devise == 2">
                               <button mat-stroked-button color="warn"
                                 (click)="deleteFunction(data.id)"><span

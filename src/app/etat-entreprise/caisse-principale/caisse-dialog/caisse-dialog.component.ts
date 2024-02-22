@@ -12,12 +12,14 @@ import { ApiserviceService } from 'src/app/api_service/apiservice.service'
 export class CaisseDialogComponent implements OnInit {
   form = new FormGroup({
     operation: new FormControl([Validators.required]),
+    created_at: new FormControl(),
     fournisseur: new FormControl(),
     representant: new FormControl(null),
     devise: new FormControl([Validators.required]),
     montant: new FormControl([Validators.required]),
     montant_anterieur: new FormControl(0),
-    motif: new FormControl('')
+    motif: new FormControl(''),
+    created_by: new FormControl('')
   })
 
   myControl = new FormControl('')

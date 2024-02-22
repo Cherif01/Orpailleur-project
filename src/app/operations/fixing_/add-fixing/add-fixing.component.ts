@@ -101,7 +101,7 @@ export class AddFixingComponent implements OnInit {
       formData.append('discompte', form.value.discompte)
       this.service.create('fixing', 'add.php', formData).subscribe({
         next: (reponse: any) => {
-          // console.log("Poids fixe avec success...")
+          console.log("Poids fixe avec success...", reponse)
           this.router.navigate(['fixing/list-fixing'])
         },
         error: (err: any) => console.log(err)
