@@ -25,6 +25,7 @@ import { SituationFournisseurComponent } from './situation-fournisseur/situation
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
+import { RapportjourComponent } from './rapportjour/rapportjour.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     ListFournisseurComponent,
     FactureachatComponent,
     FactureventeComponent,
-    SituationFournisseurComponent
+    SituationFournisseurComponent,
+    RapportjourComponent
   ],
   imports: [
     CommonModule,

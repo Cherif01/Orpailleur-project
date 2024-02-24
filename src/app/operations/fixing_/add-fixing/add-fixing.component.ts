@@ -13,6 +13,7 @@ import { Observable, map, startWith } from 'rxjs'
   styleUrls: ['./add-fixing.component.css']
 })
 export class AddFixingComponent implements OnInit {
+  // FORM
   Fixing = new FormGroup({
     idFournisseur: new FormControl('', [Validators.required]),
     poidsFixer: new FormControl(),
@@ -101,7 +102,7 @@ export class AddFixingComponent implements OnInit {
       formData.append('discompte', form.value.discompte)
       this.service.create('fixing', 'add.php', formData).subscribe({
         next: (reponse: any) => {
-          console.log("Poids fixe avec success...", reponse)
+          console.log('Poids fixe avec success...', reponse)
           this.router.navigate(['fixing/list-fixing'])
         },
         error: (err: any) => console.log(err)

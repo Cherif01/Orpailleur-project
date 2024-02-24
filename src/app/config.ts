@@ -6,7 +6,6 @@ import { environment } from "src/environments/environment";
 // export const BASE_URL = environment.production?"https://demo.dsg-gn.com/api/":"https://demo.dsg-gn.com/api/";
 // export const BASE_URL = environment.production?"http://192.168.1.169/limanaya/api/":"http://192.168.1.169/limanaya/api/";
 export const BASE_URL = environment.production?"https://dblimanaya.dsg-gn.com/api/":"https://dblimanaya.dsg-gn.com/api/";
-// export const BASE_URL = environment.production?"https://dblimanaya.dsg-gn.com/api/":"http://localhost/limanaya/api/";
 // export const BASE_URL = environment.production?"http://192.168.197.100:8000/":"http://127.0.0.1:8000/";
 
 

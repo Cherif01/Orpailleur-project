@@ -6,6 +6,7 @@ import { FactureachatComponent } from "./facture/factureachat/factureachat.compo
 import { FactureventeComponent } from "./facture/facturevente/facturevente.component";
 import { SituationFournisseurComponent } from "./situation-fournisseur/situation-fournisseur.component";
 import { AuthGuard } from "../user/auth.guard";
+import { RapportjourComponent } from "./rapportjour/rapportjour.component";
 
 const FournisseurRouting: Routes = [
     {
@@ -49,6 +50,11 @@ const FournisseurRouting: Routes = [
             {
                 path: 'situation-monetaire/:id',
                 component: SituationFournisseurComponent,
+                canActivate:[AuthGuard]
+            },
+            {
+                path: 'rapportjour',
+                component: RapportjourComponent,
                 canActivate:[AuthGuard]
             }
         ]
