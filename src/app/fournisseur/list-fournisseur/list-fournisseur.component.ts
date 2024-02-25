@@ -76,7 +76,7 @@ export class ListFournisseurComponent implements OnInit {
 
   saveTableData(element: any) {
     // console.log("ID : ", index);
-    // console.log("Row : ", element);
+    // console.log("Row : ", element);0
     this.service_vendor.updateRows(element)
       .subscribe({
         next: (response) => {
