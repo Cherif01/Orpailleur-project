@@ -31,7 +31,7 @@ import { FactureFournisseurComponent } from './purchase/facture-fournisseur/fact
 import { FacturepurchaseComponent } from './purchase/facturepurchase/facturepurchase.component';
 import { CreateFactureFrsComponent } from './purchase/create-facture-frs/create-facture-frs.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { NgxSelectModule } from 'ngx-select-ex';
+import { ViewFactureComponent } from './purchase/view-facture/view-facture.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +45,8 @@ import { NgxSelectModule } from 'ngx-select-ex';
     InitPurchaseComponent,
     FactureFournisseurComponent,
     FacturepurchaseComponent,
-    CreateFactureFrsComponent
+    CreateFactureFrsComponent,
+    ViewFactureComponent
   ],
   imports: [
     CommonModule,
@@ -69,7 +70,6 @@ import { NgxSelectModule } from 'ngx-select-ex';
     MatSelectModule,
     MatRadioModule,
     MatCheckboxModule,
-    NgxSelectModule,
     RouterModule.forChild(OperationRouting),
   ]
 })

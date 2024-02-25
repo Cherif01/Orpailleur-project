@@ -26,8 +26,11 @@ import { LoginComponent } from './user/login/login.component';
 import { LogoutComponent } from './user/logout/logout.component';
 import { AuthGuard } from './user/auth.guard';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { EnteteComponent } from './public/entete/entete.component';
+import { ProfileComponent } from './user/profile/profile.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 // DATA-TABLES
+
 
 
 @NgModule({
@@ -41,6 +44,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     DialogConvertMoneyComponent,
     LoginComponent,
     LogoutComponent,
+    EnteteComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +58,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     HttpClientModule,
     DataTablesModule,
     CommonModule,
+    MatAutocompleteModule,
     MatCardModule,
     FormsModule,
     MatIconModule,

@@ -25,26 +25,24 @@
                 <span class="micon dw dw-list"></span><span class="mtext mx-2"> Liste des lots</span>
               </button>
               <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/lot/add-lot">
-                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Cr&#233;er un lot</span>
+                <span class="micon mdi mdi-plus-thick"></span><span class="mtext mx-2"> Cr&#233;er un lot</span>
               </button>
-              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
-                <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
+              <button class="mx-2 fw-bold" mat-flat-button color="warn" routerLink="/operation/add-purchase/">
+                <span class="micon mdi mdi mdi-cart-arrow-right"></span><span class="mtext mx-2"> Continuer vers l'achat</span>
               </button>
             </div>
           </div>
         </div>
       </div>
 
-
-
       <!-- Export Datatable start -->
-      <mat-card class="mat-elevation-z8">
+      <mat-card>
         <mat-tab-group>
           <mat-tab label="LOT DU JOUR">
             <table class="table">
               <thead>
                 <th>Date</th>
-                <th>No:-Docs</th>
+                <th>N<sup>o</sup>_Docs</th>
                 <th>Designation</th>
                 <th class="">Status</th>
                 <th class="text-center">Action</th>
@@ -55,15 +53,12 @@
                   <td>00{{ lot.id }}</td>
                   <td>{{ lot.designation }}</td>
                   <td class="">
-                    <span class="text-warning fw-bold" *ngIf="lot.status == 1"> <i
-                        class="icon-copy dw dw-folder-78 mx-1">
-                      </i>Ouvert <br>
-                      <i class="small text-dark">Ce lot est encore ouvert...</i> </span>
+                    <span class="text-warning fw-bold" *ngIf="lot.status == 1">Ouvert</span>
                   </td>
                   <td class="text-center">
                     <a routerLink="/lot/detail-lot/{{ lot.id }}" (click)="playSound()" mat-raised-button color="">
-                      <span class="fw-bold">Voir le contenu </span>
-                      <i class="icon-copy dw dw-right-arrow"></i>
+                      <span class="fw-bold text-long">Voir le contenu </span>
+                      <i class="micon dw dw-right-arrow"></i>
                     </a>
                   </td>
                 </tr>
@@ -128,11 +123,10 @@
           </mat-tab>
 
           <!-- MAJ -->
-          <!-- api/arrivage/id_lot/get_achat_items/ -->
           <mat-tab label="MISE A JOURS">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center pt-3">
               <div class="col">
-                <h4 class="pt-3">Mise a jours des poids et carrat</h4>
+                <h4><i>UPDATE ITEM</i></h4>
               </div>
               <div class="col text-end">
                 <!-- Type -->
@@ -154,19 +148,22 @@
               <!-- Position Column -->
               <ng-container matColumnDef="Date">
                 <th mat-header-cell *matHeaderCellDef> Date </th>
-                <td mat-cell *matCellDef="let element"> {{element.achat.created_at | date:'dd/MM/YYYY'}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.created_at | date:'dd/MM/YYYY'}} </td>
               </ng-container>
 
               <!-- Weight Column -->
               <ng-container matColumnDef="Poids">
                 <th mat-header-cell *matHeaderCellDef> Poids </th>
-                <td mat-cell *matCellDef="let element"> {{element.poids_achat}} </td>
+                <!-- <td mat-cell *matCellDef="let element"> {{element.poidsItem}} </td> -->
+                <td mat-cell *matCellDef="let element">
+                  <input matInput [(ngModel)]="element.poidsItem" (blur)="saveTableData(element)">
+                </td>
               </ng-container>
 
               <!-- Symbol Column -->
               <ng-container matColumnDef="Carrat">
                 <th mat-header-cell *matHeaderCellDef> Carrat </th>
-                <td mat-cell *matCellDef="let element"> {{element.carrat_achat}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.carratItem}} </td>
               </ng-container>
 
               <!-- Symbol Column -->
@@ -174,7 +171,7 @@
                 <th mat-header-cell *matHeaderCellDef> Manquant </th>
                 <!-- <td mat-cell *matCellDef="let element" class="text-danger"> {{element.manquant}} </td> -->
                 <td mat-cell *matCellDef="let element">
-                  <input matInput [(ngModel)]="element.manquant" (blur)="saveTableData(element)">
+                  <input matInput [(ngModel)]="element.manquantItem" (blur)="saveTableData(element)">
                 </td>
               </ng-container>
 

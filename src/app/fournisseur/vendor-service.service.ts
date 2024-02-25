@@ -77,9 +77,14 @@ export class VendorServiceService {
   }
 
   // Add Fournisseur
-  fournisseurPost(data: any): Observable<any> {
+  AddFixingDetail(api: string, suffixURL: string, data: any): Observable<any> {
     // console.log(data);
-    return this.http.post(`${BASE_URL}${LINK_BASE}/${T_FOURNISSEUR}/`, data)
+    return this.http.post(`${BASE_URL}${api}/${suffixURL}/`, data)
+  }
+
+  // Add Fournisseur
+  fournisseurPost(api:string, suffixURL:string, data: any): Observable<any> {
+    return this.http.post(`${BASE_URL}${api}/${suffixURL}`, data);
   }
 
   // GET CLAUSE

@@ -14,7 +14,7 @@ import { CaisseOptDialogSortieComponent } from '../caisse-opt-dialog-sortie/cais
 })
 export class SortieCaisseComponent implements OnInit {
 
-  title = 'Sortie en caisse principale'
+  title = 'Sortie de caisse'
 
   @ViewChild(MatPaginator, { static: true })
   paginator: MatPaginator = Object.create(null);

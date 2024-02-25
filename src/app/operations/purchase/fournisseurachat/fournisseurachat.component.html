@@ -7,12 +7,6 @@
             <div class="title">
               <h4 class="text-capitalize fs-3">{{title}}</h4>
             </div>
-            <nav aria-label="breadcrumb" role="navigation">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
-              </ol>
-            </nav>
           </div>
           <div class="text-right d-flex justify-content-between align-items-center">
             <div class="col-reply">
@@ -21,15 +15,12 @@
               </button>
             </div>
             <div class="col-btn">
-              <button class="mx-2 fw-bold" mat-flat-button color="accent" routerLink="/operation/add-purchase">
-                <span class="micon mdi mdi-plus-thick"></span><span class="mtext mx-2"> commencer un achat </span>
+              <button class="mx-2" mat-flat-button color="accent" routerLink="/operation/add-purchase">
+                <span class="micon dw dw-add"></span><span class="mtext mx-2"> commencer un achat </span>
               </button>
-              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/purchase">
+              <button class="mx-2" mat-flat-button color="primary" routerLink="/operation/purchase">
                 <span class="micon mdi mdi-format-list-numbered-rtl"></span><span class="mtext mx-2"> Liste achat</span>
               </button>
-              <!-- <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
-                <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
-              </button> -->
             </div>
           </div>
         </div>
@@ -38,26 +29,22 @@
       <div class="main-box mb-30">
         <div class="pd-20">
         </div>
-        <div class="pb-20 p-2">
-          <mat-card class="mat-elevation-z8">
+        <div class="mat-elevation-z8">
+          <mat-card>
             <mat-card-title>
               <h2 class="text-blue">Liste g&#233;n&#233;rale des fournisseurs</h2>
             </mat-card-title>
-            <mat-card-content id="table_shadow">
+            <mat-card-content id="table_shadow" class="table-responsive">
               <mat-form-field class="w-100">
                 <input [formControl]="search" placeholder="Rechercher un fournisseur ici...." matInput>
                 <mat-icon matSuffix>search</mat-icon>
               </mat-form-field>
-              <table mat-table [dataSource]="dataSource" class="" class="w-100">
-                <ng-container matColumnDef="nom">
-                  <th mat-header-cell *matHeaderCellDef>Nom</th>
-                  <td mat-cell *matCellDef="let element">{{element.nom}}</td>
+              <table mat-table [dataSource]="dataSource" class="w-100">
+                <ng-container matColumnDef="Nom-complet">
+                  <th mat-header-cell *matHeaderCellDef>Nom complet</th>
+                  <td mat-cell *matCellDef="let element">{{element.nomComplet}}</td>
                 </ng-container>
-                <ng-container matColumnDef="prenom">
-                  <th mat-header-cell *matHeaderCellDef>Prenom</th>
-                  <td mat-cell *matCellDef="let element">{{element.prenom}}</td>
-                </ng-container>
-                <ng-container matColumnDef="pays">
+                <ng-container id="dataTableColumnNone" matColumnDef="pays">
                   <th mat-header-cell *matHeaderCellDef>Pays</th>
                   <td mat-cell *matCellDef="let element">{{element.pays}}</td>
                 </ng-container>
@@ -65,7 +52,7 @@
                   <th mat-header-cell *matHeaderCellDef>Ville</th>
                   <td mat-cell *matCellDef="let element">{{element.ville}}</td>
                 </ng-container>
-                <ng-container matColumnDef="adresse">
+                <ng-container id="dataTableColumnNone" matColumnDef="adresse">
                   <th mat-header-cell *matHeaderCellDef>Adresse</th>
                   <td mat-cell *matCellDef="let element">{{element.adresse}}</td>
                 </ng-container>
@@ -80,9 +67,7 @@
                 <ng-container matColumnDef="action">
                   <th mat-header-cell *matHeaderCellDef class="text-center">Action</th>
                   <td mat-cell *matCellDef="let element" class="text-center">
-                    <!-- <a routerLink="/operation/init-purchase/{{element.id}}" mat-flat-button color="accent">Selectionner
-                      <span class="micon dw dw-right-arrow"></span></a> -->
-                      <button (click)="sendID(element.id)" mat-flat-button color="warn">Selectionner</button>
+                      <button (click)="sendID(element.id)" mat-flat-button color="warn"><span class="mdi mdi-cart-outline"></span></button>
                   </td>
                 </ng-container>
 

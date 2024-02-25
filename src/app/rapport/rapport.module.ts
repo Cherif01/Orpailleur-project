@@ -19,6 +19,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { RapportCaisseComponent } from './rapport-caisse/rapport-caisse.component';
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
+import { RapportAchatComponent } from './rapport-achat/rapport-achat.component';
 
 
 
@@ -26,7 +27,8 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
   declarations: [
     RapportFournisseurComponent,
     RapportClientComponent,
-    RapportCaisseComponent
+    RapportCaisseComponent,
+    RapportAchatComponent
   ],
   imports: [
     CommonModule,

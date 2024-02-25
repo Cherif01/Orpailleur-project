@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddClientComponent } from 'src/app/public/dialogs/dialog-add-client/dialog-add-client.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { convertObjectInFormData } from 'src/app/etat-entreprise/caisse-principale/caisse-principale.component';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class ListClientComponent implements OnInit {
 
   // GET Client
   getClient() {
-    this.service.getList('client_api', 'client').subscribe({
+    this.service.LIST('public', 'read.php', 'table_client').subscribe({
       next: (data) => {
         this.dataSource.data = data;
         this.dataSource.paginator = this.paginator;
@@ -54,9 +55,11 @@ export class ListClientComponent implements OnInit {
     }).afterClosed()
       .subscribe((result) => {
         if (result?.event && result.event === "insert") {
-          console.log(result.data);
+          // console.log(result.data);
+          const formData = convertObjectInFormData(result.data);
+          this.dataSource.data.splice(0, this.dataSource.data.length);
           //Envoyer dans la Base
-          this.service.clientPost(result.data).subscribe({
+          this.service.create('client', 'create.php', formData).subscribe({
             next: (response) => {
               this.snackBar.open("Client enregistre avec succès !", "Okay", {
                 duration: 3000,
@@ -65,9 +68,10 @@ export class ListClientComponent implements OnInit {
                 panelClass: ['bg-success', 'text-white']
 
               })
+              this.getClient()
             },
             error: (err) => {
-              this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
+              this.snackBar.open("Erreur, Veuillez reessayer!", "Okay", {
                 duration: 3000,
                 horizontalPosition: "left",
                 verticalPosition: "top",

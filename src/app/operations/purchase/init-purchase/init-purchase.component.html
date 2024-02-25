@@ -7,12 +7,6 @@
             <div class="title">
               <h4 class="text-capitalize fs-3">{{title}}</h4>
             </div>
-            <nav aria-label="breadcrumb" role="navigation">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
-              </ol>
-            </nav>
           </div>
           <div class="text-right d-flex justify-content-between align-items-center">
             <div class="col-reply">
@@ -21,15 +15,12 @@
               </button>
             </div>
             <div class="col-btn">
-              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
+              <button class="mx-2" mat-flat-button color="accent" routerLink="/operation/add-purchase">
                 <span class="micon mdi mdi-plus-thick"></span><span class="mtext mx-2"> commencer un achat </span>
               </button>
-              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/purchase">
+              <button class="mx-2" mat-flat-button color="primary" routerLink="/operation/purchase">
                 <span class="micon mdi mdi-format-list-numbered-rtl"></span><span class="mtext mx-2"> Liste achat</span>
               </button>
-              <!-- <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
-                <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
-              </button> -->
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { map, takeUntil } from 'rxjs/operators';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,6 +9,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { SelectFilterService } from 'src/app/services/select-filter.service';
 import { Location } from '@angular/common';
 import { PurchaseService } from 'src/app/operations/purchase/purchase.service';
+import { ApiserviceService } from 'src/app/api_service/apiservice.service';
 
 @Component({
   selector: 'app-home',
@@ -42,6 +43,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private selectFilter: SelectFilterService,
     private purchaseService: PurchaseService,
+    private service: ApiserviceService,
     public location: Location
   ) {
     this.search.valueChanges.subscribe(v => {
@@ -49,17 +51,40 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  nameSession: any = localStorage.getItem('nomComplet')
+  roleSession: any = localStorage.getItem('role')
+
   upDown = true
   title = "Achat";
   items: any[] = []
   dataAchat: any[] = []
-  displaysColums = ["created_at", "slug", "fournisseur", "telephone", "poids_total" ,"carrat_achat", "action"];
+  displaysColums = ["fournisseur", "poids_total", "carrat_achat", "action"];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
+  _ACCESS_BUTTON_ROLE = "Administrateur"
+  _ROLE_ = localStorage.getItem('role')
+  Access__ = false
 
   ngOnInit(): void {
+    // console.log("Session : ", localStorage.getItem('session'));
+    // console.log("Role : ", localStorage.getItem('role'));
+    // console.log("State : ", localStorage.getItem('state'));
+    // console.log("Username : ", localStorage.getItem('username'));
+    // console.log("ROLE : ", this._ROLE_);
     this.getPurchaseListe();
+    this.dashboard()
+    this.testROLE()
   }
+
+  testROLE(){
+    if(this._ACCESS_BUTTON_ROLE == this._ROLE_){
+      this.Access__ = true
+    }else{
+      this.Access__ = false
+    }
+  }
+
+
 
 
   // LIST ACHAT
@@ -167,46 +192,16 @@ export class HomeComponent implements OnInit {
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.FilterVendor.next(this.selectFilter.filterMethodWithFirstNameAndLastName(this.vendors, this.searchFilterVendorCtrl.value));
-    });
+      });
   }
 
   onSubscribePurchage: any
   getPurchaseListe() {
-    this.onSubscribePurchage = this.purchaseService
-      .getListePurchase(this.rangeFormGroup.value)
-      .pipe(
-        map(data => {
-          let result: any[] = [];
-          // console.log(data)
-          data.forEach(item => {
-            let index = result.findIndex(i => i.slug === item.slug);
-            if (index === -1) {
-              result.push({
-                id: item.id,
-                date_achat: item.created_at,
-                slug: item.slug,
-                fournisseur: item.fournisseur,
-                poids_total: item.poids_total,
-                carrat_moyen: item.carrat_moyen,
-              });
-            } else {
-              result[index].poids_achat += item.poids_achat;
-            }
-            // console.log("ITEM : " + item);
-          });
-          // console.log(result);
-          this.dataSource.data = result;
-          // console.log(this.dataSource.data);
-          return result;
-        })
-      )
-      .subscribe((data: any) => {
-        this.items = data;
-        // this.dataSource.data = this.items
-        this.dataSource.paginator = this.paginator
-        this.getVendor(this.items)
+    this.purchaseService.LISTFournisseurAchat('dashboard', 'achatdujour.php')
+      .subscribe(data => {
+        // console.log("Achat : ", data);
+        this.dataSource.data = data
       });
-
   }
 
   filterVendor(vendorId: any) {
@@ -215,5 +210,57 @@ export class HomeComponent implements OnInit {
     else
       this.dataSource.data = this.items
   }
+
+
+
+
+  // DETAILS (STATISTIQUE DASHBOARD)
+  caisse: any = {}
+  aujourdhui: Date = new Date()
+
+  nbFournisseur = 0
+  nbClient = 0
+  nbAchatToday = 0
+  TotalPoidsToday = 0
+  poidsFixer = 0
+  moyenneBourse = 0
+  dashboard(): void {
+    // DAYS
+    this.service.getList_('dashboard', 'statistique.php')
+      .subscribe({
+        next: (data: any) => {
+          // console.log("data " , data);
+          this.nbFournisseur = data.nbFournisseur
+          this.nbClient = data.nbClient
+          this.nbAchatToday = data.nbAchatToday
+          this.TotalPoidsToday = data.TotalPoidsToday
+        }
+      })
+
+    // LOT
+
+    // ACHAT
+
+    // FIXING
+    this.service.getList_('dashboard', 'fixingtoday.php')
+      .subscribe({
+        next: (data: any) => {
+          // console.log("data ", data);
+          this.poidsFixer = data.poidsFixer
+          this.moyenneBourse = data.moyenneBourse
+        }
+      })
+
+    // CAISSE
+    this.service.getList_('caisse', 'filter_.php')
+      .subscribe({
+        next: (data: any) => {
+          // console.log("data ", data);
+          this.caisse = data
+        }
+      })
+
+  }
+  // END
 
 }

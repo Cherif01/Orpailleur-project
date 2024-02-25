@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { LINK_BASE } from 'src/app/config';
 import { LotService } from '../lot.service';
 import { Location } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { log } from 'handsontable/helpers';
+import { convertObjectInFormData } from 'src/app/etat-entreprise/caisse-principale/caisse-principale.component';
 
 @Component({
   selector: 'app-list-lot',
@@ -12,6 +11,7 @@ import { log } from 'handsontable/helpers';
   styleUrls: ['./list-lot.component.css']
 })
 export class ListLotComponent implements OnInit {
+
   constructor(
     private serviceLot: LotService,
     private snackBar: MatSnackBar,
@@ -35,29 +35,17 @@ export class ListLotComponent implements OnInit {
   title = "Lot"
   listLotHistory: any[] = [];
   listLot: any[] = [];
-  listAttribution: any
 
   ngOnInit(): void {
-    this.getAttribution()
     this.getLot()
-  }
-
-  // GET Arrivage
-  getAttribution() {
-    this.serviceLot.getAttribution('api', 'arrivage').subscribe({
-      next: (data) => {
-        this.listAttribution = data
-        // console.log(data)
-      }
-    })
   }
 
   // GET LOT
   // PoidTotalLot: number = 0
   allLot: any[] = []
   getLot() {
-    this.serviceLot.getList(LINK_BASE, 'arrivage').subscribe({
-      next: (data) => {
+    this.serviceLot.LIST('public', 'read.php', 'table_lot').subscribe({
+      next: (data: any) => {
         // console.log(data);
         const todayDate = new Date().toLocaleDateString();
         // console.log(todayDate);
@@ -80,10 +68,10 @@ export class ListLotComponent implements OnInit {
 
   listLotEvent(idLotSelect: any) {
     // console.log(idLotSelect);
-    this.serviceLot.getLotContentById(LINK_BASE, 'arrivage', idLotSelect).subscribe({
+    this.serviceLot.getOneByIdSimple('lot', 'item_by_lot.php', idLotSelect).subscribe({
       next: (data: any) => {
-        console.log(data.data);
-        this.dataSource_maj.data = data.data;
+        console.log(data);
+        this.dataSource_maj.data = data;
       }
     })
 
@@ -92,19 +80,19 @@ export class ListLotComponent implements OnInit {
   saveTableData(element: any) {
     console.log("Row : ", element);
     let obj = {
-      id: element.id,
-      achat: element.achat.id,
-      poids_achat: element.poids_achat,
-      carrat_achat: element.carrat_achat,
-      manquant: element.manquant,
-      item_used: element.item_used,
+      id: element.idItem,
+      poidsItem: element.poidsItem,
+      carratItem: element.carratItem,
+      manquantItem: element.manquantItem,
     }
+    const objetForm = convertObjectInFormData(obj)
     // console.log("NEW OBJET : ", obj);
 
-    this.serviceLot.updateRows(obj)
+    this.serviceLot.UpdateItem('achat', 'updateItem.php', objetForm)
       .subscribe({
         next: (response) => {
-          this.snackBar.open("Manquant modifier avec succès!", undefined, {
+          // console.log("res : ", response);
+          this.snackBar.open("colonne modifier avec succès!", undefined, {
             duration: 2000,
             horizontalPosition: "right",
             verticalPosition: "top",
@@ -113,6 +101,7 @@ export class ListLotComponent implements OnInit {
           });
         },
         error: (err) => {
+          console.error("err : ", err);
           this.snackBar.open("Echec, Veuillez reessayer!", undefined, {
             duration: 1000,
             horizontalPosition: "right",

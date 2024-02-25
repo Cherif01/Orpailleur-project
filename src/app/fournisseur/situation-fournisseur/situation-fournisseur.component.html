@@ -39,7 +39,7 @@
                   <div class="col-12 col-lg-3">
                     <div class="card border-0">
                       <div class="card-body text-center">
-                        <h4 class="fw-bold">{{ objetFRS.prenom }} {{ objetFRS.nom }}</h4>
+                        <h4 class="fw-bold">{{ objetFRS.nomComplet }}</h4>
                         <span class="fs-6 p-2">{{ objetFRS.pays }} / {{ objetFRS.ville }}</span> <br>
                         <span class="">{{ objetFRS.email }}</span> <br>
                         <span class="">{{ objetFRS.adresse }} / {{ objetFRS.telephone }}</span> <br>
@@ -61,8 +61,8 @@
                             <span *ngIf="SoldeGNF < 0" class="text-danger">{{ SoldeGNF | number: '2.2-2'}} GNF</span>
                           </td>
                           <td>
-                            <span *ngIf="SoldeUSD >= 0">{{format2Chart(SoldeUSD) | number: '2.2-2'}} USD</span>
-                            <span *ngIf="SoldeUSD < 0" class="text-danger">{{ format2Chart(SoldeUSD) | number: '2.2-2'}} USD</span>
+                            <span *ngIf="SoldeUSD >= 0">{{(SoldeUSD) | number: '2.2-2'}} USD</span>
+                            <span *ngIf="SoldeUSD < 0" class="text-danger">{{ (SoldeUSD) | number: '2.2-2'}} USD</span>
                           </td>
                           <td>
                             <span *ngIf="SoldeGNF >= 0 && SoldeUSD >= 0" class="text-success fw-bold">Aucune dettes
@@ -79,13 +79,14 @@
                   <div class="mb-4 mb-lg-0 shadow-lg mt-3">
                     <!-- SITUATION -->
                     <mat-tab-group>
+                      <!-- SITUATION USD -->
                       <mat-tab>
                         <ng-template mat-tab-label>
                           <mat-icon>person</mat-icon>
-                          <span class="fw-bold text-dark">SITUATION</span>
+                          <span class="fw-bold text-dark">SITUATION USD</span>
                         </ng-template>
-                        <table class="table">
-                          <thead class="text-dark">
+                        <table class="table table-striped">
+                          <thead class="bg-secondary text-light">
                             <th>Date d'operation</th>
                             <th>Mouvement</th>
                             <th>Credit</th>
@@ -94,68 +95,86 @@
                           </thead>
                           <tbody>
                             <tr *ngFor="let data of fusionTab">
-                              <td>{{ data.created_at | date: "dd/MM/YYYY 'a' HH:mm:ss" }}</td>
+                              <td>{{ data.dateOperation | date: "dd/MM/YYYY 'à' HH:mm:ss" }}</td>
                               <td class="">
-                                <span class="text-dark" *ngIf="data.type == 1">Facturation - Poids {{ data.poids_item }} g</span>
-                                <span class="text-dark" *ngIf="data.type == 2">Paiement - <i *ngIf="data.representant != null" class="text-uppercase fw-bold">{{ data.representant }}</i> <i *ngIf="data.representant == null">{{ data.fournisseur }}</i> </span>
+                                <span class="text-dark" *ngIf="data.type_operation == 'credit' ">Facturation - Poids {{
+                                  data.poidsTotal | number: '2.2-2' }} g</span>
+                                <span class="text-dark" *ngIf="data.type_operation == 'debit' ">Paiement - <i
+                                    *ngIf="data.representant != null" class="text-uppercase fw-bold">{{
+                                    data.representant }}</i> <i *ngIf="data.representant == null">{{ data.fournisseur
+                                    }}</i> </span>
+                                <span class="text-info" *ngIf="data.type_operation == 'Conversion' ">ECHANGE : {{numberVal(data.source) + ' ==> ' +numberVal(data.destination)}}</span>
                               </td>
                               <td>
-                                <span *ngIf="data.type == 1">{{ format2Chart(data.montant) | number: '2.2-2' }}</span>
-                                <span *ngIf="data.type == 2">---</span>
+                                <span *ngIf="data.type_operation == 'credit' ">{{ (data.montant) | number: '2.2-2'
+                                  }}</span>
+                                <span *ngIf="data.type_operation == 'Conversion' ">{{ (data.on) | number: '2.2-2'
+                                }} GNF</span>
                               </td>
                               <td>
-                                <span *ngIf="data.type == 2">{{ format2Chart(data.montant) | number: '2.2-2' }}</span>
-                                <span *ngIf="data.type == 1">---</span>
+                                <span *ngIf="data.type_operation == 'Conversion' ">{{ (data.out) | number: '2.2-2'
+                                }} USD</span>
+                                <span *ngIf="data.type_operation == 'debit'">{{ (data.montant) | number: '2.2-2'
+                                  }}</span>
+                                <span *ngIf="data.type_operation == 'credit'">---</span>
                               </td>
                               <td>
-                                <span [class]="'fw-bold text-' +(data.solde>0?'success':'danger')">$ {{ format2Chart(data.solde) | number }}</span>
+                                <span [class]="'fw-bold text-' +(data.solde>0?'success':'danger')">$ {{ (data.solde) |
+                                  number: '2.2-2' }}</span>
                               </td>
                             </tr>
                           </tbody>
                         </table>
                       </mat-tab>
 
-                      <!-- Fixing valider -->
-                      <!-- <mat-tab>
+                      <!-- SITUATION GNF -->
+                      <mat-tab>
                         <ng-template mat-tab-label>
-                          <mat-icon>check</mat-icon>
-                          Fixing valider
+                          <mat-icon>person</mat-icon>
+                          <span class="fw-bold text-dark">SITUATION GNF</span>
                         </ng-template>
-                        <table class="table" matTable>
-                          <thead class="text-dark">
-                            <th>NB Barres</th>
-                            <th>Poids</th>
-                            <th>Carrat</th>
-                            <th>Densite</th>
-                            <th>P.Unit</th>
-                            <th>Montant</th>
+                        <table class="table table-striped">
+                          <thead class="bg-secondary text-light">
+                            <th>Date d'operation</th>
+                            <th>Mouvement</th>
+                            <th>Credit</th>
+                            <th>Debit</th>
+                            <th>Solde A</th>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let data of TabFixingOpts; let i = index">
-                              <td>{{ i+1 }}</td>
-                              <td>{{ data.poids_item | number }}</td>
-                              <td>{{ data.carrat | number }}</td>
-                              <td>{{ 22 }}</td>
-                              <td>{{ (data.prix_unit ).toString().substring(0, 5) }}</td>
-                              <td>{{ calculMontant((data.prix_unit).toString().substring(0, 5), data.poids_item, data.carrat) }}</td>
+                            <tr *ngFor="let data of fusionTab2">
+                              <td>{{ data.dateOperation | date: "dd/MM/YYYY 'à' HH:mm:ss" }}</td>
+                              <td class="">
+                                <span class="text-dark" *ngIf="data.type_operation == 'credit' ">Facturation - Poids {{
+                                  data.poidsTotal | number: '2.2-2' }} g</span>
+                                <span class="text-dark" *ngIf="data.type_operation == 'debit' ">Paiement -
+                                  <i *ngIf="data.representant != null" class="text-uppercase fw-bold">{{
+                                    data.representant }}</i> <i *ngIf="data.representant == null">{{ data.fournisseur
+                                    }}</i> </span>
+                                <span class="text-blue" *ngIf="data.type_operation == 'USD/GNF' ">Monnaie changer</span>
+                              </td>
+                              <td>
+                                <span *ngIf="data.type_operation == 'credit' ">{{ (data.montant) | number: '2.2-2'
+                                  }}</span>
+                                <span *ngIf="data.type_operation == 'debit' ">---</span>
+                              </td>
+                              <td>
+                                <span *ngIf="data.type_operation == 'debit'">{{ (data.montant) | number: '2.2-2'
+                                  }}</span>
+                                <span *ngIf="data.type_operation == 'credit'">---</span>
+                              </td>
+                              <td>
+                                <span [class]="'fw-bold text-' +(data.solde>0?'success':'danger')">$ {{ (data.solde) |
+                                  number: '2.2-2' }}</span>
+                              </td>
                             </tr>
                           </tbody>
-                          <tfoot>
-                            <th>NB Barres</th>
-                            <th>Poids</th>
-                            <th>Carrat</th>
-                            <th>Densite</th>
-                            <th>P.Unit</th>
-                            <th>0</th>
-                          </tfoot>
                         </table>
-                      </mat-tab> -->
-
+                      </mat-tab>
                     </mat-tab-group>
                   </div>
                 </div>
               </div>
-
             </div>
           </mat-card-content>
         </mat-card>

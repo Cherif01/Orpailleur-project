@@ -7,24 +7,28 @@
   font-size: 16px;
 }
 
-.printTable thead th{
-  color: rgb(41, 40, 40);
-  border: 1.6px solid black;
+#divTable_ th{
+  color: darkslategray;
+  text-transform: uppercase;
 }
 
-.printTable tbody tr{
+.divTable_ th{
+  border: 1px solid black;
+}
+
+.divTable_ tbody tr{
   color: rgb(21, 21, 21);
   border: 1.6px solid black;
 }
-.printTable tbody td{
+.divTable_ tbody td{
   color: rgb(21, 21, 21);
   border: 1.6px solid black;
 }
-.printTable tfoot tr{
+.divTable_ tfoot tr{
   color: rgb(21, 21, 21);
   border: 1.6px solid black;
 }
-.printTable tfoot th{
+.divTable_ tfoot th{
   color: rgb(21, 21, 21);
   border: 1.6px solid black;
 }

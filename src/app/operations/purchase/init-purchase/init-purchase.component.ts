@@ -1,10 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiserviceService } from 'src/app/api_service/apiservice.service';
-import { PurchaseService } from '../purchase.service';
 import { Location } from '@angular/common';
 
 @Component({
@@ -22,9 +20,9 @@ export class InitPurchaseComponent implements OnInit {
 
   // init
   initAchat = this.fb.group({
-    fournisseur: [],
-    poids_total: [0, Validators.required],
-    carra_moyen: [0, Validators.required],
+    idFournisseur: [],
+    poidsTotal: [0, Validators.required],
+    carratMoyen: [0, Validators.required],
     created_by: [1, Validators.required]
   })
 
@@ -59,22 +57,34 @@ export class InitPurchaseComponent implements OnInit {
 
   // Recuper le dernier achat
   getLastPurchase() {
-    this.service.getList('api', 'achat')
-    .subscribe((donnees: any[]) => {
-      donnees.forEach((elem: any) => {
-        if(elem.fournisseur.id == this.ID && elem.status == 1){
-          // console.log(elem.fournisseur.id);
-          this.router.navigate(['/operation/add-purchase/' + this.ID])
-        }
-      })
+    this.service.getOneById('achat', 'achatlive.php', this.ID, 'table_achat')
+    .subscribe({
+      next: (data: any) => {
+        console.log("Live achat : ", data);
+        // data.forEach((elem: any) => {
+        //   if(elem.fournisseur.id == this.ID && elem.status == 1){
+        //     // console.log(elem.fournisseur.id);
+        //     this.router.navigate(['/operation/add-purchase/' + this.ID])
+        //   }
+        // })
+      }
     })
   }
 
   lotExist: boolean = false
+  date: Date = new Date()
   getLot() {
-    this.service.getList('api', 'arrivage').subscribe({
+    // LIST depuis le grand services
+    this.service.LIST('public', 'read.php', 'table_lot').subscribe({
       next: (data) => {
-        this.lotExist = true
+        data.forEach((item) => {
+          let day = new Date(item.created_at)
+          if(this.date.getDay() == day.getDay()){
+            this.lotExist = true
+          }else{
+            this.lotExist = false
+          }
+        })
       }
     })
   }
@@ -82,9 +92,12 @@ export class InitPurchaseComponent implements OnInit {
   // Init achat form
   InitAchatForm(form: FormGroup) {
     if (form.valid) {
-      this.initAchat.controls.fournisseur.setValue(this.ID)
-      this.initAchat.controls.created_by.setValue(1)
-      this.service.achatAddPost(form.value).subscribe({
+      const formData = new FormData();
+      this.initAchat.controls.idFournisseur.setValue(this.ID)
+      formData.append("idFournisseur", form.value.idFournisseur);
+      // console.log("FormData : ", formData);
+
+      this.service.create('achat', 'init.php', formData).subscribe({
         next: (response) => {
           this.snackBar.open("Achat initialiser avec succès !", "Okay", {
             duration: 5000,
@@ -95,6 +108,8 @@ export class InitPurchaseComponent implements OnInit {
           this.router.navigate(['/operation/add-purchase/' + this.ID])
         },
         error: (err) => {
+          console.log("Error : ", err);
+
           this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
             duration: 4000,
             horizontalPosition: "right",

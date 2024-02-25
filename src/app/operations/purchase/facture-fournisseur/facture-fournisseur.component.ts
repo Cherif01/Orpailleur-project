@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { PurchaseService } from '../purchase.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { ApiserviceService } from 'src/app/api_service/apiservice.service';
 
 @Component({
   selector: 'app-facture-fournisseur',
@@ -12,12 +13,10 @@ import { Location } from '@angular/common';
   styleUrls: ['./facture-fournisseur.component.css']
 })
 export class FactureFournisseurComponent implements OnInit {
-  @ViewChild(MatPaginator, { static: true })
-  paginator: MatPaginator = Object.create(null);
-  search = new FormControl();
 
   constructor(
     private serviceOperation: PurchaseService,
+    private service: ApiserviceService,
     private activeroute: ActivatedRoute,
     public location: Location
   ) {
@@ -27,9 +26,13 @@ export class FactureFournisseurComponent implements OnInit {
   }
 
   listFournisseur: any;
-  dataSource: MatTableDataSource<any> = new MatTableDataSource();
-  displaysColums = ["nom", "prenom", "pays", "ville", "adresse", "tel", "mail", "action"];
   title = 'Facture Fournisseur'
+
+  @ViewChild(MatPaginator, { static: true })
+  paginator: MatPaginator = Object.create(null);
+  search = new FormControl();
+  dataSource: MatTableDataSource<any> = new MatTableDataSource();
+  displayedColumns = ["fournisseur", "pays", "ville", "adresse", "tel", "action"];
   ID_F: any
 
   ngOnInit() {
@@ -44,7 +47,7 @@ export class FactureFournisseurComponent implements OnInit {
 
   // GET Fournisseur
   getFournisseur() {
-    this.serviceOperation.getList('api', 'fournisseur').subscribe({
+    this.service.LIST('public', 'read.php', 'table_fournisseur').subscribe({
       next: (data) => {
         this.dataSource.data = data;
         this.dataSource.paginator = this.paginator;
@@ -55,26 +58,33 @@ export class FactureFournisseurComponent implements OnInit {
 
   // GET FIxing
   TabFixing: any = []
+  TabFixingValider: any = []
   name: string = ""
 
   ID_fournisseur: any
   Name_fournisseur: any = ''
   Adresse_fournisseur: any
 
+  // Tous les fixing en cours d'un fournisseur
+
   getAllFixing() {
-    this.serviceOperation.getList('api', 'fixing').subscribe({
-      next: (data: any) => {
-        // console.log(data),
-        data.forEach((item: any, index: number) => {
-          if (item.fournisseur.id == this.ID_F) {
-            this.TabFixing.push(data[index]);
-            this.name = item.fournisseur.prenom + " " + item.fournisseur.nom
-            // console.log(this.TabFixing);
-          }
-        })
-      },
-      error: (err: any) => console.log(err)
-    })
+    this.service.getUnique('fixing', 'fixinglive.php', this.ID_F)
+      .subscribe({
+        next: (data: any[]) => {
+          console.log("Res : ", data)
+          data.forEach((item: any, index: number) => {
+            this.name = item.nomComplet
+            if(item.statut_fixing == 1){
+              this.TabFixing.push(item);
+            }else if(item.statut_fixing == 2){
+              this.TabFixingValider.push(item);
+            }
+
+          })
+          // console.log("Tab : ", this.TabFixing);
+        },
+        error: (err: any) => console.log(err)
+      })
 
 
   }

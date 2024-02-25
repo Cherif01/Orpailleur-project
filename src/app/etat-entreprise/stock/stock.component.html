@@ -22,24 +22,34 @@
         </div>
       </div>
       <!-- Export Datatable start -->
-      <div class="...-box">
-        <mat-card class="mat-elevation-z0 bg-transparent">
+      <div class="..-box">
+        <mat-card class="mat-elevation-z8">
+          <mat-card-title>
+            <h2 class="text-dark fw-bold text-center">
+              <span class="mb-2">Achat du jour</span> <br>
+              <span class="fw-bold text-primary">
+                {{poidsAuj | number: '2.2-2' }} g
+              </span>
+            </h2>
+            <hr>
+          </mat-card-title>
           <mat-card-content>
             <div class="row">
               <div class="col-12 col-lg-4 col-sm-4 col-md-6">
-                <div class="card mb-4 shadow border-0 m-2">
+                <div class="card mb-4 border-0 m-2">
                   <div class="card-body text-center">
                     <h4 class="my-1 fw-bold text-uppercase" id="text">STOCK (ENTR&#233;)</h4>
                     <h2 class="text-center">Aujourd'hui</h2>
                     <!-- <h2 class="text-center">Total</h2> -->
                     <div class="p-1">
-                      <h2>{{ STOCK_PRINCIPALE_ENTRER_DU_JOUR | number: '2.2-2' }} g</h2>
+                      <!-- <h2>{{ STOCK_PRINCIPALE_ENTRER_DU_JOUR | number: '2.2-2' }} g</h2> -->
+                      <h2>{{ poidsEntrer | number: '2.2-2' }} g</h2>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-12 col-lg-4 col-sm-4 col-md-6">
-                <div class="card mb-4 shadow border-0 m-2">
+                <div class="card mb-4 border-0 m-2">
                   <div class="card-body text-center">
                     <h4 class="my-1 fw-bold text-uppercase" id="text">STOCK (EXPEDI&#233;)</h4>
                     <h2 class="text-center">Aujourd'hui</h2>
@@ -51,14 +61,13 @@
                 </div>
               </div>
               <div class="col-12 col-lg-4 col-sm-4 col-md-6">
-                <div class="card mb-4 shadow border-0 m-2">
+                <div class="card mb-4 border-0 m-2">
                   <div class="card-body text-center">
                     <h4 class="my-1 fw-bold text-success" id="text">STOCK (ACTIF <span
                         class="dw dw-inbox text-success"></span>)</h4>
-                        <h2 class="text-center">Total</h2>
+                    <h2 class="text-center">Total</h2>
                     <div class="p-1">
-                      <h2 *ngIf="QTE_DIPONIBLE >= 0" class="text-success">{{ (QTE_DIPONIBLE | number: '2.2-2') }} g</h2>
-                      <h2 *ngIf="QTE_DIPONIBLE < 0" class="text-danger">{{ (QTE_DIPONIBLE | number: '2.2-2') }} g</h2>
+                      <h2 class="text-success">{{ (allPoids - QTE_EXPEDIER) | number: '2.2-2' }} g</h2>
                     </div>
                   </div>
                 </div>

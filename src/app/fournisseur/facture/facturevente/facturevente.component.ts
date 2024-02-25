@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,7 +7,7 @@ import { VendorServiceService } from '../../vendor-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 import { SelectionModel } from '@angular/cdk/collections';
-import { log } from 'handsontable/helpers';
+import { ApiserviceService } from 'src/app/api_service/apiservice.service';
 
 @Component({
   selector: 'app-facturevente',
@@ -63,11 +63,13 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
     fixing: [],
     type_envoie: [0],
     carrat_moyen_restant: [0],
+    carrat_manquant: [],
     created_by: [1, Validators.required]
   })
 
   constructor(
     private serviceVendor: VendorServiceService,
+    private service: ApiserviceService,
     private activeroute: ActivatedRoute,
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
@@ -87,7 +89,7 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
   title = "Gestion du fixing...";
   items: any[] = []
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
-  displaysColums: string[] = ["select", "Poids", "Carrat", "Prix unit"];
+  displaysColums: string[] = ["select", "Poids", "Carrat", "Manquant", "Prix unit"];
   selection = new SelectionModel<any>(true, []);
 
 
@@ -105,30 +107,83 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
 
   //#region Envoie des items dans la base de données
   poidsEnvoie: number = 0
-  EnvoieFixingDetail(selection: any) {
+  EnvoieFixingDetail(tabFixingValidInitAndItemsSelect: any) {
+    // console.log("Select : ", tabFixingValidInitAndItemsSelect);
 
-    this.serviceVendor.Add('api', 'fixing_detail/1/create_fixing_detail', selection).subscribe({
-      next: (response) => {
-        // console.log("RESPONSE : ", response);
-        this.snackBar.open("Ajout effectuer avec succes !", "Merci!", {
-          duration: 3000,
-          horizontalPosition: "right",
-          verticalPosition: "bottom",
-          panelClass: ['bg-success', 'text-white']
-        })
-        this.hideSelectedItem(selection);
-        window.location.reload()
-      },
-      error: (err) => {
-        this.snackBar.open("Erreur pendant l'envoie, Veuillez reessayer!", "D'accord !", {
-          duration: 3000,
-          horizontalPosition: "right",
-          verticalPosition: "bottom",
-          panelClass: ['bg-danger', 'text-white']
-        })
-      }
+    tabFixingValidInitAndItemsSelect[1].forEach((insert: any) => {
+      const formData = new FormData()
+      formData.append('idAchat', tabFixingValidInitAndItemsSelect[0][0].idAchat)
+      formData.append('idFournisseur', tabFixingValidInitAndItemsSelect[0][0].idFournisseur)
+      formData.append('idFixing', tabFixingValidInitAndItemsSelect[0][0].idFixing)
+      formData.append('codeGenerate', tabFixingValidInitAndItemsSelect[0][0].codeGenerate)
+      formData.append('idItem', insert.idItem)
+
+      const updateFormData = new FormData()
+      updateFormData.append('id', insert.idItem)
+      updateFormData.append('etatFixinFrs', "1")
+
+      console.log(this.format2Chart(this.poids_fixer));
+      console.log(this.format2Chart(this.PVendu));
+
+      this.service.create('fixing', 'addTableDetail.php', formData).subscribe({
+        next: (response: any) => {
+          // console.log("RES : ", response);
+          // Update
+          this.service.Update('fixing', 'updateItem.php', updateFormData)
+            .subscribe({
+              next: (responseUpdate) => {
+                // console.log("responseUpdate : ", responseUpdate);
+                // console.log("ITEM AJOUTER ", tabFixingValidInitAndItemsSelect);
+                this.hideSelectedItem(tabFixingValidInitAndItemsSelect[1])
+
+                // SI POIDS OK
+
+
+                if (this.format2Chart(this.poids_fixer) == this.format2Chart(this.PVendu)) {
+                  // console.log("cloture en cours...");
+                  const updateFormData2 = new FormData()
+                  updateFormData2.append('id', tabFixingValidInitAndItemsSelect[0][0].idFixing)
+                  updateFormData2.append('statut_fixing', "2")
+                  // Update
+                  this.service.Update('fixing', 'clotureFixing.php', updateFormData2)
+                    .subscribe({
+                      next: (responseUpdate) => {
+                        console.log("Fixing cloturer et redirection en cours... : ", responseUpdate);
+                        this.router.navigate(['/operation/facture-fournisseur/' + this.ID_fournisseur])
+                      },
+                      error: (err) => {
+                        console.log("errUpdate : ", err);
+                      }
+                    })
+                } else {
+                  console.log("Fixing non cloturer");
+                }
+                // SI POIDS OK
+              },
+              error: (err) => {
+                console.log("errUpdate : ", err);
+              }
+            })
+          this.snackBar.open("Operation reussi... !", "Merci!", {
+            duration: 3000,
+            horizontalPosition: "center",
+            verticalPosition: "bottom",
+            panelClass: ['bg-success', 'text-white']
+          })
+        },
+        error: (err: any) => {
+          console.log("ERR : ", err);
+          this.snackBar.open("Erreur pendant la validation !", "D'accord!", {
+            duration: 3000,
+            horizontalPosition: "right",
+            verticalPosition: "bottom",
+            panelClass: ['bg-danger', 'text-white']
+          })
+        }
+      })
+
+
     })
-
   }
   //#endregion
 
@@ -157,16 +212,18 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
   }
 
   hideSelectedItem(items: any[]) {
-    let tab = this.listItems.filter(v => !(items.find(item => item.achat_items === v.id)));
+    let tab = this.listItems.filter(v => !(items.find(item => item.idItem === v.id)));
     this.listItems = tab.slice();
     this.dataSource.data = tab.slice();
     this.dataSource.paginator = this.paginator;
     this.selection.selected.forEach(v => {
-      this.infoAchatView.poids_total -= v.poids_achat;
+      this.infoAchatView.poidsTotal -= v.poidsItem;
     })
     this.selection.clear(true);
     this.cdr.markForCheck();
     this.cdr.detectChanges();
+    this.router.navigate(['/operation/facture-fournisseur/' + this.ID_fournisseur])
+    // window.location.reload()
   }
 
 
@@ -186,70 +243,93 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
   FixingEncours: any
   // GET
   getFixing(): void {
-    this.serviceVendor.getElementById('api', 'fixing', this.IDFixing).subscribe({
-      next: (data) => {
-        // console.log(data.fournisseur.id);
-        this.Name_fournisseur = data.fournisseur.prenom + ' ' + data.fournisseur.nom
-        this.Adresse_fournisseur = data.fournisseur.ville + ' / ' + data.fournisseur.telephone
-        this.ID_fournisseur = data.fournisseur.id
-        this.poids_fixer = data.poids_fixe
-        this.fixing_bourse = data.fixing_bourse
-        this.discount = data.discompte
-        this.id_fixing = data.id
-        this.statut_fixing = data.status
-        // console.log('STATUT : ' + data.status);
-        // Controle du fixing dans fixing_detail
-        this.serviceVendor.infoFixing('api', 'fixing_detail', this.id_fixing)
-          .subscribe({
-            next: ((data: any) => {
-              // console.log(data);
-              this.poidsAttribuer = data.poids_total_fixing_dans_fixing_detail
-              // console.log(this.poidsAttribuer);
-            })
-          })
+    this.service.getUnique('fixing', 'getOne.php', this.IDFixing)
+      .subscribe({
+        next: (data) => {
+          // console.log("Data Resp : ", data);
+          this.Name_fournisseur = data[0][0].Name_fournisseur
+          this.Adresse_fournisseur = data[0][0].Adresse_fournisseur
+          this.ID_fournisseur = data[0][0].ID_fournisseur
+          this.poids_fixer = data[0][0].poids_fixer
+          this.fixing_bourse = data[0][0].fixing_bourse
+          this.discount = data[0][0].discount
+          this.id_fixing = data[0][0].id_fixing
+          this.statut_fixing = data[0][0].statut_fixing
+          // Poids vendu concernant ce fixing
+          this.poidsAttribuer += data[2];
 
-        this.serviceVendor.getAllByClause('api', 'achat', 'id_fournisseur', data.fournisseur.id)
-          .subscribe({
-            next: (data) => {
-              // console.log("ACHAT FOURNISSEUR")
-              data.forEach((item: any) => {
-                this.ListAchatThis.push(item)
-              })
-            },
-            error: (err) => console.log(err)
-          })
-      },
-      error: (err) => console.log(err)
-    })
+          this.service.getUnique('fixing', 'listAchat.php', this.ID_fournisseur)
+            .subscribe({
+              next: (data) => {
+                // console.log("List Achat : ", data);
+                data.forEach((item: any) => {
+                  this.ListAchatThis.push(item)
+                })
+              },
+              error: (err) => console.log(err)
+            })
+        },
+        error: (err) => console.log(err)
+      })
   }
 
-
+  // Envoie dans la db
   logSelected() {
     let selected = this.selection.selected;
-    let tab: any[] = [];
-    let poids: any = 0
+    // let idItem: any = ""
+    // console.log("this.PVendu : ", this.PVendu);
+    // Variable
+    let idAchat: number = 0
+    let poidsT: number = 0
+    let codeGenerate: any = Math.floor(Math.random() * (1000000 - 1000 + 1)) + 2023;
+    let TabDonnees: any[] = []
+    let TabItems: any[] = []
+
 
     selected.forEach(v => {
-      poids += Number(v.poids_achat)
-      tab.push({
-        achat_items: v.id,
-        achat: v.achat.id,
-        fournisseur: v.achat.fournisseur.id,
-        fixing: this.id_fixing,
-        type_envoie: 1,
-        created_by: 1
-      });
+      // Poids total des items selectionner
+      // console.log(v);
+      idAchat = v.idAchat;
+      poidsT += parseFloat(v.poidsItem);
+      this.PVendu += parseFloat(v.poidsItem);
+      TabItems.push({
+        idItem: v['idItem']
+      })
     });
+    TabDonnees = [{
+      poidsT: poidsT,
+      idAchat: idAchat,
+      idFournisseur: this.ID_fournisseur,
+      idFixing: this.IDFixing,
+      codeGenerate: codeGenerate,
+    }]
 
-    if (this.poids_fixer >= this.poidsAttribuer + poids) {
-      this.EnvoieFixingDetail(tab)
+    // GEstion
+    let idItems: any[] = []
+    TabItems.forEach((data) => {
+      idItems.push(data)
+      // console.log("ID_ITEM : ", data);
+    })
+
+    // console.log("poidsT : ", (this.poids_fixer - this.poidsAttribuer));
+
+
+    let TabData: any[] = []
+    TabData.push(TabDonnees, idItems)
+
+    // Poids selectionner <= Reste
+    if (this.format2Chart(poidsT) <= this.format2Chart(this.poids_fixer - this.poidsAttribuer)) {
+      this.EnvoieFixingDetail(TabData)
     } else {
-      this.snackBar.open("Poids depasser !", "D'accord !", {
+      this.snackBar.open("Poids depasser (verifier svp...) !", "D'accord !", {
         duration: 3000,
         horizontalPosition: "right",
         verticalPosition: "bottom",
         panelClass: ['bg-danger', 'text-white']
       })
+      // setTimeout(() => {
+      //   window.location.reload()
+      // }, 1000)
     }
 
   }
@@ -266,41 +346,49 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
   myArray: any = []
   infoAchatView: any = {}
 
-  PVendu: number = 0
+  typeSendPoids: boolean = false
+  PVendu: any = 0
   PT_Restant: number = 0
   carrat_moyen: number = 0
   type_envoie: number = 0
-  cMoyenActif: any
+  cMoyenActif: any = 0
+  manquant: any = 0
   viewDetailAchat(idAchat: any): void {
     // id_Achat : envoyer
     this.idAchat = idAchat
-    // console.log(idAchat);
-    this.listItems.splice(0, this.listItems.length)
-    this.infoAchatView = this.ListAchatThis.find(v => v.id === idAchat);
-
-    this.serviceVendor.getDetailPurchaseItems('api', 'achat_items', idAchat)
+    // this.listItems.splice(0, this.listItems.length)
+    this.infoAchatView = this.ListAchatThis.find(v => v.id_achat === idAchat);
+    // console.log("IDA",idAchat);
+    this.service.getUnique('fixing', 'getItemFalse.php', idAchat)
       .subscribe({
-        next: (items: any) => {
-          items.data.forEach((cm: any) => {
-            this.carrat_moyen += cm.carrat_achat * cm.poids_achat;
-            this.PT_Restant += Number(cm.poids_achat);
-          });
-          items.data.forEach((elem: any) => {
-          });
-          this.listItems = items.data;
-          this.cMoyenActif = (this.carrat_moyen / this.PT_Restant).toString().substring(0, 5)
-          if (this.cMoyenActif == 0) {
-            this.cMoyenActif = this.infoAchatView.carrat_moyen
-          }
-          this.dataSource.data = items.data;
+        next: ((items: any) => {
+          // console.log("Data Achat... : ", items);
+          this.dataSource.data = items[0];
           this.dataSource.paginator = this.paginator;
-        },
-        error: (err) => console.log(err)
+          // console.log("datasurce : ", this.dataSource.data);
+          this.PVendu += items[1]
+          this.typeSendPoids = items[2]
+          // console.log(this.typeSendPoids);
+          items[0].forEach((cm: any) => {
+            // console.table(cm)
+            this.manquant += cm.manquantItem
+            this.carrat_moyen += ((cm.carratItem + cm.manquantItem) * cm.poidsItem);
+            this.PT_Restant += cm.poidsItem;
+            // console.log("C : ", cm.carratItem);
+            // console.log("M : ", cm.manquantItem);
+            // console.log("Res+ : ", ((cm.cjarratItem + cm.manquantItem)* cm.poidsItem));
+          });
+          console.log("Manquant : ", this.manquant);
+          this.listItems = items[0];
+          this.cMoyenActif = this.format2Chart((this.carrat_moyen / this.PT_Restant))
+          console.log("C-Actif: ", this.cMoyenActif);
+        }),
+        error: (err) => console.log("ERROR : ", err)
       })
   }
 
   // UPDATE FIXE POIDS
-  UFix(form: FormGroup): void {
+  UFixing(form: FormGroup): void {
     if (form.valid) {
       this.UpdateFixing.controls.id.setValue(this.id_fixing)
       this.UpdateFixing.controls.discompte.setValue(this.discount)
@@ -331,29 +419,60 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
     }
   }
 
-
-  // Cloture FIX
-  ClotureFix(form: FormGroup): void {
+  // ADD FIXING FOR POIDS
+  PFix(form: FormGroup, idAchat: any, cmr: any): void {
     if (form.valid) {
-      this.confirmFixing.controls.id.setValue(this.id_fixing)
-      this.confirmFixing.controls.discompte.setValue(this.discount)
-      this.confirmFixing.controls.fixing_bourse.setValue(this.fixing_bourse)
-      this.confirmFixing.controls.poids_fixe.setValue(this.poids_fixer)
-      console.log(form.value);
-      this.serviceVendor.mettreAJourRessource(form.value)
-        .subscribe({
-          next: (response) => {
-            this.snackBar.open("FIXING CLOTURER, avec succès!", "Okay", {
+      this.infoAchatView = this.ListAchatThis.find(v => v.id_achat === idAchat);
+      // (this.poids_fixer - this.poidsAttribuer) // reste
+      if ((this.poids_fixer - this.poidsAttribuer) >= form.value.poids_select) {
+        const formData = new FormData()
+        formData.append('idAchat', this.idAchat)
+        formData.append('idFournisseur', this.ID_fournisseur.toString())
+        formData.append('idFixing', this.id_fixing)
+        formData.append('poids', form.value.poids_select)
+        formData.append('carrat', this.cMoyenActif)
+        formData.append('carrat_manquant', this.manquant)
+
+        this.service.create('fixing', 'addTablePoids.php', formData).subscribe({
+          next: (response: any) => {
+            // console.log("RES : ", response);
+            this.snackBar.open("Ajout effectuer avec succes !", "Merci!", {
               duration: 3000,
               horizontalPosition: "right",
-              verticalPosition: "top",
+              verticalPosition: "bottom",
               panelClass: ['bg-success', 'text-white']
-
             })
+            if ((this.poids_fixer) == this.poidsAttribuer + form.value.poids_select) {
+              // console.log("cloture en cours...");
+              const updateFormData = new FormData()
+              updateFormData.append('id', this.IDFixing)
+              updateFormData.append('statut_fixing', "2")
+
+              this.service.create('fixing', 'addTableDetail.php', formData).subscribe({
+                next: (response: any) => {
+                  // console.log("RES : ", response);
+                  // Update
+                  this.service.Update('fixing', 'clotureFixing.php', updateFormData)
+                    .subscribe({
+                      next: (responseUpdate) => {
+                        // console.log("responseUpdate : ", responseUpdate);
+                        this.router.navigate(['/operation/facture-fournisseur/' + this.ID_fournisseur])
+                      },
+                      error: (err) => {
+                        console.log("errUpdate : ", err);
+                      }
+                    })
+                },
+                error: (err: any) => {
+                  console.log("ERR : ", err);
+                }
+              })
+            }
             this.router.navigate(['/operation/facture-fournisseur/' + this.ID_fournisseur])
           },
-          error: (err) => {
-            this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
+          error: (err: any) => {
+            console.log("ERR : ", err);
+            this.snackBar.open("Erreur pendant la validation !", "D'accord!", {
               duration: 3000,
               horizontalPosition: "right",
               verticalPosition: "bottom",
@@ -362,51 +481,6 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
           }
         })
 
-    }
-  }
-
-  // ADD FIXING FOR POIDS
-  PFix(form: FormGroup, idAchat: number, cmr: any): void {
-    if (form.valid) {
-      console.log("CM_ACTIF : ", cmr);
-
-      this.infoAchatView = this.ListAchatThis.find(v => v.id === idAchat);
-      form.value.achat = this.infoAchatView.id
-      form.value.fixing = this.id_fixing
-      form.value.fournisseur = this.infoAchatView.fournisseur.id
-      form.value.type_envoie = 3
-      form.value.carrat_moyen_restant = Number(cmr)
-      this.FactureFixing.controls.poids_select.setValue(form.value.poids_select)
-      // this.FactureFixing.controls.carrat_moyen_achat.setValue(cmr)
-      if (this.poids_fixer >= this.poidsAttribuer + form.value.poids_select) {
-        console.log(form.value);
-        // this.EnvoieFixingDetail(tab)
-
-        this.serviceVendor.Add('api', 'fixing_detail', form.value)
-          .subscribe({
-            next: (response) => {
-              console.log(response);
-              this.snackBar.open("Achat par poids ajouter avec succès!", "Okay", {
-                duration: 3000,
-                horizontalPosition: "right",
-                verticalPosition: "bottom",
-                panelClass: ['bg-success', 'text-white']
-
-              })
-              // this.router.navigate(['/fournisseur/facture-vente/' + this.ID_fournisseur])
-              window.location.reload()
-              form.reset()
-            },
-            error: (err) => {
-              this.snackBar.open("Echec, Veuillez reessayer!", "Okay", {
-                duration: 3000,
-                horizontalPosition: "right",
-                verticalPosition: "bottom",
-                panelClass: ['bg-danger', 'text-white']
-              })
-            }
-          })
-
       } else {
         this.snackBar.open("Poids superieur au reste a valider !", "D'accord !", {
           duration: 3000,
@@ -414,13 +488,23 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
           verticalPosition: "bottom",
           panelClass: ['bg-danger', 'text-white']
         })
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
       }
-
     }
   }
 
 
-  // LIST ACHAT
+  format2Chart(data: any) {
+    let tab = data.toString().split(".");
+    if (tab.length < 2)
+      return Number(data);
+    return Number(tab[0].concat('.', tab[1].substr(0, 2)));
+  }
+
+
+  // LIST
   filterTable(value: string) {
     this.dataSource.filter = value?.trim()?.toLowerCase();
   }

@@ -37,31 +37,34 @@
               <table mat-table [dataSource]="dataSource" class="" class="w-100">
                 <ng-container matColumnDef="created_at">
                   <th mat-header-cell *matHeaderCellDef class="text-dark fw-bold">Achat du : </th>
-                  <td mat-cell *matCellDef="let element">Le : {{element.date_achat | date: 'dd/MM/yyyy' }}</td>
-                </ng-container>
-                <ng-container matColumnDef="slug">
-                  <th mat-header-cell *matHeaderCellDef class="text-dark fw-bold">N<sup>o</sup> - Achat</th>
-                  <td mat-cell *matCellDef="let element">#00{{element.id}}</td>
+                  <td mat-cell *matCellDef="let element">{{element.created_at | date: 'dd/MM/yyyy' }}</td>
                 </ng-container>
                 <ng-container matColumnDef="fournisseur">
                   <th mat-header-cell *matHeaderCellDef class="text-dark fw-bold">Fournisseur</th>
-                  <td mat-cell *matCellDef="let element">{{element.fournisseur.prenom + " " + element.fournisseur.nom}}
+                  <td mat-cell *matCellDef="let element">{{element.fournisseur }}
                   </td>
                 </ng-container>
-                <ng-container matColumnDef="adresse">
-                  <th mat-header-cell *matHeaderCellDef class="text-dark fw-bold">Adresse</th>
-                  <td mat-cell *matCellDef="let element">{{element.fournisseur.adresse}}</td>
+
+                <ng-container matColumnDef="Arrivage">
+                  <th mat-header-cell *matHeaderCellDef class="text-dark fw-bold">Contenu dans?</th>
+                  <td mat-cell *matCellDef="let element">{{element.Arrivage }}
+                  </td>
                 </ng-container>
 
-                <ng-container matColumnDef="telephone">
-                  <th mat-header-cell *matHeaderCellDef class="text-dark fw-bold">Telephone</th>
-                  <td mat-cell *matCellDef="let element">{{element.fournisseur.telephone}}</td>
+                <ng-container matColumnDef="Poids">
+                  <th mat-header-cell *matHeaderCellDef class="text-dark fw-bold">Poids Total</th>
+                  <td mat-cell *matCellDef="let element">{{element.PoidsTotal}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Carrat">
+                  <th mat-header-cell *matHeaderCellDef class="text-dark fw-bold">Carrat Moyen</th>
+                  <td mat-cell *matCellDef="let element">{{element.CarratMoyen}}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="action">
                   <th mat-header-cell *matHeaderCellDef class="text-center fw-bold">Action</th>
                   <td mat-cell *matCellDef="let element" class="text-center">
-                    <a routerLink="/operation/facturepurchase/{{element.id}}" mat-raised-button color=""
+                    <a routerLink="/operation/facturepurchase/{{element.id_achat}}" mat-raised-button color=""
                       class="mx-2 text-primary"><strong> Facture </strong>
                       <span class="micon dw dw-print"></span></a>
                   </td>
@@ -73,9 +76,6 @@
             </mat-card-content>
           </mat-card>
         </div>
-
-
-
         <!-- Export Datatable End -->
       </div>
     </div>

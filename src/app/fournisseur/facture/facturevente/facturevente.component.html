@@ -51,42 +51,32 @@
                         <div class="card-body text-center">
                           <h4 class="fw-bold text-uppercase">{{ Name_fournisseur }}</h4>
                           <span class="fw-bold text-uppercase">{{ Adresse_fournisseur }}</span>
-                          <div class="mt-2" *ngIf="poids_fixer != poidsAttribuer">
-                            <form [formGroup]="UpdateFixing" (ngSubmit)="UFix(UpdateFixing)">
-                              <div class="col">
-                                <mat-form-field class="w-100" appearance="outline">
-                                  <mat-label>Modifier le poids fixer</mat-label>
-                                  <input matInput type="number" formControlName="poids_fixe" class="w-100 p-2"
-                                    placeholder="Nouveau poids">
-                                </mat-form-field>
-                              </div>
-                              <div class="col text-center">
-                                <button type="submit" class="w-100" [disabled]="!UpdateFixing.valid" mat-raised-button
-                                  color="primary">
-                                  <span class="dw dw-edit text-primary fw-bold"></span> Modifier
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                          <div class="mt-2" *ngIf="poids_fixer == poidsAttribuer">
-                            <form [formGroup]="confirmFixing" (ngSubmit)="ClotureFix(confirmFixing)">
-                              <div class="col text-center">
-                                <button type="submit" class="w-100" [disabled]="!confirmFixing.valid" mat-raised-button
-                                  color="accent">
-                                  <span class="dw dw-add"></span> Cloturer le fixing
-                                </button>
-                              </div>
-                            </form>
-                          </div>
                         </div>
-                        <div class="card-footer text-center p-0 m-0">
+                        <div class="card-footer p-0 m-0">
                           <div class="" *ngIf="poids_fixer != poidsAttribuer">
-                            <h3>Fixing : $<span class="text-danger fw-bold p-0"> {{ fixing_bourse | number: '2.2-2' }}
-                              </span>
-                              <br> Poids actifs : <span class="text-primary fw-bold p-0"> {{ poids_fixer -
-                                poidsAttribuer |
-                                number }} g</span>
-                            </h3>
+                            <table class="table">
+                              <tr>
+                                <th>Fixing</th>
+                                <th>$</th>
+                                <td>{{ fixing_bourse }}</td>
+                              </tr>
+                              <tr>
+                                <th>Poids Fixer</th>
+                                <th>:</th>
+                                <td class="text-primary">{{ poids_fixer | number: '2.2-2' }} g</td>
+                              </tr>
+                              <tr>
+                                <th>Poids vendu</th>
+                                <th>:</th>
+                                <td [class]="poidsAttribuer>0?'text-danger':'text-success fw-bold'">{{ poidsAttribuer |
+                                  number: '2.2-2' }} g</td>
+                              </tr>
+                              <tr>
+                                <th>Non vendu</th>
+                                <th>:</th>
+                                <td>{{ poids_fixer - poidsAttribuer | number: '2.2-2' }} g</td>
+                              </tr>
+                            </table>
                           </div>
                           <h4 class="text-dark fw-bold p-0" *ngIf="poids_fixer == poidsAttribuer">En attente de cloture!
                           </h4>
@@ -94,11 +84,13 @@
                       </div>
                     </div>
                   </div>
+                  <!-- END INFO FIXING -->
 
-                  <div class="col mt-0" *ngIf="poids_fixer != poidsAttribuer">
+                  <!-- Liste des achats -->
+                  <div class="col mt-0">
                     <mat-card class="mat-elevation-z0 mb-5">
                       <mat-card-content>
-                        <div class="" id="divTable">
+                        <div class="" *ngIf="ListAchatThis.length > 0" id="divTable">
                           <table class="table table-hover">
                             <thead class="bg-danger text-light">
                               <th>#Ref</th>
@@ -109,52 +101,45 @@
                             </thead>
                             <tbody>
                               <tr *ngFor="let x of ListAchatThis">
-                                <td>{{ x.id }}</td>
-                                <td>{{ x.created_at | date: 'dd/MM/YYYY' }}</td>
-                                <td>{{ x.poids_total }}</td>
-                                <td>{{ (x.carrat_moyen).toString().substring(0, 5) }}</td>
+                                <td>{{ x.id_achat }}</td>
+                                <td>{{ x.Arrivage }}</td>
+                                <td>{{ x.PoidsTotal }}</td>
+                                <td>{{ x.CarratMoyen }}</td>
                                 <td class="text-center">
                                   <form>
                                     <button data-bs-toggle="collapse" data-bs-target="#listAchat"
-                                      (click)="viewDetailAchat(x.id)" mat-button color="primary">Selectionner
-                                      <span class="dw dw-right-arrow"></span></button>
+                                      (click)="viewDetailAchat(x.id_achat)" mat-button color="primary">Utiliser |
+                                      <span class="mdi mdi-arrow-down-bold"></span></button>
                                   </form>
                                 </td>
                               </tr>
                             </tbody>
                           </table>
                         </div>
+                        <div class="" *ngIf="ListAchatThis.length == 0" id="divTable">
+                          <div class="text-center">
+                            <h2 class="text-dark text-uppercase">Aucun achat valide pour ce fournisseur...</h2>
+                            <marquee behavior="alternate" direction="right">Il paraît que ce fournisseur ait vendu tout
+                              ces achat ou n'a jamais enregistrer d'achat au paravant... <br> cliquer sur ce boutton en
+                              bas pour commencer à enregistrer des barres..</marquee>
+                            <div class="arrow">
+                              <img src="./assets/gif/arrow-down-blue.gif" class="img-responsive" id="img-gif" alt=""
+                                srcset="">
+                            </div>
+                            <button class="mx-2" mat-flat-button color="primary"
+                              routerLink="/operation/add-purchase/{{ ID_fournisseur }}">
+                              <span class="micon mdi mdi-reply-all-outline text-light"></span><span class="mtext mx-2">
+                                commencer un achat </span>
+                            </button>
+                          </div>
+                        </div>
                       </mat-card-content>
                     </mat-card>
                   </div>
-                  <div class="col" *ngIf="poids_fixer == poidsAttribuer">
-                    <p id="p1">
-                      <i> <strong>Lorem</strong> ipsum dolor sit amet consectetur adipisicing elit. At officiis ratione
-                        animi
-                        reprehenderit vitae
-                        itaque suscipit fugit possimus tenetur doloremque. Esse nesciunt accusamus maiores aut. Quisquam
-                        deleniti
-                        accusantium veniam minus.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. At officiis ratione animi reprehenderit
-                        vitae
-                        itaque suscipit fugit possimus tenetur doloremque. Esse nesciunt accusamus maiores aut. Quisquam
-                        deleniti
-                        accusantium veniam minus.</i> <br> <br>
-                      <i> <strong>Lorem</strong> ipsum dolor sit amet consectetur adipisicing elit. At officiis ratione
-                        animi
-                        reprehenderit vitae
-                        itaque suscipit fugit possimus tenetur doloremque. Esse nesciunt accusamus maiores aut. Quisquam
-                        deleniti
-                        accusantium veniam minus.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. At officiis ratione animi reprehenderit
-                        vitae
-                        itaque suscipit fugit possimus tenetur doloremque. Esse nesciunt accusamus maiores aut. Quisquam
-                        deleniti
-                        accusantium veniam minus.</i> <br>
-                    </p>
-                  </div>
+                  <!-- Facture direct apres -->
                 </div>
               </div>
+              <!-- FIN ACHAT -->
               <div class="accordion-body" *ngIf="statut_fixing == 2">
                 <h4 class="text-dark fw-bold">
                   Fixing valider...
@@ -171,8 +156,8 @@
               data-bs-parent="#accordionFixing">
               <div class="accordion-body bg-transparent">
                 <mat-tab-group [disableRipple]="false">
-                  <mat-tab label="PAR BARRES" *ngIf="type_envoie == 1 || type_envoie == 0">
-                    <div class="col mt-3" *ngIf="listItems.length > 0">
+                  <mat-tab label="PAR BARRES" *ngIf="!typeSendPoids">
+                    <div class="col mt-3">
                       <!-- List item -->
                       <div class="d-flex align-items-center">
                         <div class="col">
@@ -180,14 +165,18 @@
                           <hr>
                           <div class="d-flex justify-content start">
                             <div class="col">
-                              <span class="p-1">POIDS TOTAL DE L'ACHAT : <u class="text-dark fw-bold">{{ infoAchatView.poids_total }} g</u></span> <br>
-                              <span class="p-1 text-dark">POIDS RESTANT DE L'ACHAT : <u class="text-dark fw-bold">{{ PT_Restant | number }} g</u></span> <br>
+                              <span class="p-1">POIDS TOTAL DE L'ACHAT : <u class="text-dark fw-bold">{{
+                                  infoAchatView.PoidsTotal }} g</u></span> <br>
+                              <span class="p-1 text-dark">POIDS RESTANT DE L'ACHAT : <u class="text-dark fw-bold">{{
+                                infoAchatView.PoidsTotal - poidsAttribuer | number: '2.2-2' }} g</u></span> <br>
                             </div>
                             <div class="col">
-                            <span class="p-1 text-dark">POIDS FIXER : <u class="text-dark fw-bold">{{ this.poids_fixer | number }} g</u></span> <br>
-                            <span class="p-1 text-dark">POIDS DU FIXING RESTANT : <u class="text-dark fw-bold">{{ this.poids_fixer - this.poidsAttribuer | number }} g</u></span> <br>
-                        </div>
-                      </div>
+                              <span class="p-1 text-dark">POIDS FIXER : <u class="text-dark fw-bold">{{ this.poids_fixer
+                                  }} g</u></span> <br>
+                              <span class="p-1 text-dark">POIDS DU FIXING RESTANT : <u class="text-dark fw-bold">{{
+                                  poids_fixer - poidsAttribuer }} g</u></span> <br>
+                            </div>
+                          </div>
                         </div>
                         <div class="col-2"><button mat-raised-button color="accent" (click)="logSelected()">
                             <mat-icon>check</mat-icon> Valider</button></div>
@@ -219,12 +208,17 @@
 
                             <ng-container matColumnDef="Poids">
                               <th class="text-center" mat-header-cell *matHeaderCellDef>Poids</th>
-                              <td class="text-center" *matCellDef="let element">{{ element.poids_achat }}</td>
+                              <td class="text-center" *matCellDef="let element">{{ element.poidsItem }}</td>
                             </ng-container>
                             <ng-container matColumnDef="Carrat">
                               <th class="text-center" mat-header-cell *matHeaderCellDef>Carrat</th>
                               <td class="text-center" class="text-center" mat-cell *matCellDef="let element">{{
-                                element.carrat_achat }}</td>
+                                element.carratItem }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="Manquant">
+                              <th class="text-center" mat-header-cell *matHeaderCellDef>R&#233;liquat</th>
+                              <td class="text-center" class="text-center" mat-cell *matCellDef="let element">{{
+                                element.manquantItem }}</td>
                             </ng-container>
                             <ng-container matColumnDef="Prix unit">
                               <th class="text-center" mat-header-cell *matHeaderCellDef>Prix Unit</th>
@@ -244,63 +238,61 @@
                     </div>
                   </mat-tab>
 
-
                   <!-- DEBUT ETAPE PAR POIDS -->
                   <mat-tab label="ENVOIE PAR POIDS...">
                     <div class="col p-4 m-2">
-                      <h2 class="text-secondary text-center">Fixing / Poids direct</h2>
-                      <div class="m-2 d-flex justify-content-center">
-                        <div class="card col-6 mb-2 shadow-lg p-3">
-                          <div class="">
-                            <h4 class="fw-bold p-0 text-center">ACHAT No: <span class="text-danger">{{ infoAchatView.id
-                                }}</span></h4>
-                            <table class="table">
-                              <tr>
-                                <th>POIDS TOTAL</th>
-                                <th>:</th>
-                                <td class="text-success">{{ infoAchatView.poids_total }} g</td>
-                              </tr>
-                              <tr>
-                                <th>POIDS VENDU</th>
-                                <th>:</th>
-                                <td>{{ this.PVendu  | number: '2.2-2' }} g</td>
-                              </tr>
-                              <tr>
-                                <th>POIDS RESTANT</th>
-                                <th>:</th>
-                                <td class="text-danger">{{ PT_Restant | number: '2.2-2' }} g</td>
-                              </tr>
-                              <tr>
-                                <th>CARRAT</th>
-                                <th>:</th>
-                                <td>{{ (cMoyenActif) }}</td>
-                              </tr>
-                            </table>
-                          </div>
-<!--  -->
-                          <div class="card-body text-center">
-                            <div class="mt-2">
-                              <form [formGroup]="FixingPoids" (ngSubmit)="PFix(FixingPoids, infoAchatView.id, (cMoyenActif).toString().substring(0,5))">
-                                <div class="col">
-                                  <input type="number" hidden formControlName="carrat_moyen_restant">
-                                  <mat-form-field class="w-100">
-                                    <mat-label>Poids</mat-label>
-                                    <input matInput type="number" min="0" max="{{PT_Restant}}"
-                                      formControlName="poids_select" class="w-100"
-                                      placeholder="Entrer le poids &#224; prendre (Ex : 1xxx) g">
-                                  </mat-form-field>
-                                </div>
-                                <div class="col text-center">
-                                  <button type="submit" class="w-100 p-2" [disabled]="!FixingPoids.valid" mat-raised-button
-                                    color="primary">
-                                    <span class="dw dw-add text-light"></span> Valider avec ce poids
-                                  </button>
-                                </div>
-                              </form>
+                      <div class="d-flex justify-content-between flex-wrap align-items-center">
+                        <div class="col">
+                          <h2 class="text-secondary text-center">Fixing / Poids direct</h2>
+                        </div>
+                        <div class="col">
+                          <form [formGroup]="FixingPoids"
+                            (ngSubmit)="PFix(FixingPoids, infoAchatView.id_achat, format2Chart((cMoyenActif)))">
+                            <div class="col">
+                              <input type="number" hidden formControlName="carrat_moyen_restant">
+                              <mat-form-field class="w-100">
+                                <mat-label>Poids &#224; vendre</mat-label>
+                                <input matInput type="number" min="0" max="{{ poids_fixer -
+                                    poidsAttribuer
+                                    }}" formControlName="poids_select" class="w-100"
+                                  placeholder="Entrer le poids &#224; prendre (Ex : 1xx) g">
+                                <mat-hint class="text-primary">Vente possible : {{ poids_fixer -
+                                  poidsAttribuer
+                                  }} g</mat-hint>
+                              </mat-form-field>
                             </div>
-                          </div>
+                            <div class="col text-center">
+                              <button type="submit" class="w-100 p-2" [disabled]="!FixingPoids.valid" mat-raised-button
+                                color="primary">
+                                <span class="mdi mdi-plus-thick text-light mx-2"></span> Confirmer l'envoie
+                              </button>
+                            </div>
+                          </form>
                         </div>
                       </div>
+
+                      <table class="table table-striped">
+                        <thead>
+                          <th>Achat No</th>
+                          <th>ACHAT/VENTE</th>
+                          <th>POIDS FIXER</th>
+                          <th>POIDS RESTANT (FIXING)</th>
+                          <th>CARRAT</th>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{{ infoAchatView.id_achat }}</td>
+                            <td>{{ infoAchatView.PoidsTotal | number: '2.2-2' }} g / <span class="text-danger"> {{
+                              infoAchatView.PoidsTotal - poidsAttribuer | number: '2.2-2' }}g</span></td>
+                            <td>{{ poids_fixer | number: '2.2-2' }} g</td>
+                            <td class="text-danger">{{ poids_fixer -
+                              poidsAttribuer | number: '2.2-2'
+                              }} g</td>
+                            <td>{{ (cMoyenActif) }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <!--  -->
                     </div>
                   </mat-tab>
                 </mat-tab-group>

@@ -1,0 +1,130 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active"
+                  aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div
+            class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button
+                color="warn"><mat-icon
+                  class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+            <div class="col-btn">
+              <button class="mx-2 fw-bold" mat-flat-button
+                color="primary" (click)="imprimerDiv()">
+                <span class="micon dw dw-list"></span>
+                <span class="mtext mx-2">
+                  IMPRIMER LE RAPPORT !</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add -->
+      <div class="card-box mb-30">
+        <div class="pb-20">
+          <mat-card>
+            <div class="situation-jour" #divToPrint>
+              <h1 class="text-primary fw-bold">*** Situation du Jour *** </h1>
+
+              <div class="table-responsive">
+                <h1 class="text-secondary">RAPPORT DE COMPTE</h1>
+                <table class="table table-hover table-striped">
+                  <thead class="bg-secondary text-light">
+                    <th>Date d'operation</th>
+                    <th>Mouvement</th>
+                    <th>Credit</th>
+                    <th>Debit</th>
+                    <th>Solde A</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of fusionTab">
+                      <td>{{ data.dateOperation | date:
+                        "dd/MM/YYYY 'à' HH:mm:ss" }}</td>
+                      <td class>
+                        <span class="text-dark"
+                          *ngIf="data.type_operation == 'credit' ">Facturation -
+                          Poids {{
+                          data.poidsTotal | number: '2.2-2' }} g</span>
+                        <span class="text-dark"
+                          *ngIf="data.type_operation == 'debit' ">Paiement - <i
+                            *ngIf="data.representant != null"
+                            class="text-uppercase fw-bold">{{
+                            data.representant }}</i> <i
+                            *ngIf="data.representant == null">{{
+                            data.fournisseur
+                            }}</i> </span>
+                        <span class="text-info"
+                          *ngIf="data.type_operation == 'Conversion' ">ECHANGE :
+                          {{numberVal(data.source) + ' ==> '
+                          +numberVal(data.destination)}}</span>
+                      </td>
+                      <td>
+                        <span *ngIf="data.type_operation == 'credit' ">{{
+                          (data.montant) | number: '2.2-2'
+                          }}</span>
+                        <span *ngIf="data.type_operation == 'Conversion' ">{{
+                          (data.on) | number: '2.2-2'
+                          }} GNF</span>
+                      </td>
+                      <td>
+                        <span *ngIf="data.type_operation == 'Conversion' ">{{
+                          (data.out) | number: '2.2-2'
+                          }} USD</span>
+                        <span *ngIf="data.type_operation == 'debit'">{{
+                          (data.montant) | number: '2.2-2'
+                          }}</span>
+                        <span *ngIf="data.type_operation == 'credit'">---</span>
+                      </td>
+                      <td>
+                        <span
+                          [class]="'fw-bold text-' +(data.solde>0?'success':'danger')">$
+                          {{ (data.solde) |
+                          number: '2.2-2' }}</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <hr>
+
+                <h1>ACHAT EFFECTUER</h1>
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <th>Date</th>
+                    <th>Fournisseur</th>
+                    <th>Poids</th>
+                    <th>Carrat</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of dataAchat">
+                      <th>{{ data.dateOperation }}</th>
+                      <th>{{ data.fournisseurName }}</th>
+                      <th>{{ data.poidsTotal }}</th>
+                      <th>{{ data.carra_moyen }}</th>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+      <!-- Fin ajout -->
+    </div>
+  </div>
+</div>

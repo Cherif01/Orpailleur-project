@@ -15,7 +15,13 @@
             </nav>
           </div>
           <div class="text-right">
-            <button mat-raised-button color="primary" routerLink="/client/list-client" class="mx-2">Liste client</button>
+            <button mat-raised-button color="primary" routerLink="/client/list-client" class="mx-2"><i
+                class="dw dw-list text-light mx-2"></i> Liste client</button>
+            <button mat-raised-button color="primary" (click)="openDialog()" class="mx-2"> <i
+                class="dw dw-add text-light mx-2"></i> <span class="mtext">Nouvelle operation</span> </button>
+            <button mat-raised-button color="warn" (click)="openDialogFix()" class="mx-2"> <i
+                class="mdi mdi-cog-counterclockwise text-light mx-2"></i> <span class="mtext">Fixer un poids</span>
+            </button>
           </div>
         </div>
       </div>
@@ -29,43 +35,286 @@
                 <ng-template mat-tab-label>
                   <h3 class="fw-bold">SITUATION CLIENT</h3>
                 </ng-template>
-                <form action="" [formGroup]="clientOperation">
-                  <div class="pt-3 pb-3 d-flex justify-content-start flex-wrap align-items-center">
-                    <mat-form-field class="me-3">
-                      <mat-label>Select</mat-label>
-                      <mat-select formControlName="operation_client">
-                        <mat-option value="">---- OPERATION ----</mat-option>
-                        <mat-option value="1">Versement</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="me-3">
-                      <mat-label>Entrer le montant</mat-label>
-                      <input matInput type="number" formControlName="montant_client" required>
-                    </mat-form-field>
-                    <button mat-flat-button color="primary" [hidden]="clientOperation.invalid" (click)="addMouvClient(clientOperation)">Primary</button>
-                  </div>
-                </form>
+                <!-- History -->
+                <div class="table-responsive bg-white">
+                  <mat-card class="p-2 bg-white">
+
+                    <mat-card-content>
+                      <div class="d-flex">
+                        <div class="col">
+                          <mat-form-field class="w-100">
+                            <input [formControl]="search" placeholder="Rechercher une oper&#233;tion..." matInput>
+                            <mat-icon matSuffix>search</mat-icon>
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <form action="" [formGroup]="rechercheIntervalleForm" class="w-100">
+                            <div class="col d-flex input-group m-0 p-0">
+                              <input type="date" formControlName="dateStart" class="form-control border-dark fw-bold">
+                              <input type="date" formControlName="dateEnd"
+                                class="mx-1 form-control border-dark fw-bold">
+                              <button mat-flat-button color="primary" class="border-dark" (click)="getCaisse()">
+                                Afficher un rapport
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                      <table class="table table-responsive-md" id="divTable_">
+                        <thead>
+                          <th class="text-start">Date Operation</th>
+                          <th>Op&#233;ration</th>
+                          <th>Devise</th>
+                          <th>Motif</th>
+                          <th>Entrer</th>
+                          <th>Sortie</th>
+                          <th class="text-center">Utilisateur</th>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let data of historique; let i = index">
+                            <td *ngIf="data.devise == 2" class="text-start">
+                              Le : {{ data.created_at | date: "dd/MM/YYYY 'à' HH:mm:ss" }}
+                            </td>
+                            <td *ngIf="data.devise == 2" class="m-0 p-0 text-start">
+                              <span class="text-primary" *ngIf="data.operation == 5"><span
+                                  class="dw dw-down-arrow2"></span>
+                                Avance client</span>
+                              <span class="text-danger" *ngIf="data.operation == 6">Reglement client <span
+                                  class="dw dw-share-2"></span></span>
+                            </td>
+                            <td *ngIf="data.devise == 2" class="text-secondary">USD</td>
+                            <td *ngIf="data.devise == 2">{{ data.motif }}</td>
+                            <td *ngIf="data.devise == 2">
+                              <span *ngIf="data.operation == 1 || data.operation == 3 || data.operation == 5">{{
+                                data.montant | number }}</span>
+                            </td>
+                            <td *ngIf="data.devise == 2">
+                              <span *ngIf="data.operation == 2 || data.operation == 4 || data.operation == 6">{{
+                                data.montant | number }}</span>
+                            </td>
+                            <td *ngIf="data.devise == 2" class="text-secondary text-center">Admin</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
               </mat-tab>
               <!-- EXPEDITION -->
               <mat-tab>
                 <ng-template mat-tab-label>
                   <h3 class="fw-bold">EXPEDITION</h3>
                 </ng-template>
+                <mat-card-content>
+                  <div class="d-flex justify-content-between mt-2 flex-wrap">
+                    <div class="col">
+                      <mat-form-field class="w-100">
+                        <input [formControl]="search" placeholder="Rechercher un fixing ici...." matInput>
+                        <mat-icon matSuffix>search</mat-icon>
+                      </mat-form-field>
+                    </div>
+                    <div class="col text-end">
+                      <form action="" [formGroup]="validationFixing">
+                        <mat-form-field class="mx-2">
+                          <mat-label>Liste des fixings</mat-label>
+                          <mat-select formControlName="idFixing">
+                            <mat-option value="">---- CHOISIR ----</mat-option>
+                            <mat-option *ngFor="let data of ListFixing" [value]="data.id">
+                              {{ 'Le: '+(data.created_at | date: 'dd/MM/Y') +' - FIX: $'+data.fixingBourse+' - poids: '+data.poidsFixer }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <button mat-raised-button color="accent" [disabled]="validationFixing.invalid"
+                          (click)="logSelected(validationFixing.value.idFixing)">
+                          <mat-icon>check</mat-icon> Valider</button>
+                      </form>
+                    </div>
+                  </div>
+
+                  <hr>
+                  <h1 class="p-2 shadow">GESTION DES EXPEDITIONS</h1>
+                  <table mat-table [dataSource]="dataSource" class="table w-100 table-hover table-striped maTable" id="divTable_">
+                    <!-- Checkbox Column -->
+                    <ng-container matColumnDef="select">
+                      <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                        </mat-checkbox>
+                      </th>
+                      <td mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                          [aria-label]="checkboxLabel(row)">
+                        </mat-checkbox>
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Date">
+                      <th mat-header-cell *matHeaderCellDef class="text-start">Date</th>
+                      <td class="text-start" mat-cell *matCellDef="let element">{{ element.created_at | date:
+                        'dd/MM/YYYY' }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Client">
+                      <th mat-header-cell *matHeaderCellDef class="text-start">Client</th>
+                      <td class="" mat-cell *matCellDef="let element">{{ element.client }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Lot">
+                      <th mat-header-cell *matHeaderCellDef class="text-start">Arrivage</th>
+                      <td class="" mat-cell *matCellDef="let element">{{ element.arrivage }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Poids">
+                      <th mat-header-cell *matHeaderCellDef>Pds barre</th>
+                      <td class="" mat-cell *matCellDef="let element">{{ element.poids }} g</td>
+                    </ng-container>
+                    <ng-container matColumnDef="CarratMoyen" class="text-start">
+                      <th mat-header-cell *matHeaderCellDef>Carrat</th>
+                      <td class="" mat-cell *matCellDef="let element">{{ element.carrat }}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displaysColums;"></tr>
+                    <tr mat-row *matRowDef="let row; columns:displaysColums" (click)="selection.toggle(row)">
+                    </tr>
+                  </table>
+                  <mat-paginator [pageSizeOptions]="[100, 500]" showFirstLastButtons></mat-paginator>
+                </mat-card-content>
               </mat-tab>
+
               <!-- FIXING -->
               <mat-tab>
                 <ng-template mat-tab-label>
                   <h3 class="fw-bold">FIXING</h3>
                 </ng-template>
+                <mat-card-content class="table-responsive">
+                  <mat-form-field class="w-100">
+                    <input [formControl]="search" placeholder="Rechercher un fixing ici...." matInput>
+                    <mat-icon matSuffix>search</mat-icon>
+                  </mat-form-field>
+                  <table mat-table [dataSource]="dataSource2" matSort class="w-100" id="divTable_">
+                    <!-- Checkbox Column -->
+
+                    <ng-container matColumnDef="date">
+                      <th mat-header-cell *matHeaderCellDef class="text-start">Date</th>
+                      <td mat-cell *matCellDef="let element" class="text-start">Le : {{ element.created_at | date: 'dd/MM/yyyy' }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="fixing">
+                      <th mat-header-cell *matHeaderCellDef>Fixing</th>
+                      <td mat-cell *matCellDef="let element">{{ element.fixingBourse | number }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="discounte">
+                      <th mat-header-cell *matHeaderCellDef>Discompte</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{ element.discompte | number }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="p_unit">
+                      <th mat-header-cell *matHeaderCellDef>P.Unit</th>
+                      <td mat-cell *matCellDef="let element"> {{ format2Chart((element.fixingBourse / 34) -
+                        element.discompte) }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="pds_fixe">
+                      <th mat-header-cell *matHeaderCellDef>Pds fix&#233;</th>
+                      <td class="text-primary" mat-cell *matCellDef="let element">{{ element.poidsFixer | number }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="pds_vendu">
+                      <th mat-header-cell *matHeaderCellDef>Vendu</th>
+                      <td class="text-success" mat-cell *matCellDef="let element">
+                        <span *ngIf="element.statut_fixing_client == 1">/</span>
+                        <span *ngIf="element.statut_fixing_client == 2">{{ element.poidsFixer | number }}</span>
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="pds_restant" class="text-center">
+                      <th mat-header-cell *matHeaderCellDef>Reste</th>
+                      <td class="text-danger" mat-cell *matCellDef="let element">
+                        <span *ngIf="element.statut_fixing_client == 1">{{ element.poidsFixer | number }}</span>
+                        <span *ngIf="element.statut_fixing_client == 2">{{ 0 | number }}</span>
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displaysColums2;sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns:displaysColums2" (click)="selection.toggle(row)"></tr>
+                  </table>
+                  <mat-paginator [pageSizeOptions]="[10,15,100]" showFirstLastButtons></mat-paginator>
+                </mat-card-content>
+              </mat-tab>
+
+              <!-- EXPEDITION VALIDER -->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <h3 class="fw-bold">EXPEDITION FIXER ET VALIDER</h3>
+                </ng-template>
+                <mat-card-content>
+                  <div class="d-flex justify-content-between mt-2 flex-wrap">
+                    <div class="col">
+                      <mat-form-field class="w-100">
+                        <input [formControl]="search" placeholder="Rechercher un fixing ici...." matInput>
+                        <mat-icon matSuffix>search</mat-icon>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <table mat-table [dataSource]="dataSource3" class="table w-100" id="divTable_">
+                    <ng-container matColumnDef="Date">
+                      <th mat-header-cell *matHeaderCellDef class="text-start">Date</th>
+                      <td class="text-start" mat-cell *matCellDef="let element">{{ element.created_at | date:
+                        'dd/MM/YYYY' }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Client">
+                      <th mat-header-cell *matHeaderCellDef>Client</th>
+                      <td class="" mat-cell *matCellDef="let element">{{ element.client }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Lot">
+                      <th mat-header-cell *matHeaderCellDef class="text-start">Arrivage</th>
+                      <td class="text-start" mat-cell *matCellDef="let element">{{ element.arrivage }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Poids">
+                      <th mat-header-cell *matHeaderCellDef>Pds barre</th>
+                      <td class="" mat-cell *matCellDef="let element">{{ element.poidsItem }} g</td>
+                    </ng-container>
+                    <ng-container matColumnDef="CarratMoyen">
+                      <th mat-header-cell *matHeaderCellDef>Carrat</th>
+                      <td class="" mat-cell *matCellDef="let element">{{ element.carratItem }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Fixing">
+                      <th mat-header-cell *matHeaderCellDef>Fixing</th>
+                      <td class="" mat-cell *matCellDef="let element">{{ element.fixingBourse }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Discompte">
+                      <th mat-header-cell *matHeaderCellDef>Discompte</th>
+                      <td class="" mat-cell *matCellDef="let element">{{ element.discompte }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Prix">
+                      <th mat-header-cell *matHeaderCellDef>P.Unit</th>
+                      <td class="" mat-cell *matCellDef="let element">{{ element.prix_unitaire | number: '2.2-2' }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Densite">
+                      <th mat-header-cell *matHeaderCellDef>Densite</th>
+                      <td class="" mat-cell *matCellDef="let element">{{ 22 }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Montant">
+                      <th mat-header-cell *matHeaderCellDef>Montant</th>
+                      <td class="" mat-cell *matCellDef="let element">{{ element.montant | number: '2.2-2' }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Statut">
+                      <th mat-header-cell *matHeaderCellDef>Statut</th>
+                      <td class="" mat-cell *matCellDef="let element" class="text-success">Valid&#233;</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displaysColums3;"></tr>
+                    <tr mat-row *matRowDef="let row; columns:displaysColums3" (click)="selection.toggle(row)">
+                    </tr>
+                  </table>
+                  <mat-paginator [pageSizeOptions]="[100, 500]" showFirstLastButtons></mat-paginator>
+                </mat-card-content>
               </mat-tab>
             </mat-tab-group>
           </mat-card-content>
           <mat-card-footer>
-            <table class="table fs-3 fw-bold">
+            <table class="table fw-bold">
               <tr>
-                <th>SOLDE</th>
+                <th class="fs-6 text-center">SOLDE FINAL</th>
                 <th>:</th>
-                <td>0.00 $</td>
+                <td class="fs-6 text-center" [class]="(SoldeFinal-MTotal)>=0?'text-success':'text-danger'">
+                  $ {{ SoldeFinal - MTotal | number: '2.2-2'}}
+                </td>
               </tr>
             </table>
           </mat-card-footer>

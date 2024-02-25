@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { ChangeDetectionStrategy, Input } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -26,7 +26,6 @@ export class FournisseurachatComponent implements OnInit {
     private activeroute: ActivatedRoute,
     private service: ApiserviceService,
     private purchaseService: PurchaseService,
-    private fb: FormBuilder,
     public location: Location,
     private router: Router
   ) {
@@ -37,7 +36,7 @@ export class FournisseurachatComponent implements OnInit {
   }
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
-  displaysColums = ["nom", "prenom", "pays", "ville", "adresse", "tel", "mail", "action"];
+  displaysColums = ["Nom-complet", "pays", "ville", "adresse", "tel", "mail", "action"];
 
   ID_fournisseur: any = 0
 
@@ -48,7 +47,7 @@ export class FournisseurachatComponent implements OnInit {
 
   // GET Fournisseur
   getFournisseurAchat() {
-    this.service.getFournisseur().subscribe({
+    this.service.LIST('public', 'read.php', 'table_fournisseur').subscribe({
       next: (data) => {
         this.dataSource.data = data;
         this.dataSource.paginator = this.paginator;
@@ -58,14 +57,14 @@ export class FournisseurachatComponent implements OnInit {
 
   sendID(id_fournisseur: any): void {
     if (id_fournisseur) {
-      this.purchaseService.getPurchaseOnline(id_fournisseur)
+      this.purchaseService.getOneById('fournisseur', 'getOne.php', id_fournisseur)
         .subscribe({
           next: (data => {
-            if(data.length > 0){
-              console.log(data);
+            console.log("Data : ", data);
+            if (data != null) {
               // this.dataSource
               this.router.navigate([`/operation/add-purchase/${id_fournisseur}`])
-            }else{
+            } else {
               this.router.navigate([`/operation/init-purchase/${id_fournisseur}`])
             }
           }),
@@ -73,8 +72,8 @@ export class FournisseurachatComponent implements OnInit {
             console.log(error);
           })
         })
-      }
-      // this.router.navigate([`/operation/add-purchase/${id_fournisseur}`])
+    }
+    // this.router.navigate([`/operation/add-purchase/${id_fournisseur}`])
   }
 
   // Filtre search

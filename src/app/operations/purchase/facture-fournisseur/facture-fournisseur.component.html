@@ -54,21 +54,15 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let data of TabFixing">
-                        <td *ngIf="data.status == 1">{{ data.id }}</td>
-                        <td *ngIf="data.status == 1"><i>{{ data.created_at | date: 'dd/MM/YYYY' }}</i></td>
-                        <td *ngIf="data.status == 1"><i>{{ data.poids_fixe | number }}</i></td>
-                        <!-- <td><i>{{ data.poids_fixe  - 100| number }}</i></td> -->
-                        <td *ngIf="data.status == 1"><i>{{ data.discompte | number }}</i></td>
-                        <td *ngIf="data.status == 1" class="text-center">
-                          <span class="text-danger fw-bold" *ngIf="data.status == 1"> <i
-                              class="icon-copy dw dw-folder-78 mx-1"></i> En attente </span>
-                        </td>
-                        <td *ngIf="data.status == 1" class="text-center">
-                          <a *ngIf="data.status == 1" routerLink="/fournisseur/facture-vente/{{data.id}}"
+                        <td>{{ data.id }}</td>
+                        <td><i>{{ data.created_at | date: 'dd/MM/YYYY' }}</i></td>
+                        <td><i>{{ data.poidsFixer | number }}</i></td>
+                        <td><i>{{ data.discompte | number }}</i></td>
+                        <td class="text-center"><i class="text-danger">en cours  | <span class="mdi mdi-thumbs-up-down-outline"></span></i></td>
+                        <td class="text-center">
+                          <a routerLink="/fournisseur/facture-vente/{{data.id}}"
                             mat-raised-button color="primary" class="mx-3">G&#233;rer <span
                               class="dw dw-right-arrow"></span></a>
-                          <a *ngIf="data.status == 2" routerLink="/fournisseur/facture-vente/{{data.id}}"
-                            mat-raised-button color="accent" class="mx-3">Facture <span class="dw dw-file2"></span></a>
                         </td>
                       </tr>
                     </tbody>
@@ -90,19 +84,16 @@
                       <th class="text-center">Action</th>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let data of TabFixing">
-                        <td *ngIf="data.status == 2">#00{{ data.id }}</td>
-                        <td *ngIf="data.status == 2"><i>{{ data.created_at | date: 'dd/MM/YYYY' }}</i></td>
-                        <td *ngIf="data.status == 2"><i>{{ data.poids_fixe | number }}</i></td>
-                        <!-- <td><i>{{ data.poids_fixe  - 100| number }}</i></td> -->
-                        <td *ngIf="data.status == 2"><i>{{ data.discompte | number }}</i></td>
-                        <td *ngIf="data.status == 2" class="text-center">
-                          <span class="text-success fw-bold" *ngIf="data.status == 2"> <i
-                              class="icon-copy dw dw-checked mx-1"></i> Valider</span>
-                        </td>
-                        <td *ngIf="data.status == 2" class="text-center">
-                          <a *ngIf="data.status == 2" routerLink="/operation/create-facture"
-                            mat-stroked-button color="primary" class="mx-3">Facture <span class="dw dw-file2"></span></a>
+                      <tr *ngFor="let data of TabFixingValider">
+                        <td>{{ data.id }}</td>
+                        <td><i>{{ data.created_at | date: 'dd/MM/YYYY' }}</i></td>
+                        <td><i>{{ data.poidsFixer | number }}</i></td>
+                        <td><i>{{ data.discompte | number }}</i></td>
+                        <td class="text-center"><i class="text-success">valider | <span class="mdi mdi-star-check-outline"></span></i></td>
+                        <td class="text-center">
+                          <a routerLink="/operation/create-facture"
+                            mat-flat-button color="warn" class="mx-3">Impression<span
+                              class="dw dw-files"></span></a>
                         </td>
                       </tr>
                     </tbody>
@@ -110,7 +101,6 @@
                 </mat-card-content>
               </mat-tab>
             </mat-tab-group>
-
           </mat-card>
         </div>
         <!-- FIN  -->
@@ -120,55 +110,52 @@
           <mat-card-title>
             <h2 class="text-blue">Liste g&#233;n&#233;rale des fournisseurs</h2>
           </mat-card-title>
-          <mat-card-content id="table_shadow">
+          <mat-card-content id="table_shadow" class="table-responsive">
             <mat-form-field class="w-100">
               <input [formControl]="search" placeholder="Rechercher un fournisseur ici...." matInput>
               <mat-icon matSuffix>search</mat-icon>
             </mat-form-field>
             <table mat-table [dataSource]="dataSource" class="" class="w-100">
-              <ng-container matColumnDef="nom">
-                <th mat-header-cell *matHeaderCellDef>Nom</th>
-                <td mat-cell *matCellDef="let element">{{element.nom}}</td>
+
+              <ng-container matColumnDef="fournisseur">
+                <th mat-header-cell *matHeaderCellDef>Nom complet</th>
+                <td mat-cell *matCellDef="let element">{{element.nomComplet}}</td>
               </ng-container>
-              <ng-container matColumnDef="prenom">
-                <th mat-header-cell *matHeaderCellDef>Prenom</th>
-                <td mat-cell *matCellDef="let element">{{element.prenom}}</td>
-              </ng-container>
+
               <ng-container matColumnDef="pays">
                 <th mat-header-cell *matHeaderCellDef>Pays</th>
                 <td mat-cell *matCellDef="let element">{{element.pays}}</td>
               </ng-container>
+
               <ng-container matColumnDef="ville">
                 <th mat-header-cell *matHeaderCellDef>Ville</th>
                 <td mat-cell *matCellDef="let element">{{element.ville}}</td>
               </ng-container>
+
               <ng-container matColumnDef="adresse">
                 <th mat-header-cell *matHeaderCellDef>Adresse</th>
                 <td mat-cell *matCellDef="let element">{{element.adresse}}</td>
               </ng-container>
+
               <ng-container matColumnDef="tel">
                 <th mat-header-cell *matHeaderCellDef>Telephone</th>
                 <td mat-cell *matCellDef="let element">{{element.telephone}}</td>
               </ng-container>
-              <ng-container matColumnDef="mail">
-                <th mat-header-cell *matHeaderCellDef>Email</th>
-                <td mat-cell *matCellDef="let element">{{element.email}}</td>
-              </ng-container>
+
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Facture ?</th>
-                <td mat-cell *matCellDef="let element" class="text-center">
-                  <a routerLink="/fournisseur/facture-achat/{{element.id}}" mat-flat-button color="primary"
-                    class="mx-3">Achat <span class="dw dw-edit-file"></span></a>
-                  <a href="#">|</a>
-                  <a routerLink="/operation/facture-fournisseur/{{element.id}}" mat-flat-button color="accent"
-                    class="mx-3">Vente <span class="dw dw-edit-file"></span></a>
+                <td mat-cell *matCellDef="let element" class="text-center mx-2">
+                  <button routerLink="/fournisseur/facture-achat/{{element.id}}" mat-flat-button color="primary"
+                    class="mx-3"><span class="mtext">Achat</span> <span class="dw dw-edit-file"></span></button>
+                  <button routerLink="/operation/facture-fournisseur/{{element.id}}" mat-flat-button color="accent"
+                    class="mx-3"><span class="mtext">Vente</span> <span class="dw dw-edit-file"></span></button>
                 </td>
               </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="displaysColums;sticky: true"></tr>
-              <tr mat-row *matRowDef="let row; columns:displaysColums"></tr>
-            </table>
-            <mat-paginator [pageSizeOptions]="[10,15,100]" showFirstLastButtons></mat-paginator>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 15, 50, 100]" showFirstLastButtons></mat-paginator>
           </mat-card-content>
         </mat-card>
         <!-- FIN LISTE FOURNISSEUR -->

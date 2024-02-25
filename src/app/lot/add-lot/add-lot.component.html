@@ -25,10 +25,7 @@
                 <span class="micon dw dw-list"></span><span class="mtext mx-2"> Liste des lots</span>
               </button>
               <button class="mx-2 fw-bold" mat-flat-button color="accent" routerLink="/lot/add-lot">
-                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Cr&#233;er un lot</span>
-              </button>
-              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
-                <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
+                <span class="micon mdi mdi-plus-thick"></span><span class="mtext mx-2"> Cr&#233;er un lot</span>
               </button>
             </div>
           </div>
@@ -42,28 +39,28 @@
         <mat-card class="mat-elevation-z8">
           <div class="pb-20 d-flex justify-content-between align-items-center flex-wrap">
             <div class="col">
-              <form class="mx-1 mx-md-4" [formGroup]="Lot" (ngSubmit)="LotAddForm(Lot)">
+              <form class="mx-1" [formGroup]="LotForm">
                 <!-- LOT -->
-                <div class="col-12  col-lg-12 mb-3">
+                <div class="col-12 col-lg-12 mb-3">
                   <h3>Cr&#233;ation du lot</h3>
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Creer un lot</mat-label>
                     <input formControlName="designation" matInput placeholder="Ex : Lot du ...">
                     <mat-hint>Exemple : Lot du 03/mai/2023</mat-hint>
-                    <mat-error *ngIf="Lot.controls.designation.errors">
+                    <mat-error *ngIf="LotForm.controls.designation.errors">
                       Champ obligatoire
                     </mat-error>
                   </mat-form-field>
-                  <button type="submit" mat-raised-button color="primary" class="w-100 mt-3" id="bt"
-                    [disabled]="!Lot.valid"><span id="text_contact">Enregistrer le lot ?</span>
+                  <button (click)="AddLot(LotForm)" mat-raised-button color="primary" class="w-100 mt-3" id="bt"
+                    [disabled]="!LotForm.valid"><span id="text_contact">Enregistrer le lot ?</span>
                   </button>
                 </div>
 
               </form>
             </div>
-            <div class="col p-3">
+            <div class="col p-3" id="col-none">
               <div class="img-responsive">
-                <img src="../../../assets/image/caisse.png" class="img-responsive" alt="">
+                <img src="https://png.pngtree.com/png-vector/20190501/ourmid/pngtree-add-to-cart--icon-design-png-image_1011440.jpg" alt="">
               </div>
             </div>
           </div>

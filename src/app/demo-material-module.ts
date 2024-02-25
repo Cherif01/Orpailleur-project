@@ -16,10 +16,7 @@ import { PortalModule } from '@angular/cdk/portal';
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
 
 // Importation des modules Material
 import { MatAutocompleteModule } from '@angular/material/autocomplete';

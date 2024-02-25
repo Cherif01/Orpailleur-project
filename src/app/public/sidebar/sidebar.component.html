@@ -1,8 +1,8 @@
 <div class="right-sidebar">
   <div class="sidebar-title">
     <h3 class="weight-600 font-16 text-blue">
-      Layout Settings
-      <span class="btn-block font-weight-400 font-12">User Interface Settings</span>
+      Parametres de l'application
+      <span class="btn-block font-weight-400 font-12">Interface Utilisateur</span>
     </h3>
     <div class="close-sidebar" data-toggle="right-sidebar-close">
       <i class="icon-copy ion-close-round"></i>
@@ -10,13 +10,13 @@
   </div>
   <div class="right-sidebar-body customscroll">
     <div class="right-sidebar-body-content">
-      <h4 class="weight-600 font-18 pb-10">Header Background</h4>
+      <h4 class="weight-600 font-18 pb-10">Ari&#224;re plan du haut</h4>
       <div class="sidebar-btn-group pb-30 mb-10">
         <a href="javascript:void(0);" class="btn btn-outline-primary header-white active">White</a>
         <a href="javascript:void(0);" class="btn btn-outline-primary header-dark">Dark</a>
       </div>
 
-      <h4 class="weight-600 font-18 pb-10">Sidebar Background</h4>
+      <h4 class="weight-600 font-18 pb-10">Arri&#232;re plan du menu</h4>
       <div class="sidebar-btn-group pb-30 mb-10">
         <a href="javascript:void(0);" class="btn btn-outline-primary sidebar-light ">White</a>
         <a href="javascript:void(0);" class="btn btn-outline-primary sidebar-dark active">Dark</a>
@@ -24,7 +24,7 @@
 
 
       <div class="reset-options pt-5 text-center">
-        <button class="btn p-2 btn-danger" id="reset-settings">Reset Settings</button>
+        <button class="btn p-2 btn-danger" id="reset-settings">Par Defaut</button>
       </div>
     </div>
   </div>
@@ -35,8 +35,8 @@
 <div class="left-side-bar bg-transparent">
   <div class="brand-logo">
     <a routerLink="/home">
-      <img src="./assets/logo/logo.png" alt="" class="dark-logo w-50">
-      <img src="./assets/logo/logo.png" alt="" class="light-logo w-50">
+      <img src="/assets/logo/logo.png" alt="" class="dark-logo w-50">
+      <img src="/assets/logo/logo.png" alt="" class="light-logo w-50">
     </a>
     <div class="close-sidebar" data-bs-toggle="left-sidebar-close">
       <i class="icon-close-round"></i>
@@ -50,58 +50,57 @@
         <!-- OPERATION -->
         <div class="accordion" id="sidebarCollapseParent">
 
-          <div class="accordion-item p-0 m-0">
+          <div class="accordion-item p-0 m-0" *ngIf="ListAccess_onglet.includes('operation')">
             <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
               data-bs-target="#operation" aria-expanded="true" aria-controls="operation">
-              <span class="text-uppercase">Op&#233;ration</span>
+              <span class="text-uppercase"> Op&#233;ration</span>
             </button>
             <div id="operation" class="accordion-collapse collapse" aria-labelledby="headingOne"
               data-bs-parent="#sidebarCollapseParent">
               <div class="accordion-body panel p-0">
                 <!-- <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow. -->
                 <div class="div">
-                  <li class="p-0">
-                    <a routerLink="home" routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow"
-                      (click)="playSound()">
-                      <i class="micon mdi mdi-home-import-outline"></i>
-                      <span class="mtext">Tableau de bord</span>
+                  <li class="p-0" *ngFor="let menu of menuOperation">
+                    <a *ngIf="ListAccess_menu_url.includes(menu.url)" routerLink="{{menu.url}}" routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow">
+                      <i class="micon {{menu.icons}} "></i>
+                      <span class="">{{menu.libelle}}</span>
                     </a>
                   </li>
-                  <li class="w-100 p-0">
+                  <!-- <li class="w-100 p-0">
                     <a href="#" routerLink="lot/list-lot" routerLinkActive="active-sidebar"
-                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      class="dropdown-toggle no-arrow">
                       <i class="micon mdi mdi-human-dolly"></i>
-                      <span class="mtext">Lot</span>
+                      <span class="">Lot</span>
                     </a>
                   </li>
                   <li>
                     <a routerLink="operation/purchase" href="#" routerLinkActive="active-sidebar"
-                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      class="dropdown-toggle no-arrow">
                       <i class="micon mdi mdi-cart-plus"></i>
-                      <span class="mtext">Achat</span>
+                      <span class="">Achat</span>
                     </a>
-                  </li>
-                  <li>
+                  </li> -->
+                  <!-- <li>
                     <a href="#" routerLink="/etat-entreprise/entrer-caisse" routerLinkActive="active-sidebar"
-                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      class="dropdown-toggle no-arrow">
                       <i class="micon mdi mdi-arrow-right-bottom-bold"></i>
-                      <span class="mtext">Entrer de caisse</span>
+                      <span class="">Entrer de caisse</span>
                     </a>
                   </li>
                   <li>
                     <a href="#" routerLink="/etat-entreprise/sortie-caisse" routerLinkActive="active-sidebar"
-                      class="dropdown-toggle no-arrow" (click)="playSound()">
+                      class="dropdown-toggle no-arrow">
                       <i class="micon mdi mdi-arrow-left-bottom-bold"></i>
-                      <span class="mtext">Sortie de caisse</span>
+                      <span class="">Sortie de caisse</span>
                     </a>
-                  </li>
+                  </li> -->
                 </div>
               </div>
             </div>
           </div>
 
           <!-- ETAT / SITUATION -->
-          <div class="accordion-item p-0 m-0">
+          <div class="accordion-item p-0 m-0" *ngIf="ListAccess_onglet.includes('situation')">
             <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
               data-bs-target="#etat" aria-expanded="true" aria-controls="etat">
               <span>SITUATION</span>
@@ -109,211 +108,268 @@
             <div id="etat" class="accordion-collapse collapse" aria-labelledby="headingTwo"
               data-bs-parent="#sidebarCollapseParent">
               <div class="accordion-body panel p-0">
-                <div class="div">
-                  <li>
+                <li class="p-0" *ngFor="let menu of menuSituation">
+                  <a *ngIf="ListAccess_menu_url.includes(menu.url)" routerLink="{{menu.url}}" routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow">
+                    <i class="micon {{menu.icons}} "></i>
+                    <span class="">{{menu.libelle}}</span>
+                  </a>
+                </li>
+                <!-- <li>
                     <a routerLink="/etat-entreprise/stock-principale" class="dropdown-toggle no-arrow"
-                      routerLinkActive="active-sidebar" (click)="playSound()">
+                      routerLinkActive="active-sidebar">
                       <i class="micon mdi mdi-database-plus-outline"></i>
-                      <span class="mtext">Stock principale</span>
+                      <span class="">Stock principale</span>
                     </a>
                   </li>
                   <li>
                     <a routerLink="/etat-entreprise/caisse-principale" class="dropdown-toggle no-arrow"
-                      routerLinkActive="active-sidebar" (click)="playSound()">
+                      routerLinkActive="active-sidebar">
                       <i class="micon mdi mdi-cash-100"></i>
-                      <span class="mtext">Caisse principale</span>
+                      <span class="">Caisse principale</span>
                     </a>
-                  </li>
-                </div>
+                  </li> -->
               </div>
             </div>
           </div>
-
-          <!-- FOURNISSEUR -->
-          <div class class="accordion-item p-0 m-0">
-            <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#fournisseur" aria-expanded="true" aria-controls="fournisseur">
-              <span>FOURNISSEUR</span>
-            </button>
-            <div id="fournisseur" class="accordion-collapse collapse" aria-labelledby="headingFournisseur"
-              data-bs-parent="#sidebarCollapseParent">
-              <div class="accordion-body panel p-0">
-                <div class="div">
-                  <li>
-                    <a href="#" routerLink="fournisseur/add-fournisseur" routerLinkActive="active-sidebar"
-                      class="dropdown-toggle no-arrow" (click)="playSound()">
-                      <i class="micon mdi mdi-account-plus"></i>
-                      <span class="mtext">Ajouter</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" routerLink="fournisseur/list-fournisseur" routerLinkActive="active-sidebar"
-                      class="dropdown-toggle no-arrow" (click)="playSound()">
-                      <i class="micon mdi mdi-account-details-outline"></i>
-                      <span class="mtext">Liste g&#233;n&#233;rale</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" routerLink="operation/facture-fournisseur" routerLinkActive="active-sidebar"
-                      class="dropdown-toggle no-arrow" (click)="playSound()">
-                      <i class="micon mdi mdi-file-outline"></i>
-                      <span class="mtext">Facturer un fixing</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" routerLink="operation/create-facture" routerLinkActive="active-sidebar"
-                      class="dropdown-toggle no-arrow" (click)="playSound()">
-                      <i class="micon mdi mdi-folder-file-outline"></i>
-                      <span class="mtext">Facture fournisseur</span>
-                    </a>
-                  </li>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-          <!-- CLIENT -->
-          <div class class="accordion-item p-0 m-0">
-            <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#client" aria-expanded="true" aria-controls="client">
-              <span>CLIENTS</span>
-            </button>
-            <div id="client" class="accordion-collapse collapse" aria-labelledby="headingClient"
-              data-bs-parent="#sidebarCollapseParent">
-              <div class="accordion-body panel p-0">
-                <div class="div">
-                  <li>
-                    <a href="#" routerLink="client/list-client" routerLinkActive="active-sidebar"
-                      class="dropdown-toggle no-arrow" (click)="playSound()">
-                      <i class="micon mdi mdi-account-arrow-down-outline"></i>
-                      <span class="mtext">Tous les Client</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="operation/sales" href="#" routerLinkActive="active-sidebar"
-                      class="dropdown-toggle no-arrow" (click)="playSound()">
-                      <i class="micon mdi mdi-truck-plus-outline"></i>
-                      <span class="mtext">Expedition</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" routerLink="operation/situation-client" routerLinkActive="active-sidebar"
-                      class="dropdown-toggle no-arrow" (click)="playSound()">
-                      <i class="micon mdi mdi-file-outline"></i>
-                      <span class="mtext">Facture vente</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="operation/situation-client" href="#" routerLinkActive="active-sidebar"
-                      class="dropdown-toggle no-arrow" (click)="playSound()">
-                      <i class="micon mdi mdi-calculator"></i>
-                      <span class="mtext">Situation</span>
-                    </a>
-                  </li>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-          <!-- FIXING -->
-          <div class class="accordion-item p-0 m-0">
-            <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#fixing" aria-expanded="true" aria-controls="fixing">
-              <span>FIXING</span>
-            </button>
-            <div id="fixing" class="accordion-collapse collapse" aria-labelledby="headingFixing"
-              data-bs-parent="#sidebarCollapseParent">
-              <div class="accordion-body panel p-0">
-                <div class="div">
-                  <li>
-                    <a href="#" routerLink="/fixing/bourse-view" class="dropdown-toggle no-arrow"
-                      routerLinkActive="active-sidebar" (click)="playSound()">
-                      <i class="micon mdi mdi-bitcoin"></i>
-                      <span class="mtext">Afficher la bourse</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" routerLink="/fixing/list-fixing" class="dropdown-toggle no-arrow"
-                      routerLinkActive="active-sidebar" (click)="playSound()">
-                      <i class="micon mdi mdi-dots-vertical"></i>
-                      <span class="mtext">Liste des fixings</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" routerLink="/fixing/add-fixing" class="dropdown-toggle no-arrow"
-                      routerLinkActive="active-sidebar" (click)="playSound()">
-                      <i class="micon mdi mdi-gold"></i>
-                      <span class="mtext">Fix&#233; un poids</span>
-                    </a>
-                  </li>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-          <!-- Rapport -->
-          <div class class="accordion-item p-0 m-0">
-            <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#rapport" aria-expanded="true" aria-controls="rapport">
-              <span>RAPPORT</span>
-            </button>
-            <div id="rapport" class="accordion-collapse collapse" aria-labelledby="headingRapport"
-              data-bs-parent="#sidebarCollapseParent">
-              <div class="accordion-body panel p-0">
-                <div class="div pb-3">
-                  <li>
-                    <a href="#" routerLink="rapport/rapport-achat" class="dropdown-toggle no-arrow"
-                      routerLinkActive="active-sidebar" (click)="playSound()">
-                      <i class="micon mdi mdi-plus-box"></i>
-                      <span class="mtext">Achat</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" routerLink="rapport/rapport-frs" class="dropdown-toggle no-arrow"
-                      routerLinkActive="active-sidebar" (click)="playSound()">
-                      <i class="micon mdi mdi-account"></i>
-                      <span class="mtext">Fournisseur</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" routerLink="rapport/rapport-client" class="dropdown-toggle no-arrow"
-                      routerLinkActive="active-sidebar" (click)="playSound()">
-                      <i class="micon mdi mdi-account-badge"></i>
-                      <span class="mtext">Client</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" routerLink="rapport/rapport-caisse" class="dropdown-toggle no-arrow"
-                      routerLinkActive="active-sidebar" (click)="playSound()">
-                      <i class="micon mdi mdi-cash-check"></i>
-                      <span class="mtext">Caisse</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" routerLink="rapport/rapport-arrivage" class="dropdown-toggle no-arrow"
-                      routerLinkActive="active-sidebar" (click)="playSound()">
-                      <i class="micon mdi mdi-human-dolly"></i>
-                      <span class="mtext">Arrivage (convoie)</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" routerLink="rapport/rapport-expedition" class="dropdown-toggle no-arrow"
-                      routerLinkActive="active-sidebar" (click)="playSound()">
-                      <i class="micon mdi mdi-truck"></i>
-                      <span class="mtext">Exp&#233;dition (convoie)</span>
-                    </a>
-                  </li>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
+
+        <!-- FOURNISSEUR -->
+        <div class class="accordion-item p-0 m-0" *ngIf="ListAccess_onglet.includes('fournisseur')">
+          <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#fournisseur" aria-expanded="true" aria-controls="fournisseur">
+            <span>FOURNISSEUR</span>
+          </button>
+          <div id="fournisseur" class="accordion-collapse collapse" aria-labelledby="headingFournisseur"
+            data-bs-parent="#sidebarCollapseParent">
+            <div class="accordion-body panel p-0">
+              <div class="div">
+                <li class="p-0" *ngFor="let menu of menuFournisseur">
+                  <a *ngIf="ListAccess_menu_url.includes(menu.url)" routerLink="{{menu.url}}" routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow">
+                    <i class="micon {{menu.icons}} "></i>
+                    <span class="">{{menu.libelle}}</span>
+                  </a>
+                </li>
+                <!-- <li>
+                  <a href="#" routerLink="fournisseur/add-fournisseur" routerLinkActive="active-sidebar"
+                    class="dropdown-toggle no-arrow">
+                    <i class="micon mdi mdi-account-plus"></i>
+                    <span class="">Ajouter</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" routerLink="fournisseur/list-fournisseur" routerLinkActive="active-sidebar"
+                    class="dropdown-toggle no-arrow">
+                    <i class="micon mdi mdi-account-details-outline"></i>
+                    <span class="">Liste g&#233;n&#233;rale</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" routerLink="operation/facture-fournisseur" routerLinkActive="active-sidebar"
+                    class="dropdown-toggle no-arrow">
+                    <i class="micon mdi mdi-file-outline"></i>
+                    <span class="">Facturer un fixing</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" routerLink="operation/create-facture" routerLinkActive="active-sidebar"
+                    class="dropdown-toggle no-arrow">
+                    <i class="micon mdi mdi-folder-file-outline"></i>
+                    <span class="">Facture fournisseur</span>
+                  </a>
+                </li> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- CLIENT -->
+        <div class class="accordion-item p-0 m-0" *ngIf="ListAccess_onglet.includes('client')">
+          <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#client" aria-expanded="true" aria-controls="client">
+            <span>PARTENAIRES</span>
+          </button>
+          <div id="client" class="accordion-collapse collapse" aria-labelledby="headingClient"
+            data-bs-parent="#sidebarCollapseParent">
+            <div class="accordion-body panel p-0">
+              <div class="div">
+                <li class="p-0" *ngFor="let menu of menuClient">
+                  <a *ngIf="ListAccess_menu_url.includes(menu.url)" routerLink="{{menu.url}}" routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow">
+                    <i class="micon {{menu.icons}} "></i>
+                    <span class="">{{menu.libelle}}</span>
+                  </a>
+                </li>
+                <!-- <li>
+                  <a href="#" routerLink="client/list-client" routerLinkActive="active-sidebar"
+                    class="dropdown-toggle no-arrow">
+                    <i class="micon mdi mdi-account-arrow-down-outline"></i>
+                    <span class="">Tous les Client</span>
+                  </a>
+                </li>
+                <li>
+                  <a routerLink="operation/sales" href="#" routerLinkActive="active-sidebar"
+                    class="dropdown-toggle no-arrow">
+                    <i class="micon mdi mdi-truck-plus-outline"></i>
+                    <span class="">Expedition</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" routerLink="operation/situation-client" routerLinkActive="active-sidebar"
+                    class="dropdown-toggle no-arrow">
+                    <i class="micon mdi mdi-file-outline"></i>
+                    <span class="">Facture vente</span>
+                  </a>
+                </li> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- FIXING -->
+        <div class class="accordion-item p-0 m-0" *ngIf="ListAccess_onglet.includes('fixing')">
+          <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#fixing" aria-expanded="true" aria-controls="fixing">
+            <span>FIXING</span>
+          </button>
+          <div id="fixing" class="accordion-collapse collapse" aria-labelledby="headingFixing"
+            data-bs-parent="#sidebarCollapseParent">
+            <div class="accordion-body panel p-0">
+              <div class="div">
+                <li class="p-0" *ngFor="let menu of menuFixing">
+                  <a *ngIf="ListAccess_menu_url.includes(menu.url)" routerLink="{{menu.url}}" routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow">
+                    <i class="micon {{menu.icons}} "></i>
+                    <span class="">{{menu.libelle}}</span>
+                  </a>
+                </li>
+                <!-- <li>
+                  <a href="#" routerLink="/fixing/bourse-view" class="dropdown-toggle no-arrow"
+                    routerLinkActive="active-sidebar">
+                    <i class="micon mdi mdi-bitcoin"></i>
+                    <span class="">Afficher la bourse</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" routerLink="/fixing/list-fixing" class="dropdown-toggle no-arrow"
+                    routerLinkActive="active-sidebar">
+                    <i class="micon mdi mdi-dots-vertical"></i>
+                    <span class="">Liste des fixings</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" routerLink="/fixing/add-fixing" class="dropdown-toggle no-arrow"
+                    routerLinkActive="active-sidebar">
+                    <i class="micon mdi mdi-gold"></i>
+                    <span class="">Fix&#233; un poids</span>
+                  </a>
+                </li> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rapport -->
+        <div class class="accordion-item p-0 m-0" *ngIf="ListAccess_onglet.includes('rapport')">
+          <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#rapport" aria-expanded="true" aria-controls="rapport">
+            <span>RAPPORT</span>
+          </button>
+          <div id="rapport" class="accordion-collapse collapse" aria-labelledby="headingRapport"
+            data-bs-parent="#sidebarCollapseParent">
+            <div class="accordion-body panel p-0">
+              <div class="div pb-3">
+                <li class="p-0" *ngFor="let menu of menuRapport">
+                  <a *ngIf="ListAccess_menu_url.includes(menu.url)" routerLink="{{menu.url}}" routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow">
+                    <i class="micon {{menu.icons}} "></i>
+                    <span class="">{{menu.libelle}}</span>
+                  </a>
+                </li>
+                <!-- <li>
+                  <a href="#" routerLink="rapport/rapport-achat" class="dropdown-toggle no-arrow"
+                    routerLinkActive="active-sidebar">
+                    <i class="micon mdi mdi-plus-box"></i>
+                    <span class="">Achat</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" routerLink="rapport/rapport-frs" class="dropdown-toggle no-arrow"
+                    routerLinkActive="active-sidebar">
+                    <i class="micon mdi mdi-account"></i>
+                    <span class="">Fournisseur</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" routerLink="rapport/rapport-client" class="dropdown-toggle no-arrow"
+                    routerLinkActive="active-sidebar">
+                    <i class="micon mdi mdi-account-badge"></i>
+                    <span class="">Client</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" routerLink="rapport/rapport-caisse" class="dropdown-toggle no-arrow"
+                    routerLinkActive="active-sidebar">
+                    <i class="micon mdi mdi-cash-check"></i>
+                    <span class="">Caisse</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" routerLink="rapport/rapport-arrivage" class="dropdown-toggle no-arrow"
+                    routerLinkActive="active-sidebar">
+                    <i class="micon mdi mdi-human-dolly"></i>
+                    <span class="">Arrivage (convoie)</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" routerLink="rapport/rapport-expedition" class="dropdown-toggle no-arrow"
+                    routerLinkActive="active-sidebar">
+                    <i class="micon mdi mdi-truck"></i>
+                    <span class="">Exp&#233;dition (convoie)</span>
+                  </a>
+                </li> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- UTILISATEUR -->
+        <div class class="accordion-item p-0 m-0" *ngIf="ListAccess_onglet.includes('settings')">
+          <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#settings" aria-expanded="true" aria-controls="settings">
+            <span>PARAMETRES</span>
+          </button>
+          <div id="settings" class="accordion-collapse collapse" aria-labelledby="headingSettings"
+            data-bs-parent="#sidebarCollapseParent">
+            <div class="accordion-body panel p-0">
+              <div class="div">
+                <li class="p-0" *ngFor="let menu of menuSettings">
+                  <a *ngIf="ListAccess_menu_url.includes(menu.url)" routerLink="{{menu.url}}" routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow">
+                    <i class="micon {{menu.icons}} "></i>
+                    <span class="">{{menu.libelle}}</span>
+                  </a>
+                </li>
+                <!-- <li>
+                  <a href="#" routerLink="settings/user" routerLinkActive="active-sidebar"
+                    class="dropdown-toggle no-arrow">
+                    <i class="micon mdi mdi-account-plus"></i>
+                    <span class="">Utilisateur</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" routerLink="settings/menu" routerLinkActive="active-sidebar"
+                    class="dropdown-toggle no-arrow">
+                    <i class="micon mdi mdi-menu-open"></i>
+                    <span class="">Menu & Acc&#232;s</span>
+                  </a>
+                </li> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end -->
       </ul>
     </div>
   </div>
 </div>
+
 <div class="mobile-menu-overlay"></div>
