@@ -43,7 +43,7 @@
                 <input [formControl]="search" placeholder="Rechercher un fournisseur ici...." matInput>
                 <mat-icon matSuffix>search</mat-icon>
               </mat-form-field>
-              <table mat-table [dataSource]="dataSource" class="w-100">
+              <table mat-table [dataSource]="dataSource" class="w-100" id="myDataTable">
                 <ng-container matColumnDef="Nom-complet">
                   <th mat-header-cell *matHeaderCellDef>Nom complet</th>
                   <td mat-cell *matCellDef="let element">

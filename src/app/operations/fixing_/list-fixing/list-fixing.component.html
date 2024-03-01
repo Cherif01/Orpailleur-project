@@ -60,7 +60,7 @@
               />
               <mat-icon matSuffix>search</mat-icon>
             </mat-form-field>
-            <table mat-table [dataSource]="dataSource" matSort class="w-100">
+            <table mat-table [dataSource]="dataSource" matSort class="w-100" id="myDataTable">
               <!-- Checkbox Column -->
 
               <ng-container matColumnDef="date">
@@ -79,7 +79,7 @@
                 <th mat-header-cell *matHeaderCellDef>Pds fix&#233;</th>
                 <!-- <td class="text-primary" mat-cell *matCellDef="let element">{{ element.poidsFixer | number }}</td> -->
                 <td mat-cell *matCellDef="let element" width="15%">
-                  <input
+                  <input [disabled]="element.statut_fixing == 2"
                     matInput
                     [(ngModel)]="element.poidsFixer"
                     (blur)="saveTableData(element)"
@@ -90,7 +90,7 @@
                 <th mat-header-cell *matHeaderCellDef>Fixing</th>
                 <!-- <td mat-cell *matCellDef="let element">{{ element.fixingBourse | number }}</td> -->
                 <td mat-cell *matCellDef="let element" width="10%">
-                  <input
+                  <input [disabled]="element.statut_fixing == 2"
                     matInput
                     [(ngModel)]="element.fixingBourse"
                     (blur)="saveTableData(element)"
@@ -100,7 +100,7 @@
               <ng-container matColumnDef="discounte">
                 <th mat-header-cell *matHeaderCellDef>Discounte</th>
                 <td mat-cell *matCellDef="let element" width="10%">
-                  <input
+                  <input [disabled]="element.statut_fixing == 2"
                     matInput
                     [(ngModel)]="element.discompte"
                     (blur)="saveTableData(element)"

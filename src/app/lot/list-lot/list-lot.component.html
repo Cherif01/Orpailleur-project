@@ -10,25 +10,32 @@
             <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+                <li class="breadcrumb-item active"
+                  aria-current="page">{{title}}</li>
               </ol>
             </nav>
           </div>
-          <div class="text-right d-flex justify-content-between align-items-center">
+          <div
+            class="text-right d-flex justify-content-between align-items-center">
             <div class="col-reply">
-              <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon
+              <button (click)="this.location.back()" mat-icon-button
+                color="warn"><mat-icon
                   class="mat-24">reply</mat-icon>
               </button>
             </div>
             <div class="col-btn">
-              <button class="mx-2 fw-bold" mat-flat-button color="accent" routerLink="/lot/list-lot">
-                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Liste des lots</span>
+              <button
+                class="micon mdi mdi-menu-right-outline mx-2 btn btn-outline-dark"
+                routerLink="/lot/list-lot">
+                Liste des lots
               </button>
-              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/lot/add-lot">
-                <span class="micon mdi mdi-plus-thick"></span><span class="mtext mx-2"> Cr&#233;er un lot</span>
+              <button class="micon mdi mdi-plus-thick mx-2 btn btn-outline-dark"
+                routerLink="/lot/add-lot">
+                Cr&#233;er un lot
               </button>
-              <button class="mx-2 fw-bold" mat-flat-button color="warn" routerLink="/operation/add-purchase/">
-                <span class="micon mdi mdi mdi-cart-arrow-right"></span><span class="mtext mx-2"> Continuer vers l'achat</span>
+              <button class="micon mdi mdi-reply mx-2 btn btn-outline-dark"
+                routerLink="/operation/add-purchase/">
+                Allez vers l'achat
               </button>
             </div>
           </div>
@@ -39,24 +46,29 @@
       <mat-card>
         <mat-tab-group>
           <mat-tab label="LOT DU JOUR">
-            <table class="table">
+            <div class="separator-20"></div>
+            <h2>Lot du jour...</h2>
+            <table class="table table-hover" id="myDataTable">
               <thead>
                 <th>Date</th>
                 <th>N<sup>o</sup>_Docs</th>
                 <th>Designation</th>
-                <th class="">Status</th>
+                <th class>Status</th>
                 <th class="text-center">Action</th>
               </thead>
               <tbody>
                 <tr *ngFor="let lot of listLot">
-                  <td><strong>{{ lot.created_at | date:'dd/MM/yyyy' }}</strong></td>
+                  <td><strong>{{ lot.created_at | date:'dd/MM/yyyy'
+                      }}</strong></td>
                   <td>00{{ lot.id }}</td>
                   <td>{{ lot.designation }}</td>
-                  <td class="">
-                    <span class="text-warning fw-bold" *ngIf="lot.status == 1">Ouvert</span>
+                  <td class>
+                    <span class="text-warning fw-bold"
+                      *ngIf="lot.status == 1">Ouvert</span>
                   </td>
                   <td class="text-center">
-                    <a routerLink="/lot/detail-lot/{{ lot.id }}" (click)="playSound()" mat-raised-button color="">
+                    <a routerLink="/lot/detail-lot/{{ lot.id }}"
+                      (click)="playSound()" mat-raised-button color>
                       <span class="fw-bold text-long">Voir le contenu </span>
                       <i class="micon dw dw-right-arrow"></i>
                     </a>
@@ -66,18 +78,23 @@
             </table>
           </mat-tab>
 
-
           <!-- Historique -->
           <mat-tab label="ARCHIVES DES LOTS">
+            <div class="separator-20"></div>
             <mat-form-field>
               <mat-label>Rechercher</mat-label>
-              <input matInput (keyup)="applyFilter($event)" class="w-100" placeholder="Ex. lot du 13xxx" #input>
+              <input matInput (keyup)="applyFilter($event)" class="w-100"
+                placeholder="Ex. lot du 13xxx" #input>
             </mat-form-field>
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
+            <div class="separator-20"></div>
+            <h2>Historique des enregistrements</h2>
+            <table mat-table [dataSource]="dataSource"
+              class="mat-elevation-z4 w-100" id="myDataTable">
               <!-- Position Column -->
               <ng-container matColumnDef="Date">
                 <th mat-header-cell *matHeaderCellDef> Date </th>
-                <td mat-cell *matCellDef="let element"> {{element.created_at | date:'dd/MM/YYYY'}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.created_at |
+                  date:'dd/MM/YYYY'}} </td>
               </ng-container>
 
               <!-- Name Column -->
@@ -89,14 +106,16 @@
               <!-- Weight Column -->
               <ng-container matColumnDef="Designation">
                 <th mat-header-cell *matHeaderCellDef> Designation </th>
-                <td mat-cell *matCellDef="let element"> {{element.designation}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.designation}}
+                </td>
               </ng-container>
 
               <!-- Symbol Column -->
               <ng-container matColumnDef="Status">
                 <th mat-header-cell *matHeaderCellDef> Status </th>
                 <td mat-cell *matCellDef="let element">
-                  <span class="text-danger fw-bold"> <i class="icon-copy dw dw-lock mx-1"></i>
+                  <span class="text-danger fw-bold"> <i
+                      class="icon-copy dw dw-lock mx-1"></i>
                     Fermer</span>
                 </td>
               </ng-container>
@@ -105,7 +124,8 @@
               <ng-container matColumnDef="Action">
                 <th mat-header-cell *matHeaderCellDef> Action </th>
                 <td mat-cell *matCellDef="let element">
-                  <a routerLink="/lot/detail-lot/{{ element.id }}" (click)="playSound()" mat-raised-button color="warn">
+                  <a routerLink="/lot/detail-lot/{{ element.id }}"
+                    (click)="playSound()" mat-raised-button color="warn">
                     <span class="fw-bold">Voir le contenu </span>
                     <i class="icon-copy dw dw-right-arrow"></i>
                   </a>
@@ -117,38 +137,44 @@
 
               <!-- Row shown when there is no matching data. -->
               <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                <td class="mat-cell" colspan="4">No data matching the filter
+                  "{{input.value}}"</td>
               </tr>
             </table>
           </mat-tab>
 
           <!-- MAJ -->
           <mat-tab label="MISE A JOURS">
+            <div class="separator-20"></div>
+            <h2>Mise a jour des poids & carrat</h2>
             <div class="d-flex justify-content-between align-items-center pt-3">
-              <div class="col">
-                <h4><i>UPDATE ITEM</i></h4>
-              </div>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Rechercher</mat-label>
+                <input matInput (keyup)="applyFilter($event)" class="w-100"
+                  placeholder="Ex. 100 g / 22.20" #input>
+              </mat-form-field>
               <div class="col text-end">
                 <!-- Type -->
-                <mat-form-field appearance="fill" class="mb-2 p-0">
+                <mat-form-field appearance="outline" class="w-100">
                   <mat-label>--- LISTE LOT ---</mat-label>
-                  <mat-select disableRipple required (selectionChange)="listLotEvent($event.value)">
+                  <mat-select disableRipple required
+                    (selectionChange)="listLotEvent($event.value)">
                     <mat-option>-- Ne rien afficher ---</mat-option>
-                    <mat-option *ngFor="let x of allLot" [value]="x.id">{{ x.designation }}</mat-option>
+                    <mat-option *ngFor="let x of allLot" [value]="x.id">{{
+                      x.designation }}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
             </div>
             <!-- Tableau update -->
-            <mat-form-field>
-              <mat-label>Rechercher</mat-label>
-              <input matInput (keyup)="applyFilter($event)" class="w-100" placeholder="Ex. lot du 13xxx" #input>
-            </mat-form-field>
-            <table mat-table [dataSource]="dataSource_maj" class="mat-elevation-z8 w-100">
+
+            <table mat-table [dataSource]="dataSource_maj"
+              class="mat-elevation-z4 w-100" id="myDataTable">
               <!-- Position Column -->
               <ng-container matColumnDef="Date">
                 <th mat-header-cell *matHeaderCellDef> Date </th>
-                <td mat-cell *matCellDef="let element"> {{element.created_at | date:'dd/MM/YYYY'}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.created_at |
+                  date:'dd/MM/YYYY'}} </td>
               </ng-container>
 
               <!-- Weight Column -->
@@ -156,14 +182,18 @@
                 <th mat-header-cell *matHeaderCellDef> Poids </th>
                 <!-- <td mat-cell *matCellDef="let element"> {{element.poidsItem}} </td> -->
                 <td mat-cell *matCellDef="let element">
-                  <input matInput [(ngModel)]="element.poidsItem" (blur)="saveTableData(element)">
+                  <input matInput [(ngModel)]="element.poidsItem"
+                    (blur)="saveTableData(element)">
                 </td>
               </ng-container>
 
               <!-- Symbol Column -->
               <ng-container matColumnDef="Carrat">
                 <th mat-header-cell *matHeaderCellDef> Carrat </th>
-                <td mat-cell *matCellDef="let element"> {{element.carratItem}} </td>
+                <td mat-cell *matCellDef="let element">
+                  <input matInput [(ngModel)]="element.carratItem"
+                    (blur)="saveTableData(element)">
+                </td>
               </ng-container>
 
               <!-- Symbol Column -->
@@ -171,16 +201,19 @@
                 <th mat-header-cell *matHeaderCellDef> Manquant </th>
                 <!-- <td mat-cell *matCellDef="let element" class="text-danger"> {{element.manquant}} </td> -->
                 <td mat-cell *matCellDef="let element">
-                  <input matInput [(ngModel)]="element.manquantItem" (blur)="saveTableData(element)">
+                  <input matInput [(ngModel)]="element.manquantItem"
+                    (blur)="saveTableData(element)">
                 </td>
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="displayedColumns_maj"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns_maj;"></tr>
+              <tr mat-row
+                *matRowDef="let row; columns: displayedColumns_maj;"></tr>
 
               <!-- Row shown when there is no matching data. -->
               <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="4">Aucune donnees pour ce filtre : "{{input.value}}"</td>
+                <td class="mat-cell" colspan="4">Aucune donnees pour ce filtre :
+                  "{{input.value}}"</td>
               </tr>
             </table>
           </mat-tab>

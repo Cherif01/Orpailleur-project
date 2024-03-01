@@ -9,23 +9,28 @@
             </div>
             <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+                <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+                <li class="breadcrumb-item active"
+                  aria-current="page">{{title}}</li>
               </ol>
             </nav>
           </div>
-          <div class="text-right d-flex justify-content-between align-items-center">
+          <div
+            class="text-right d-flex justify-content-between align-items-center">
             <div class="col-reply">
-              <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon
+              <button (click)="this.location.back()" mat-icon-button
+                color="warn"><mat-icon
                   class="mat-24">reply</mat-icon>
               </button>
             </div>
             <div class="col-btn">
-              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/lot/list-lot">
-                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Liste des lots</span>
+              <button class="micon mdi mdi-menu-left mx-2 btn btn-outline-dark"
+                routerLink="/lot/list-lot">
+                  Liste des lots
               </button>
-              <button class="mx-2 fw-bold" mat-flat-button color="accent" routerLink="/lot/add-lot">
-                <span class="micon mdi mdi-plus-thick"></span><span class="mtext mx-2"> Cr&#233;er un lot</span>
+              <button class="micon mdi mdi-plus-thick mx-2 btn btn-outline-dark"
+                routerLink="/lot/add-lot">
+                Cr&#233;er un lot
               </button>
             </div>
           </div>
@@ -37,7 +42,8 @@
                 <h4 class="text-blue h4">Ajout d'un fournisseurs</h4>
              </div> -->
         <mat-card class="mat-elevation-z8">
-          <div class="pb-20 d-flex justify-content-between align-items-center flex-wrap">
+          <div
+            class="pb-20 d-flex justify-content-between align-items-center flex-wrap">
             <div class="col">
               <form class="mx-1" [formGroup]="LotForm">
                 <!-- LOT -->
@@ -45,14 +51,17 @@
                   <h3>Cr&#233;ation du lot</h3>
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Creer un lot</mat-label>
-                    <input formControlName="designation" matInput placeholder="Ex : Lot du ...">
+                    <input formControlName="designation" matInput
+                      placeholder="Ex : Lot du ...">
                     <mat-hint>Exemple : Lot du 03/mai/2023</mat-hint>
                     <mat-error *ngIf="LotForm.controls.designation.errors">
                       Champ obligatoire
                     </mat-error>
                   </mat-form-field>
-                  <button (click)="AddLot(LotForm)" mat-raised-button color="primary" class="w-100 mt-3" id="bt"
-                    [disabled]="!LotForm.valid"><span id="text_contact">Enregistrer le lot ?</span>
+                  <button (click)="AddLot(LotForm)" mat-raised-button
+                    color="primary" class="w-100 mt-3" id="bt"
+                    [disabled]="!LotForm.valid"><span
+                      id="text_contact">Enregistrer le lot ?</span>
                   </button>
                 </div>
 
@@ -60,7 +69,9 @@
             </div>
             <div class="col p-3" id="col-none">
               <div class="img-responsive">
-                <img src="https://png.pngtree.com/png-vector/20190501/ourmid/pngtree-add-to-cart--icon-design-png-image_1011440.jpg" alt="">
+                <img
+                  src="https://png.pngtree.com/png-vector/20190501/ourmid/pngtree-add-to-cart--icon-design-png-image_1011440.jpg"
+                  alt>
               </div>
             </div>
           </div>

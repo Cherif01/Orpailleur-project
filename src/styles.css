@@ -99,3 +99,13 @@ table .dw{
     font-size: 14px;
   }
 }
+
+#myDataTable, #myDataTable th, #myDataTable td {
+  padding: 5px;
+  border: 1px solid black;
+}
+
+.maTable, .maTable th, .maTable td {
+  padding: 5px;
+  border: 1px solid black;
+}

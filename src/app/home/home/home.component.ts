@@ -72,8 +72,11 @@ export class HomeComponent implements OnInit {
     // console.log("Username : ", localStorage.getItem('username'));
     // console.log("ROLE : ", this._ROLE_);
     this.getPurchaseListe();
-    this.dashboard()
     this.testROLE()
+    setInterval(()=>{
+      this.dashboard()
+      this.getPurchaseListe()
+    }, 5000)
   }
 
   testROLE(){

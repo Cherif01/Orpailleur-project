@@ -35,7 +35,7 @@
                 <mat-label>Rechercher</mat-label>
                 <input matInput (keyup)="applyFilter($event)" class="w-100" placeholder="Ex. lot du 13xxx" #input>
               </mat-form-field>
-              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
+              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100" id="myDataTable">
                 <!-- Position Column -->
                 <ng-container matColumnDef="Date">
                   <th mat-header-cell *matHeaderCellDef> Date </th>
@@ -131,7 +131,7 @@
                   <h3>Achat du : {{ startDate }}</h3>
                 </div>
 
-                <table class="table table-striped">
+                <table class="table table-striped" id="myDataTable">
                   <thead>
                     <th>Date</th>
                     <th>Barre</th>
