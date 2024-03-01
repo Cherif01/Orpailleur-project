@@ -215,8 +215,6 @@ export class HomeComponent implements OnInit {
   }
 
 
-
-
   // DETAILS (STATISTIQUE DASHBOARD)
   caisse: any = {}
   aujourdhui: Date = new Date()
@@ -239,6 +237,7 @@ export class HomeComponent implements OnInit {
           this.TotalPoidsToday = data.TotalPoidsToday
         }
       })
+
 
     // LOT
 

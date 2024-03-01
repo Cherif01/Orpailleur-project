@@ -19,7 +19,7 @@ import { FixingClientDialogComponent } from 'src/app/etat-entreprise/fixing-clie
   styleUrls: ['./detail-client.component.css']
 })
 export class DetailClientComponent implements OnInit {
-  @ViewChild('divToPrint') divToPrint: ElementRef | any
+  @ViewChild('divToPrint, divToPrint_') divToPrint: ElementRef | any
   @ViewChild('head') head: ElementRef | any
   @ViewChild(MatPaginator, { static: true })
   paginator: MatPaginator = Object.create(null)
@@ -96,6 +96,7 @@ export class DetailClientComponent implements OnInit {
     this.getCaisse()
     this.goRapport()
     this.getListExpedition()
+    this.getFacture()
     this.getListFixing()
     this.getListExpedition_valider()
   }
@@ -105,7 +106,7 @@ export class DetailClientComponent implements OnInit {
   getInfo() {
     this.service.getUnique('client', 'getInfoOne.php', this.Id_client).subscribe({
       next: (data: any) => {
-        console.log("Client : ", data);
+        // console.log("Client : ", data);
         this.infoClient = data;
       }
     })
@@ -134,18 +135,49 @@ export class DetailClientComponent implements OnInit {
       })
   }
   // VALIDER
-  MTotal = 0
-  PTotal = 0
-  CMoyen = 0
-  factureHistorique: any[] = []
   getListExpedition_valider (): void {
     this.service
       .LIST_BY_ID('client', 'get_by_client_valider.php', this.Id_client)
       .subscribe({
         next: (response: any) => {
           // console.log('Valider : ', response);
-          this.factureHistorique = response[0]
+          // this.factureHistorique = response[0]
           this.dataSource3.data = response[0]
+        },
+        error: (err: any) => console.log('erreur : ', err)
+      })
+  }
+
+
+  // GET Facture by fixing...
+  dataFacture: any[] = []
+  getFacture (): void {
+    this.service
+      .LIST_BY_ID('client', 'getFactureFixing.php', this.Id_client)
+      .subscribe({
+        next: (response: any) => {
+          // console.log('List : ', response);
+          this.dataFacture = response
+        },
+        error: (err: any) => console.log('erreur : ', err)
+      })
+  }
+
+  factureHistorique: any[] = []
+  MTotal = 0
+  PTotal = 0
+  CMoyen = 0
+  getOneFacture (idFixing: any): void {
+    this.MTotal = 0
+    this.PTotal = 0
+    this.CMoyen = 0
+    this.factureHistorique = []
+    this.service
+      .LIST_BY_ID('client', 'getOneFacture.php', idFixing)
+      .subscribe({
+        next: (response: any) => {
+          // console.log('Valider : ', response);
+          this.factureHistorique = response[0]
           this.MTotal = response[1]
           let cSum = 0
           response[0].forEach((v: any) => {
@@ -344,6 +376,7 @@ export class DetailClientComponent implements OnInit {
       formData.append('idItem', v.item)
       formData.append('idAchat', v.achat)
       formData.append('codeGenerer', code)
+      // formData.append('statut_fixing_vitem_client', this)
 
       // console.log('FormData : ', formData);
       // console.log(idFixing, this.Id_client);
@@ -413,6 +446,10 @@ export class DetailClientComponent implements OnInit {
   }
 
   imprimerDiv (): void {
+    imprimerDiv(this.divToPrint.nativeElement.innerHTML)
+  }
+
+  imprimerDiv_ (): void {
     imprimerDiv(this.divToPrint.nativeElement.innerHTML)
   }
 }

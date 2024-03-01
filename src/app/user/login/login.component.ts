@@ -41,6 +41,18 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  viewPass: boolean = false
+  viewPassword(): void {
+    let inputPass = document.getElementById('password_')
+    inputPass?.setAttribute('type', 'text')
+    this.viewPass = true
+  }
+  hiddenPassword(): void {
+    let inputPass = document.getElementById('password_')
+    inputPass?.setAttribute('type', 'password')
+    this.viewPass = false
+  }
+
 
   // loginSET() {
   //   let values = this.userLogin.value

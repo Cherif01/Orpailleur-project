@@ -12,3 +12,7 @@
 .maTable th, .maTable td{
   text-align: left;
 }
+
+.separator-20{
+  margin: 20px;
+}
