@@ -1,4 +1,44 @@
 #couvertureAll {
   background-size: cover;
   height: 100vh;
+  background: url('https://images.pexels.com/photos/321452/pexels-photo-321452.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+  background-repeat: no-repeat;
+}
+h2{
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  color: white;
+}
+.select-role label>span{
+  color: #FCD084;
+}
+.select-role label{
+  color: aliceblue;
+  font-weight: bolder;
+}
+
+#passwordControl {
+  cursor: pointer;
+}
+
+#couvertureAll input {
+  background-color: transparent;
+  border: 1px solid #FCD084;
+  color: white;
+}
+
+input::placeholder{
+  color: #888585;
+  font-size: 14px;
+  font-style: italic;
+  
+}
+
+.login-box{
+  border: 2px solid #9F8548;
+}
+
+.dw-lock, .dw-unlock, .dw-user1{
+  color: white;
 }

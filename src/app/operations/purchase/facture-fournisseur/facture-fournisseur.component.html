@@ -42,7 +42,7 @@
               <!-- EN COURS -->
               <mat-tab label="EN COURS">
                 <mat-card-content id="">
-                  <table class="table">
+                  <table class="table" id="myDataTable">
                     <thead>
                       <th>#REF</th>
                       <th>Date Fixing</th>
@@ -73,7 +73,7 @@
               <!-- VALIDER -->
               <mat-tab label="VALIDER">
                 <mat-card-content id="">
-                  <table class="table">
+                  <table class="table" id="myDataTable">
                     <thead>
                       <th>#REF</th>
                       <th>Date Fixing</th>
@@ -115,7 +115,7 @@
               <input [formControl]="search" placeholder="Rechercher un fournisseur ici...." matInput>
               <mat-icon matSuffix>search</mat-icon>
             </mat-form-field>
-            <table mat-table [dataSource]="dataSource" class="" class="w-100">
+            <table mat-table [dataSource]="dataSource" id="myDataTable" class="w-100">
 
               <ng-container matColumnDef="fournisseur">
                 <th mat-header-cell *matHeaderCellDef>Nom complet</th>

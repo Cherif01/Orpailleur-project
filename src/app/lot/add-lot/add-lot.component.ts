@@ -39,11 +39,11 @@ export class AddLotComponent implements OnInit {
         .subscribe({
           next: (reponse: any) => {
             // console.log("response ", reponse);
-            this.snackBar.open("Lot créer avec succès!", undefined, {
-              duration: 3000,
-              horizontalPosition: "center",
+            this.snackBar.open(reponse.message, undefined, {
+              duration: 4000,
+              horizontalPosition: "right",
               verticalPosition: "top",
-              panelClass: ['bg-success', 'text-white']
+              panelClass: [reponse.color, 'text-white']
 
             });
           },

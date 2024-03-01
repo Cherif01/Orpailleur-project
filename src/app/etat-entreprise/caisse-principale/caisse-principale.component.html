@@ -157,7 +157,7 @@
                             <td *ngIf="data.devise == 2">{{
                               (data.montant_anterieur) | number }}</td>
                             <td *ngIf="data.devise == 2"
-                              class="text-danger fw-bold text-capitalize">{{users}}</td>
+                              class="text-secondary fw-bold text-capitalize">{{data.users}}</td>
                             <td class="text-center" *ngIf="data.devise == 2">
                               <button mat-stroked-button color="warn"
                                 (click)="deleteFunction(data.id)"><span
@@ -243,7 +243,7 @@
                             <td *ngIf="data.devise == 1">{{
                               (data.montant_anterieur) | number }}</td>
                             <td *ngIf="data.devise == 1"
-                              class="text-primary fw-bold text-uppercase">{{users}}</td>
+                              class="text-secondary fw-bold text-capitalize">{{data.users}}</td>
                             <td class="text-center" *ngIf="data.devise == 1">
                               <button mat-stroked-button color="warn"
                                 (click)="deleteFunction(data.id)"><span

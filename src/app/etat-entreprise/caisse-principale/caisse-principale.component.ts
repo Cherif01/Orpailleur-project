@@ -64,8 +64,11 @@ export class CaissePrincipaleComponent implements OnInit {
     // interval(10) // Émet une valeur toutes les 60000 millisecondes (1 minute)
     // .pipe(take(5)) // Limite le nombre total d'émissions à 5 (facultatif)
     // .subscribe(() => {
-    this.getCaisse()
+
+    setInterval(()=>{
+      this.getCaisse()
     this.getSoldeAll();
+    }, 5000)
     // });
   }
 
@@ -77,7 +80,7 @@ export class CaissePrincipaleComponent implements OnInit {
         if (result?.event && result.event === "insert") {
           let form: caisseData = result.data;
           form.created_by = this.usersID
-          console.log("Data : ", form);
+          // console.log("Data : ", form);
 
           switch (form.operation) {
             case 1:
@@ -265,7 +268,7 @@ export class CaissePrincipaleComponent implements OnInit {
       })
         .subscribe({
           next: ((data: any) => {
-            console.log("Caisse : ", data);
+            // console.log("Caisse : ", data);
             this.historique = data;
           })
         })

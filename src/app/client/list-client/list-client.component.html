@@ -31,7 +31,7 @@
                 <input [formControl]="search" placeholder="Rechercher un fournisseur ici...." matInput>
                 <mat-icon matSuffix>search</mat-icon>
               </mat-form-field>
-              <table mat-table [dataSource]="dataSource" class="w-100">
+              <table mat-table [dataSource]="dataSource" class="w-100" id="myDataTable">
                 <ng-container matColumnDef="raison_sociale">
                   <th mat-header-cell *matHeaderCellDef>Soci&#233;t&#233;</th>
                   <td mat-cell *matCellDef="let element">{{element.raison_sociale}}</td>

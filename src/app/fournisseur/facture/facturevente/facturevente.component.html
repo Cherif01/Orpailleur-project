@@ -54,7 +54,7 @@
                         </div>
                         <div class="card-footer p-0 m-0">
                           <div class="" *ngIf="poids_fixer != poidsAttribuer">
-                            <table class="table">
+                            <table class="table" id="myDataTable">
                               <tr>
                                 <th>Fixing</th>
                                 <th>$</th>
@@ -91,7 +91,7 @@
                     <mat-card class="mat-elevation-z0 mb-5">
                       <mat-card-content>
                         <div class="" *ngIf="ListAchatThis.length > 0" id="divTable">
-                          <table class="table table-hover">
+                          <table class="table table-hover" id="myDataTable">
                             <thead class="bg-danger text-light">
                               <th>#Ref</th>
                               <th>Arrivage</th>
@@ -187,7 +187,7 @@
                             <input [formControl]="search" placeholder="Rechercher un fixing ici...." matInput>
                             <mat-icon matSuffix>search</mat-icon>
                           </mat-form-field>
-                          <table mat-table [dataSource]="dataSource" class="table w-100" id="divTable_">
+                          <table mat-table [dataSource]="dataSource" class="table w-100 maTable" id="divTable_">
 
                             <!-- Checkbox Column -->
                             <ng-container matColumnDef="select">
@@ -271,7 +271,7 @@
                         </div>
                       </div>
 
-                      <table class="table table-striped">
+                      <table class="table table-striped" id="myDataTable">
                         <thead>
                           <th>Achat No</th>
                           <th>ACHAT/VENTE</th>

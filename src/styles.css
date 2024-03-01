@@ -96,6 +96,16 @@ table .dw{
     margin-top: 20px;
   }
   .soldeTitle, #text{
-    font-size: 14px;
+    font-size: 16px;
   }
+}
+
+#myDataTable, #myDataTable th, #myDataTable td {
+  padding: 5px;
+  border: 1px solid black;
+}
+
+.maTable, .maTable th, .maTable td {
+  padding: 5px;
+  border: 1px solid black;
 }

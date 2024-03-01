@@ -23,6 +23,16 @@ export class ApiserviceService {
   }
 
   // READ GLOBAL
+  sendID(api: string, suffixUrl: string, id: any) {
+    let params = {
+      params: {
+        id: id
+      },
+    }
+    return this.http.get<any[]>(`${BASE_URL}${api}/${suffixUrl}`, params);
+  }
+
+  // READ GLOBAL
   LIST_BY_ID(api: string, suffixUrl: string, id: any) {
     let params = {
       params: {

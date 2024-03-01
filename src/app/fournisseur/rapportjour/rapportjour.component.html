@@ -25,7 +25,7 @@
             </div>
             <div class="col-btn">
               <button class="mx-2 fw-bold" mat-flat-button
-                color="primary" (click)="imprimerDiv()">
+                color="warn" (click)="imprimerDiv()">
                 <span class="micon dw dw-list"></span>
                 <span class="mtext mx-2">
                   IMPRIMER LE RAPPORT !</span>
@@ -43,18 +43,21 @@
 
               <div class="table-responsive">
                 <h1 class="text-secondary">RAPPORT DE COMPTE</h1>
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped" id="myDataTable">
                   <thead class="bg-secondary text-light">
-                    <th>Date d'operation</th>
+                    <th>Operation</th>
                     <th>Mouvement</th>
                     <th>Credit</th>
                     <th>Debit</th>
-                    <th>Solde A</th>
+                    <!-- <th>Solde A</th> -->
                   </thead>
                   <tbody>
                     <tr *ngFor="let data of fusionTab">
-                      <td>{{ data.dateOperation | date:
-                        "dd/MM/YYYY 'à' HH:mm:ss" }}</td>
+                      <td>
+                        <span class="text-primary">{{ data.fournisseurName }}</span> <br>
+                        {{ data.dateOperation | date:
+                        "dd/MM/YYYY 'à' HH:mm:ss" }}
+                      </td>
                       <td class>
                         <span class="text-dark"
                           *ngIf="data.type_operation == 'credit' ">Facturation -
@@ -90,12 +93,12 @@
                           }}</span>
                         <span *ngIf="data.type_operation == 'credit'">---</span>
                       </td>
-                      <td>
+                      <!-- <td>
                         <span
                           [class]="'fw-bold text-' +(data.solde>0?'success':'danger')">$
                           {{ (data.solde) |
                           number: '2.2-2' }}</span>
-                      </td>
+                      </td> -->
                     </tr>
                   </tbody>
                 </table>
@@ -103,16 +106,18 @@
                 <hr>
 
                 <h1>ACHAT EFFECTUER</h1>
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped" id="myDataTable">
                   <thead>
                     <th>Date</th>
                     <th>Fournisseur</th>
+                    <th>Adresse</th>
                     <th>Poids</th>
                     <th>Carrat</th>
                   </thead>
                   <tbody>
                     <tr *ngFor="let data of dataAchat">
                       <th>{{ data.dateOperation }}</th>
+                      <th>{{ data.fournisseurName }}</th>
                       <th>{{ data.fournisseurName }}</th>
                       <th>{{ data.poidsTotal }}</th>
                       <th>{{ data.carra_moyen }}</th>

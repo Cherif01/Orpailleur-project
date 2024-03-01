@@ -56,35 +56,116 @@
                 NOUVELLE EXPEDITION
               </ng-template>
               <div
-                class="d-flex justify-content-between align-items-center w-100">
+                class="d-flex justify-content-between align-items-end w-100">
                 <div class="col">
-                  <h2 class="text-dark mx-0 m-3">D&#233;buter le
-                    proc&#233;ssus</h2>
+                  <!-- CARTE CLIENT -->
+                  <div class="col" *ngIf="statExpedition == true">
+                    <div class="card m-2">
+                      <div
+                        class="card-head bg-dark fw-bold fs-4 text-light p-2">
+                        <span>Expedition en cours pour ?</span>
+                      </div>
+                      <div class="card-body">
+                        <table class="table table-striped">
+                          <tr>
+                            <th>Societe</th>
+                            <th>:</th>
+                            <td>{{ infoCL.raison_sociale }}</td>
+                          </tr>
+                          <tr>
+                            <th>Responsable</th>
+                            <th>:</th>
+                            <td>{{ infoCL.responsable }}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col" *ngIf="statExpedition == true">
+                    <div class="m-2">
+                      <div class="card p-2">
+                        <div
+                          class="d-flex align-items-center justify-content-start flex-wrap">
+                          <div class="col">
+                            <button class="mr-2 btn btn-danger border-danger"
+                              (click)="deleteExpedtion()">SUPPRIMER
+                              L'expedition
+                            </button>
+                          </div>
+                          <div class="col">
+                            <button class="mx-2 btn btn-success border-success"
+                              (click)="endExpedtion()">TERMINER
+                              L'expedition
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- FORMULAIRE INIT -->
+                  <div class="col" [formGroup]="formInit"
+                    *ngIf="statExpedition == false">
+                    <h2 class="text-dark mx-0 m-3">D&#233;buter le
+                      proc&#233;ssus avec ?</h2>
+                    <mat-form-field class="w-100" appearance="outline">
+                      <mat-label>--- CLIENT ---</mat-label>
+                      <mat-select formControlName="idClient">
+                        <mat-option *ngFor="let data of TabClient"
+                          value="{{ data.id }}"><i class="text-primary">Societe:
+                          </i> {{ data.raison_sociale }} | <i
+                            class="text-danger">Representant: </i> {{
+                          data.responsable
+                          }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" class="w-100"
+                      [disabled]="formInit.invalid"
+                      (click)="initExpedition(formInit)">Placer au marcher
+                    </button>
+                  </div>
                 </div>
                 <div class="col text-end">
-                  <button mat-raised-button color="accent" [disabled]="!btnSend"
-                    (click)="sendExpedition()">VALIDER </button>
+                  <button mat-raised-button color="warn" class="mx-2"
+                    [hidden]="!btnSend"
+                    (click)="viewListLot()">RETOUR LISTE LOT
+                    <mat-icon>reply</mat-icon></button>
                 </div>
               </div>
               <hr>
 
               <!-- CONFIG -->
-              <div class="d-flex justify-content-start w-100">
-                <div class="col-12 col-lg-3">
-                  <mat-form-field class="w-100" appearance="outline">
-                    <mat-label>--- CLIENT ---</mat-label>
-                    <mat-select (valueChange)="eventClient($event)">
-                      <mat-option *ngFor="let data of TabClient"
-                        value="{{ data.id }}"><i class="text-primary">Societe:
-                        </i> {{ data.raison_sociale }} | <i
-                          class="text-danger">Representant: </i> {{
-                        data.responsable
-                        }}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+              <div class="d-flex justify-content-center flex-wrap"
+                *ngIf="cacherListLot == false && statExpedition == true">
+
+                <div class="col-12 col-md-4 col-lg-3"
+                  *ngFor="let data of TabLot">
+                  <div class="m-1">
+                    <mat-card class="border border-secondary">
+                      <mat-card-header>
+                        <mat-card-title class="small text-uppercase">{{data.designation}}</mat-card-title>
+                        <mat-card-subtitle>Creer le {{ data.created_at | date:
+                          'dd/M/Y'}}</mat-card-subtitle>
+                      </mat-card-header>
+                      <img matCardImage src="/assets/image/package.jpeg">
+                      <mat-card-content>
+                        {{'POIDS TOTAL : ' + (data.poids_total | number:
+                        '1.2-2')}} g <br>
+                        <!-- <button mat-stroked-button color="primary" (click)="eventLot(data.idLot)">Choisir</button> -->
+                      </mat-card-content>
+                      <mat-card-actions align="start" class="d-flex">
+                        <button mat-flat-button color="accent"
+                          (click)="parItems(data.idLot);" class="mx-2">Par
+                          Barres</button>
+                        <button mat-flat-button color="warn"
+                          (click)="parAchat(data.idLot)" class="mx-2">Par
+                          Achat</button>
+                      </mat-card-actions>
+                    </mat-card>
+                  </div>
                 </div>
+
                 <!-- List Lot -->
-                <div class="col-12 col-lg-4">
+                <!-- <div class="col-12 col-lg-4">
                   <mat-form-field class="w-100" appearance="outline">
                     <mat-label>--- LIST LOT ---</mat-label>
                     <mat-select (valueChange)="eventLot($event)">
@@ -96,24 +177,22 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
-                </div>
+                </div> -->
 
                 <!-- DETAILS DE SELECTION -->
-                <div class="col-12 col-lg-5">
+                <!-- <div class="col-12 col-lg-5">
                   <mat-card class="mat-elevation-z5 p-3" *ngIf="selectLot">
                     <h5 class="text-primary fw-bold">Envoie par ?</h5>
                     <section class="example-section">
-                      <!-- <mat-radio> -->
                         <mat-radio-button (click)="parAchat()"
                           class="example-margin w-50" value="1">Par
                           Achat</mat-radio-button>
                         <mat-radio-button (click)="parItems()"
                           class="example-margin w-50" value="2">Par
                           Barres</mat-radio-button>
-                      <!-- </mat-radio> -->
                     </section>
                   </mat-card>
-                </div>
+                </div> -->
               </div>
 
               <hr>
@@ -121,7 +200,11 @@
                 *ngIf="dataSource2.data.length < 1">{{ message }}</h2>
 
               <div class="p-2" *ngIf="dataSource2.data.length > 0">
-                <h2 class="text-start text-primary">{{ title_message }}</h2>
+                <h2 class="text-start fw-bold text-uppercase mb-2">{{
+                  title_message }}</h2>
+                <button mat-raised-button color="primary"
+                  *ngIf="statExpedition == true" [disabled]="!btnSend"
+                  (click)="sendExpedition()">VALIDER </button>
                 <!-- Tableau Tous les items du lot en details -->
                 <mat-form-field class="w-100">
                   <mat-label>Rechercher</mat-label>
@@ -214,14 +297,10 @@
                       element.created_at | date: 'dd/MM/YYYY' }}</td>
                   </ng-container>
                   <ng-container matColumnDef="Client">
-                    <th mat-header-cell *matHeaderCellDef>Expedier au Client</th>
+                    <th mat-header-cell *matHeaderCellDef>Expedier au
+                      Client</th>
                     <td class mat-cell *matCellDef="let element">{{
                       element.Client }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="Lot">
-                    <th mat-header-cell *matHeaderCellDef>Source (Arrivage)</th>
-                    <td class mat-cell *matCellDef="let element">{{ element.Lot
-                      }}</td>
                   </ng-container>
                   <ng-container matColumnDef="Poids">
                     <th mat-header-cell *matHeaderCellDef>Pds Total</th>
@@ -230,14 +309,15 @@
                   </ng-container>
                   <ng-container matColumnDef="CarratMoyen">
                     <th mat-header-cell *matHeaderCellDef>Carrat</th>
-                    <td class mat-cell *matCellDef="let element">{{ element.Carrat }}</td>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.Carrat }}</td>
                   </ng-container>
                   <ng-container matColumnDef="Status">
                     <th mat-header-cell *matHeaderCellDef>Status</th>
                     <td class mat-cell *matCellDef="let element">
                       <span *ngIf="element.Statut == 1" class="text-warning">En
                         cours</span>
-                      <span *ngIf="element.Statut == 200"
+                      <span *ngIf="element.Statut == 2"
                         class="text-success">Expédier</span>
                       <span *ngIf="element.Statut == 3"
                         class="text-danger">Annuler</span>
@@ -251,7 +331,9 @@
                         [matMenuTriggerFor]="menu">
                         Voir + <span class="dw dw-down-chevron"></span></button>
                       <mat-menu #menu="matMenu">
-                        <a mat-menu-item routerLink="/" class="text-start">
+                        <a mat-menu-item
+                          routerLink="/client/detail-client/{{element.idClient}}"
+                          class="text-start">
                           <strong>
                             <span class="dw dw-user-1 mx-3"></span>
                             <span>Afficher</span>
