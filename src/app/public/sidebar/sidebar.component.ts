@@ -32,7 +32,7 @@ export class SidebarComponent implements OnInit {
     this.service.LIST_ALL_PRECIS('menu', 'read.php').subscribe({
       next: (data: any) => {
         // console.log(data)
-        if (data.length > 0) {
+        if (data != null && data.length > 0) {
           data.forEach((user: any) => {
             // console.log("menu : ", user);
             switch (user.famille) {
