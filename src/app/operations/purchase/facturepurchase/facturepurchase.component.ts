@@ -66,7 +66,7 @@ export class FacturepurchaseComponent implements OnInit {
     this.service.getUnique('achat', 'getOne.php', this.ID_ACHAT_GET)
       .subscribe({
         next: (data) => {
-          // console.log("Donnees : ", data);
+          console.log("Donnees : ", data);
           this.InfoAchat2 = data;
         },
         error: (err) => console.error("Erreur : ", err)
