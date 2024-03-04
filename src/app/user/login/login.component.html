@@ -3,7 +3,7 @@
   <div
     class="login-wrap vh-100 d-flex align-items-center flex-wrap justify-content-center">
     <div class="col">
-      <div class="login-box bg-ligh border-radius-10">
+      <div class="login-box border-radius-10">
         <div class="login-title text-center">
           <h2 class="text-center">Limanaya Business</h2>
           <span class="text-center text-danger border border-warning p-2 w-100"
@@ -14,17 +14,16 @@
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
               <label class="btn" (click)="updateRole('Administrateur')">
                 <input type="radio" id="admin" />
-                <div class="icon"><img src="/assets/logo/logo.png" class="svg"
+                <div class="icon"><img src="./assets/logo/logo.png" class="svg"
                     alt></div>
-                <span>En tant que : </span>
+                <i>Master </i>
                 Manager
               </label>
               <label class="btn" (click)="updateRole('Utilisateur')">
                 <input type="radio" id="user">
-                <div class="icon"><img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
-                    class="svg" alt></div>
-                <span>En tant que : </span>
+                <div class="icon"><img src="./assets/logo/logo.png" class="svg"
+                    alt></div>
+                <i>Uses : </i>
                 Utilisateur
               </label>
             </div>
@@ -48,20 +47,24 @@
               formControlName="motDePasse">
             <div class="input-group-append custom">
               <span class="input-group-text">
-                <i class="dw dw-lock" id="passwordControl" (click)="viewPassword()" *ngIf="viewPass == false"></i>
-                <i class="dw dw-unlock" id="passwordControl" (click)="hiddenPassword()" *ngIf="viewPass == true"></i>
+                <i class="dw dw-lock" id="passwordControl"
+                  (click)="viewPassword()" *ngIf="viewPass == false"></i>
+                <i class="dw dw-unlock" id="passwordControl"
+                  (click)="hiddenPassword()" *ngIf="viewPass == true"></i>
               </span>
             </div>
           </div>
           <hr>
-          <span class="fw-bold text-light">Mot de passe : <i class="text-success"> Crypt&#233;</i></span> <br>
-          <span class="fw-bold text-light">Web - secured : <i class="text-success"> SSL</i></span> <br> <br>
+          <span class="fw-bold text-light">Mot de passe : <i
+              class="text-success"> Crypt&#233;</i></span> <br>
+          <span class="fw-bold text-light">Web - secured : <i
+              class="text-success"> SSL</i></span> <br> <br>
           <div class="row">
             <div class="col-sm-12">
               <div class="input-group mb-0">
-                <button class="w-100 btn btn-outline-warning"
+                <button mat-flat-button color="warn"
                   (click)="authFunction(userLogin)"
-                  [hidden]="userLogin.invalid">Connexion</button>
+                  [disabled]="userLogin.invalid">Connexion</button>
               </div>
             </div>
           </div>
