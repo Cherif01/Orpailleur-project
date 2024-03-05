@@ -181,22 +181,23 @@
                           number: '2.2-2' }}</td>
                       </tr>
                     </tbody>
-                    <tfoot>
-                      <tr class="text-info">
-                        <th class="text-center text-uppercase text-danger">Total
-                        </th>
-                        <th class="text-center text-danger">{{ poids_total |
-                          number: '2.2-2' }} g</th>
-                        <th class="text-center text-danger">{{
-                          format2Chart(carra_moyen) }}</th>
-                        <th class="text-center text-danger"> - </th>
-                        <th class="text-center text-danger"> {{ pu }} </th>
-                        <th class="text-center text-danger"> {{
-                          (MontantFacture + MontantFacturePoids) | number:
-                          '2.2-2' }}
-                        </th>
-                      </tr>
-                    </tfoot>
+
+                  </table>
+                  <table class="table">
+                    <tr class="text-info">
+                      <th class="text-start text-uppercase text-danger">Total
+                      </th>
+                      <th class="text-center text-danger">{{ poids_total |
+                        number: '2.2-2' }} g</th>
+                      <th class="text-start text-danger">{{
+                        format2Chart(carra_moyen) }}</th>
+                      <th class="text-start text-danger"> - </th>
+                      <th class="text-center text-danger"> {{ pu }} </th>
+                      <th class="text-center text-danger"> {{
+                        (MontantFacture + MontantFacturePoids) | number:
+                        '2.2-2' }}
+                      </th>
+                    </tr>
                   </table>
                 </div>
               </div>

@@ -106,7 +106,7 @@ export class DetailClientComponent implements OnInit {
   getInfo() {
     this.service.getUnique('client', 'getInfoOne.php', this.Id_client).subscribe({
       next: (data: any) => {
-        // console.log("Client : ", data);
+        console.log("Client : ", data);
         this.infoClient = data;
       }
     })
