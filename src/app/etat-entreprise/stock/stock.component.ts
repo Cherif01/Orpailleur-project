@@ -41,6 +41,7 @@ export class StockComponent implements OnInit {
         next: (f: any) => {
           this.poidsEntrer += f.StockEntrer
           this.poidsAuj += f.poidsAuj
+          this.QTE_EXPEDIER += f.Expedier
           this.allPoids += f.allPoids
         }
       })

@@ -17,6 +17,7 @@ import { ApiserviceService } from 'src/app/api_service/apiservice.service';
 })
 
 export class FactureventeComponent implements OnInit, AfterViewInit {
+
   @ViewChild(MatPaginator, { static: true })
   paginator: MatPaginator = Object.create(null);
   search = new FormControl();
@@ -51,7 +52,7 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
     poids_fixe: [0, Validators.required],
     fixing_bourse: new FormControl(0),
     status: [2, Validators.required],
-    created_by: [1, Validators.required]
+    created_by: [7, Validators.required]
   })
 
   // FIXING PAR POIDS
@@ -64,7 +65,7 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
     type_envoie: [0],
     carrat_moyen_restant: [0],
     carrat_manquant: [],
-    created_by: [1, Validators.required]
+    created_by: [7, Validators.required]
   })
 
   constructor(
@@ -86,22 +87,20 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
   }
 
   upDown = true
-  title = "Gestion du fixing...";
+  title = "Vente du fixing";
   items: any[] = []
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   displaysColums: string[] = ["select", "Poids", "Carrat", "Manquant", "Prix unit"];
   selection = new SelectionModel<any>(true, []);
 
-
+  // idSession: string = localStorage.getItem('id');
 
   IDFixing: any
 
   ngOnInit(): void {
     // ID IDFixing EN GET
     this.IDFixing = this.activeroute.snapshot.params['id'];
-
     this.getFixing()
-
   }
   allAdd: any = false
 
@@ -238,7 +237,7 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
   ListAchatThis: any[] = []
 
   sommeItemsInFixingDetails: number = 0
-  poidsAttribuer: number = 0
+  poidsAttribuer: any = 0
   statut_fixing: number = 0
   FixingEncours: any
   // GET
@@ -285,7 +284,6 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
     let TabDonnees: any[] = []
     let TabItems: any[] = []
 
-
     selected.forEach(v => {
       // Poids total des items selectionner
       // console.log(v);
@@ -311,8 +309,8 @@ export class FactureventeComponent implements OnInit, AfterViewInit {
       // console.log("ID_ITEM : ", data);
     })
 
-    // console.log("poidsT : ", (this.poids_fixer - this.poidsAttribuer));
-
+    // console.log("poidsT1 : ", poidsT);
+    // console.log("poidsT2 : ", (this.poids_fixer -  parseFloat(this.poidsAttribuer)));
 
     let TabData: any[] = []
     TabData.push(TabDonnees, idItems)

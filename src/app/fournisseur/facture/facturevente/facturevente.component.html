@@ -10,22 +10,29 @@
             <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+                <li class="breadcrumb-item active"
+                  aria-current="page">{{title}}</li>
               </ol>
             </nav>
           </div>
-          <div class="text-right d-flex justify-content-between align-items-center">
+          <div
+            class="text-right d-flex justify-content-between align-items-center">
             <div class="col-reply">
-              <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon
+              <button (click)="this.location.back()" mat-icon-button
+                color="warn"><mat-icon
                   class="mat-24">reply</mat-icon>
               </button>
             </div>
             <div class="col-btn">
-              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/create-facture/">
-                <span class="micon dw dw-list"></span><span class="mtext mx-2"> Facture</span>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary"
+                routerLink="/operation/create-facture/">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2">
+                  Facture</span>
               </button>
-              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/operation/add-purchase">
-                <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary"
+                routerLink="/operation/add-purchase">
+                <span class="micon dw dw-up-arrow"></span><span
+                  class="mtext mx-2"> Autres</span>
               </button>
             </div>
           </div>
@@ -35,11 +42,13 @@
       <div class="...-box mb-30">
         <div class="accordion" id="accordionFixing">
           <div class="accordion-item">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#details"
+            <button class="accordion-button" type="button"
+              data-bs-toggle="collapse" data-bs-target="#details"
               aria-expanded="true" aria-controls="details">
               Fixing & Achat
             </button>
-            <div id="details" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+            <div id="details" class="accordion-collapse collapse show"
+              aria-labelledby="headingOne"
               data-bs-parent="#accordionFixing">
               <div class="accordion-body" *ngIf="statut_fixing != 2">
                 <!-- <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow. -->
@@ -49,11 +58,13 @@
                     <div class="responsive">
                       <div class="card mb-2 border-0" id="detail">
                         <div class="card-body text-center">
-                          <h4 class="fw-bold text-uppercase">{{ Name_fournisseur }}</h4>
-                          <span class="fw-bold text-uppercase">{{ Adresse_fournisseur }}</span>
+                          <h4 class="fw-bold text-uppercase">{{ Name_fournisseur
+                            }}</h4>
+                          <span class="fw-bold text-uppercase">{{
+                            Adresse_fournisseur }}</span>
                         </div>
                         <div class="card-footer p-0 m-0">
-                          <div class="" *ngIf="poids_fixer != poidsAttribuer">
+                          <div class *ngIf="poids_fixer != poidsAttribuer">
                             <table class="table" id="myDataTable">
                               <tr>
                                 <th>Fixing</th>
@@ -63,22 +74,28 @@
                               <tr>
                                 <th>Poids Fixer</th>
                                 <th>:</th>
-                                <td class="text-primary">{{ poids_fixer | number: '2.2-2' }} g</td>
+                                <td class="text-primary">{{ poids_fixer |
+                                  number: '2.2-2' }} g</td>
                               </tr>
                               <tr>
                                 <th>Poids vendu</th>
                                 <th>:</th>
-                                <td [class]="poidsAttribuer>0?'text-danger':'text-success fw-bold'">{{ poidsAttribuer |
+                                <td
+                                  [class]="poidsAttribuer>0?'text-danger':'text-success fw-bold'">{{
+                                  poidsAttribuer |
                                   number: '2.2-2' }} g</td>
                               </tr>
                               <tr>
                                 <th>Non vendu</th>
                                 <th>:</th>
-                                <td>{{ poids_fixer - poidsAttribuer | number: '2.2-2' }} g</td>
+                                <td>{{ poids_fixer - poidsAttribuer | number:
+                                  '2.2-2' }} g</td>
                               </tr>
                             </table>
                           </div>
-                          <h4 class="text-dark fw-bold p-0" *ngIf="poids_fixer == poidsAttribuer">En attente de cloture!
+                          <h4 class="text-dark fw-bold p-0"
+                            *ngIf="poids_fixer == poidsAttribuer">En attente de
+                            cloture!
                           </h4>
                         </div>
                       </div>
@@ -90,7 +107,8 @@
                   <div class="col mt-0">
                     <mat-card class="mat-elevation-z0 mb-5">
                       <mat-card-content>
-                        <div class="" *ngIf="ListAchatThis.length > 0" id="divTable">
+                        <div class *ngIf="ListAchatThis.length > 0"
+                          id="divTable">
                           <table class="table table-hover" id="myDataTable">
                             <thead class="bg-danger text-light">
                               <th>#Ref</th>
@@ -107,28 +125,39 @@
                                 <td>{{ x.CarratMoyen }}</td>
                                 <td class="text-center">
                                   <form>
-                                    <button data-bs-toggle="collapse" data-bs-target="#listAchat"
-                                      (click)="viewDetailAchat(x.id_achat)" mat-button color="primary">Utiliser |
-                                      <span class="mdi mdi-arrow-down-bold"></span></button>
+                                    <button data-bs-toggle="collapse"
+                                      data-bs-target="#listAchat"
+                                      (click)="viewDetailAchat(x.id_achat)"
+                                      mat-button color="primary">Utiliser |
+                                      <span
+                                        class="mdi mdi-arrow-down-bold"></span></button>
                                   </form>
                                 </td>
                               </tr>
                             </tbody>
                           </table>
                         </div>
-                        <div class="" *ngIf="ListAchatThis.length == 0" id="divTable">
+                        <div class *ngIf="ListAchatThis.length == 0"
+                          id="divTable">
                           <div class="text-center">
-                            <h2 class="text-dark text-uppercase">Aucun achat valide pour ce fournisseur...</h2>
-                            <marquee behavior="alternate" direction="right">Il paraît que ce fournisseur ait vendu tout
-                              ces achat ou n'a jamais enregistrer d'achat au paravant... <br> cliquer sur ce boutton en
-                              bas pour commencer à enregistrer des barres..</marquee>
+                            <h2 class="text-dark text-uppercase">Aucun achat
+                              valide pour ce fournisseur...</h2>
+                            <marquee behavior="alternate" direction="right">Il
+                              paraît que ce fournisseur ait vendu tout
+                              ces achat ou n'a jamais enregistrer d'achat au
+                              paravant... <br> cliquer sur ce boutton en
+                              bas pour commencer à enregistrer des
+                              barres..</marquee>
                             <div class="arrow">
-                              <img src="./assets/gif/arrow-down-blue.gif" class="img-responsive" id="img-gif" alt=""
-                                srcset="">
+                              <img src="./assets/gif/arrow-down-blue.gif"
+                                class="img-responsive" id="img-gif" alt
+                                srcset>
                             </div>
                             <button class="mx-2" mat-flat-button color="primary"
                               routerLink="/operation/add-purchase/{{ ID_fournisseur }}">
-                              <span class="micon mdi mdi-reply-all-outline text-light"></span><span class="mtext mx-2">
+                              <span
+                                class="micon mdi mdi-reply-all-outline text-light"></span><span
+                                class="mtext mx-2">
                                 commencer un achat </span>
                             </button>
                           </div>
@@ -148,11 +177,14 @@
             </div>
           </div>
           <div class="accordion-item" *ngIf="statut_fixing != 2">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#listAchat" aria-expanded="false" aria-controls="listAchat">
+            <button class="accordion-button collapsed" type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#listAchat" aria-expanded="false"
+              aria-controls="listAchat">
               Details Achat
             </button>
-            <div id="listAchat" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+            <div id="listAchat" class="accordion-collapse collapse"
+              aria-labelledby="headingTwo"
               data-bs-parent="#accordionFixing">
               <div class="accordion-body bg-transparent">
                 <mat-tab-group [disableRipple]="false">
@@ -161,38 +193,52 @@
                       <!-- List item -->
                       <div class="d-flex align-items-center">
                         <div class="col">
-                          <h2 class="text-blue p-0 m-0">Toutes les barres restantes</h2>
+                          <h2 class="text-blue p-0 m-0">Toutes les barres
+                            restantes</h2>
                           <hr>
-                          <div class="d-flex justify-content start">
+                          <div class="d-flex justify-content-start flex-wrap">
                             <div class="col">
-                              <span class="p-1">POIDS TOTAL DE L'ACHAT : <u class="text-dark fw-bold">{{
+                              <span class="p-1">POIDS TOTAL DE L'ACHAT : <u
+                                  class="text-dark fw-bold">{{
                                   infoAchatView.PoidsTotal }} g</u></span> <br>
-                              <span class="p-1 text-dark">POIDS RESTANT DE L'ACHAT : <u class="text-dark fw-bold">{{
-                                infoAchatView.PoidsTotal - poidsAttribuer | number: '2.2-2' }} g</u></span> <br>
+                              <span class="p-1 text-dark">POIDS RESTANT DE
+                                L'ACHAT : <u class="text-dark fw-bold">{{
+                                  (infoAchatView.PoidsTotal - poidsAttribuer) |
+                                  number: '1.2-2' }} g</u></span> <br>
                             </div>
                             <div class="col">
-                              <span class="p-1 text-dark">POIDS FIXER : <u class="text-dark fw-bold">{{ this.poids_fixer
+                              <span class="p-1 text-dark">POIDS FIXER : <u
+                                  class="text-dark fw-bold">{{ this.poids_fixer
                                   }} g</u></span> <br>
-                              <span class="p-1 text-dark">POIDS DU FIXING RESTANT : <u class="text-dark fw-bold">{{
-                                  poids_fixer - poidsAttribuer }} g</u></span> <br>
+                              <span class="p-1 text-dark">POIDS DU FIXING
+                                RESTANT : <u class="text-dark fw-bold">{{
+                                  (poids_fixer - poidsAttribuer) | number:
+                                  '1.2-2' }} g</u></span>
+                              <br>
                             </div>
                           </div>
                         </div>
-                        <div class="col-2"><button mat-raised-button color="accent" (click)="logSelected()">
+                        <div class="col-2"><button mat-raised-button
+                            color="accent" (click)="logSelected()">
                             <mat-icon>check</mat-icon> Valider</button></div>
                       </div>
-                      <mat-card class="mat-elevation-z0 bg-transparent" id="mat_card_table">
+                      <mat-card class="mat-elevation-z0 bg-transparent"
+                        id="mat_card_table">
                         <mat-card-content>
                           <mat-form-field class="w-100">
-                            <input [formControl]="search" placeholder="Rechercher un fixing ici...." matInput>
+                            <input [formControl]="search"
+                              placeholder="Rechercher un fixing ici...."
+                              matInput>
                             <mat-icon matSuffix>search</mat-icon>
                           </mat-form-field>
-                          <table mat-table [dataSource]="dataSource" class="table w-100 maTable" id="divTable_">
+                          <table mat-table [dataSource]="dataSource"
+                            class="table w-100 maTable" id="divTable_">
 
                             <!-- Checkbox Column -->
                             <ng-container matColumnDef="select">
                               <th mat-header-cell *matHeaderCellDef>
-                                <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                                <mat-checkbox
+                                  (change)="$event ? toggleAllRows() : null"
                                   [checked]="selection.hasValue() && isAllSelected()"
                                   [indeterminate]="selection.hasValue() && !isAllSelected()"
                                   [aria-label]="checkboxLabel()">
@@ -200,38 +246,52 @@
                               </th>
                               <td mat-cell *matCellDef="let row">
                                 <mat-checkbox (click)="$event.stopPropagation()"
-                                  (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                                  (change)="$event ? selection.toggle(row) : null"
+                                  [checked]="selection.isSelected(row)"
                                   [aria-label]="checkboxLabel(row)">
                                 </mat-checkbox>
                               </td>
                             </ng-container>
 
                             <ng-container matColumnDef="Poids">
-                              <th class="text-center" mat-header-cell *matHeaderCellDef>Poids</th>
-                              <td class="text-center" *matCellDef="let element">{{ element.poidsItem }}</td>
+                              <th class="text-center" mat-header-cell
+                                *matHeaderCellDef>Poids</th>
+                              <td class="text-center"
+                                *matCellDef="let element">{{ element.poidsItem
+                                }}</td>
                             </ng-container>
                             <ng-container matColumnDef="Carrat">
-                              <th class="text-center" mat-header-cell *matHeaderCellDef>Carrat</th>
-                              <td class="text-center" class="text-center" mat-cell *matCellDef="let element">{{
+                              <th class="text-center" mat-header-cell
+                                *matHeaderCellDef>Carrat</th>
+                              <td class="text-center" class="text-center"
+                                mat-cell *matCellDef="let element">{{
                                 element.carratItem }}</td>
                             </ng-container>
                             <ng-container matColumnDef="Manquant">
-                              <th class="text-center" mat-header-cell *matHeaderCellDef>R&#233;liquat</th>
-                              <td class="text-center" class="text-center" mat-cell *matCellDef="let element">{{
+                              <th class="text-center" mat-header-cell
+                                *matHeaderCellDef>R&#233;liquat</th>
+                              <td class="text-center" class="text-center"
+                                mat-cell *matCellDef="let element">{{
                                 element.manquantItem }}</td>
                             </ng-container>
                             <ng-container matColumnDef="Prix unit">
-                              <th class="text-center" mat-header-cell *matHeaderCellDef>Prix Unit</th>
-                              <td class="text-center" class="text-center" mat-cell *matCellDef="let element">{{
+                              <th class="text-center" mat-header-cell
+                                *matHeaderCellDef>Prix Unit</th>
+                              <td class="text-center" class="text-center"
+                                mat-cell *matCellDef="let element">{{
                                 ((fixing_bourse / 34) -
                                 discount).toString().substring(0, 5) }}</td>
                             </ng-container>
 
-                            <tr mat-header-row *matHeaderRowDef="displaysColums;"></tr>
-                            <tr mat-row *matRowDef="let row; columns:displaysColums" (click)="selection.toggle(row)">
+                            <tr mat-header-row
+                              *matHeaderRowDef="displaysColums;"></tr>
+                            <tr mat-row
+                              *matRowDef="let row; columns:displaysColums"
+                              (click)="selection.toggle(row)">
                             </tr>
                           </table>
-                          <mat-paginator [pageSizeOptions]="[100, 500]" showFirstLastButtons></mat-paginator>
+                          <mat-paginator [pageSizeOptions]="[100, 500]"
+                            showFirstLastButtons></mat-paginator>
                         </mat-card-content>
                       </mat-card>
                       <!-- FIN LIST ITEMS -->
@@ -239,32 +299,42 @@
                   </mat-tab>
 
                   <!-- DEBUT ETAPE PAR POIDS -->
-                  <mat-tab label="ENVOIE PAR POIDS...">
+                  <!-- <mat-tab label="ENVOIE PAR POIDS...">
                     <div class="col p-4 m-2">
-                      <div class="d-flex justify-content-between flex-wrap align-items-center">
+                      <div
+                        class="d-flex justify-content-between flex-wrap align-items-center">
                         <div class="col">
-                          <h2 class="text-secondary text-center">Fixing / Poids direct</h2>
+                          <h2 class="text-secondary text-center">Fixing / Poids
+                            direct</h2>
                         </div>
                         <div class="col">
                           <form [formGroup]="FixingPoids"
                             (ngSubmit)="PFix(FixingPoids, infoAchatView.id_achat, format2Chart((cMoyenActif)))">
                             <div class="col">
-                              <input type="number" hidden formControlName="carrat_moyen_restant">
+                              <input type="number" hidden
+                                formControlName="carrat_moyen_restant">
                               <mat-form-field class="w-100">
                                 <mat-label>Poids &#224; vendre</mat-label>
-                                <input matInput type="number" min="0" max="{{ poids_fixer -
+                                <input matInput type="number" min="0"
+                                  max="{{ poids_fixer -
                                     poidsAttribuer
-                                    }}" formControlName="poids_select" class="w-100"
+                                    }}" formControlName="poids_select"
+                                  class="w-100"
                                   placeholder="Entrer le poids &#224; prendre (Ex : 1xx) g">
-                                <mat-hint class="text-primary">Vente possible : {{ poids_fixer -
+                                <mat-hint class="text-primary">Vente possible :
+                                  {{ poids_fixer -
                                   poidsAttribuer
                                   }} g</mat-hint>
                               </mat-form-field>
                             </div>
                             <div class="col text-center">
-                              <button type="submit" class="w-100 p-2" [disabled]="!FixingPoids.valid" mat-raised-button
+                              <button type="submit" class="w-100 p-2"
+                                [disabled]="!FixingPoids.valid"
+                                mat-raised-button
                                 color="primary">
-                                <span class="mdi mdi-plus-thick text-light mx-2"></span> Confirmer l'envoie
+                                <span
+                                  class="mdi mdi-plus-thick text-light mx-2"></span>
+                                Confirmer l'envoie
                               </button>
                             </div>
                           </form>
@@ -282,8 +352,10 @@
                         <tbody>
                           <tr>
                             <td>{{ infoAchatView.id_achat }}</td>
-                            <td>{{ infoAchatView.PoidsTotal | number: '2.2-2' }} g / <span class="text-danger"> {{
-                              infoAchatView.PoidsTotal - poidsAttribuer | number: '2.2-2' }}g</span></td>
+                            <td>{{ infoAchatView.PoidsTotal | number: '2.2-2' }}
+                              g / <span class="text-danger"> {{
+                                infoAchatView.PoidsTotal - poidsAttribuer |
+                                number: '2.2-2' }}g</span></td>
                             <td>{{ poids_fixer | number: '2.2-2' }} g</td>
                             <td class="text-danger">{{ poids_fixer -
                               poidsAttribuer | number: '2.2-2'
@@ -292,9 +364,8 @@
                           </tr>
                         </tbody>
                       </table>
-                      <!--  -->
                     </div>
-                  </mat-tab>
+                  </mat-tab> -->
                 </mat-tab-group>
               </div>
             </div>

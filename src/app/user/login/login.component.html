@@ -6,24 +6,25 @@
       <div class="login-box border-radius-10">
         <div class="login-title text-center">
           <h2 class="text-center">Limanaya Business</h2>
+          <marquee behavior="alternate"><i class="text-light fw-bold">Connectez-vous pour commencer...</i></marquee>
           <span class="text-center text-danger border border-warning p-2 w-100"
             *ngIf="noLogin">Pseudo ou Mot de passe incorrect !</span>
         </div>
         <form [formGroup]="userLogin">
           <div class="select-role">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn" (click)="updateRole('Administrateur')">
+              <label class="btn text-light" (click)="updateRole('Administrateur')">
                 <input type="radio" id="admin" />
                 <div class="icon"><img src="./assets/logo/logo.png" class="svg"
                     alt></div>
-                <i>Master </i>
+                <i>GLB </i>
                 Manager
               </label>
-              <label class="btn" (click)="updateRole('Utilisateur')">
+              <label class="btn text-light" (click)="updateRole('Utilisateur')">
                 <input type="radio" id="user">
                 <div class="icon"><img src="./assets/logo/logo.png" class="svg"
                     alt></div>
-                <i>Uses : </i>
+                <i>GLB </i>
                 Utilisateur
               </label>
             </div>
@@ -62,7 +63,7 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="input-group mb-0">
-                <button mat-flat-button color="warn"
+                <button mat-flat-button color="accent" class="w-100"
                   (click)="authFunction(userLogin)"
                   [disabled]="userLogin.invalid">Connexion</button>
               </div>

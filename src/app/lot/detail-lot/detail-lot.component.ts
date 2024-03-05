@@ -55,7 +55,7 @@ export class DetailLotComponent implements OnInit {
   LotUniq () {
     this.serviceLot.getOneByIdSimple('lot', 'get.php', this.IDLot).subscribe({
       next: data => {
-        // console.log("Res :", data);
+        console.log("Res :", data);
         this.LotUnique = data[0]
         data[1][0].forEach((item: any) => {
           // console.log("i", item) ;

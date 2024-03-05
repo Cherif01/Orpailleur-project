@@ -1,21 +1,34 @@
 #couvertureAll {
   background-size: cover;
-  height: 100vh;
+  /* height: 100vh; */
+  background-color: black;
   background: url('https://images.pexels.com/photos/321452/pexels-photo-321452.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+  /* background: url('https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=600'); */
+  background-position: right;
   background-repeat: no-repeat;
+}
+/* Si l'image ne se charge pas, utilisez uniquement la couleur de secours */
+.couvertureAll::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black; /* Couleur de secours */
 }
 h2{
   text-transform: uppercase;
-  font-weight: bolder;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: 'Roboto slab', sans-serif;
   color: white;
 }
 .select-role label>span{
   color: #FCD084;
 }
 .select-role label{
-  color: aliceblue;
-  font-weight: bolder;
+  color: rgb(255, 255, 255);
+  font-weight: bold;
 }
 
 #passwordControl {
@@ -25,19 +38,19 @@ h2{
 #couvertureAll input {
   background-color: transparent;
   border: 1px solid #FCD084;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 input::placeholder{
-  color: #888585;
-  font-size: 14px;
+  color: #f5d273;
+  font-size: 12px;
   font-style: italic;
 
 }
 
 .login-box{
   border: 2px solid #9F8548;
-  background-color: rgba(222, 184, 135, 0.215);
+  background-color: rgba(0, 0, 0, 0.854);
 }
 
 .dw-lock, .dw-unlock, .dw-user1{

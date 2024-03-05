@@ -87,15 +87,13 @@
                         <div
                           class="d-flex align-items-center justify-content-start flex-wrap">
                           <div class="col">
-                            <button class="mr-2 btn btn-danger border-danger"
+                            <button class="mr-2 w-100 btn btn-outline-danger border-danger"
                               (click)="deleteExpedtion()">SUPPRIMER
-                              L'expedition
                             </button>
                           </div>
                           <div class="col">
-                            <button class="mx-2 btn btn-success border-success"
+                            <button class="mx-2 w-100 btn btn-outline-success border-success"
                               (click)="endExpedtion()">TERMINER
-                              L'expedition
                             </button>
                           </div>
                         </div>
@@ -134,31 +132,30 @@
               <hr>
 
               <!-- CONFIG -->
-              <div class="d-flex justify-content-center flex-wrap"
+              <div class="d-flex justify-content-start flex-wrap"
                 *ngIf="cacherListLot == false && statExpedition == true">
 
-                <div class="col-12 col-md-4 col-lg-3"
+                <div class="col-12 col-md-4 col-lg-4"
                   *ngFor="let data of TabLot">
                   <div class="m-1">
                     <mat-card class="border border-secondary">
                       <mat-card-header>
-                        <mat-card-title class="small text-uppercase">{{data.designation}}</mat-card-title>
+                        <mat-card-title class="small text-uppercase">Total : <span class="text-primary">{{ data.poids_total | number: '1.2-2' }} g</span></mat-card-title>
                         <mat-card-subtitle>Creer le {{ data.created_at | date:
                           'dd/M/Y'}}</mat-card-subtitle>
                       </mat-card-header>
-                      <img matCardImage src="/assets/image/package.jpeg">
+                      <!-- <img matCardImage src="./assets/image/package.jpeg"> -->
                       <mat-card-content>
-                        {{'POIDS TOTAL : ' + (data.poids_total | number:
-                        '1.2-2')}} g <br>
+                        <h2 class="text-secondary">{{data.designation}}</h2>
                         <!-- <button mat-stroked-button color="primary" (click)="eventLot(data.idLot)">Choisir</button> -->
                       </mat-card-content>
-                      <mat-card-actions align="start" class="d-flex">
-                        <button mat-flat-button color="accent"
-                          (click)="parItems(data.idLot);" class="mx-2">Par
+                      <mat-card-actions class="w-100">
+                        <button mat-raised-button color="primary" class="w-100"
+                          (click)="parItems(data.idLot);">Par
                           Barres</button>
-                        <button mat-flat-button color="warn"
+                        <!-- <button mat-flat-button color="warn"
                           (click)="parAchat(data.idLot)" class="mx-2">Par
-                          Achat</button>
+                          Achat</button> -->
                       </mat-card-actions>
                     </mat-card>
                   </div>
