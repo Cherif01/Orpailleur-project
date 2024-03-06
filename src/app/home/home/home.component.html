@@ -40,7 +40,7 @@
         developpement...</marquee>
     </div> -->
     <div class="row">
-      <div class="col-xl-4 mb-30">
+      <div class="col-12 col-md-6 col-lg-4 col-xl-4 mb-30">
         <div class="card-box height-100-p widget-style1">
           <div class="d-flex flex-wrap align-items-center">
             <div class="progress-data">
@@ -53,7 +53,7 @@
           </div>
         </div>
       </div>
-      <div class="col-xl-4 mb-30">
+      <div class="col-12 col-md-6 col-lg-4 col-xl-4 mb-30">
         <div class="card-box height-100-p widget-style1">
           <div class="d-flex flex-wrap align-items-center">
             <div class="progress-data">
@@ -66,36 +66,36 @@
           </div>
         </div>
       </div>
-      <div class="col-xl-4 mb-30">
+      <div class="col-12 col-md-6 col-lg-4 col-xl-4 mb-30">
         <div class="card-box height-100-p widget-style1">
           <div class="d-flex flex-wrap align-items-center">
             <div class="progress-data">
               <div id="chart3"></div>
             </div>
             <div class="widget-data">
-              <div class="h5 mb-2 text-secondary">{{ nbAchatToday }} <i class="small text-danger">achat(s)</i> | <i class="small text-danger">Total : </i> {{ TotalPoidsToday }} g </div>
-              <div class="weight-600 font-14 h4">Achat du jour</div>
+              <div class="h5 mb-2 text-dark"><span class="text-secondary">Poids : </span> {{ TotalPoidsToday }} g </div>
+              <div class="weight-600 font-14 h4">{{nbAchatToday}} achat(s) aujourd'hui</div>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-xl-4 mb-30">
+      <div class="col-12 col-md-6 col-lg-4 col-xl-4 mb-30">
         <div class="card-box height-100-p pd-20">
           <h2 class="h4 mb-20">Entrer de caisse</h2>
           <div id="chart5">{{ caisse.EntrerUSD | number: '2.2-2' }} USD</div>
           <div id="chart5">{{ caisse.EntrerGNF | number }} GNF</div>
         </div>
       </div>
-      <div class="col-xl-4 mb-30">
+      <div class="col-12 col-md-6 col-lg-4 col-xl-4 mb-30">
         <div class="card-box height-100-p pd-20">
           <h2 class="h4 mb-20">Sortie de caisse</h2>
           <div id="chart6">{{ caisse.SortieUSD | number: '2.2-2' }} USD</div>
           <div id="chart6">{{ caisse.SortieGNF | number }} GNF</div>
         </div>
       </div>
-      <div class="col-xl-4 mb-30">
+      <div class="col-12 col-md-6 col-lg-4 col-xl-4 mb-30">
         <div class="card-box height-100-p pd-20">
           <h2 class="h4 mb-20">Fixing du jour</h2>
           <div id="chart6"> <span class="mx-2 dw dw-down-arrow text-success"></span> {{ poidsFixer | number: '2.2-2' }} g</div>

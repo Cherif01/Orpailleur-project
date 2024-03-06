@@ -1,18 +1,22 @@
-#divTable_ th{
+#divTable_ th {
   color: midnightblue;
   text-align: start;
   padding: 5px;
 }
-#divTable_ td{
+
+#divTable_ td {
   font-size: 14px;
   font-weight: 700;
   padding: 5px;
 }
 
-.maTable th, .maTable td{
+.maTable th, .maTable td {
   text-align: left;
 }
 
-.separator-20{
+.separator-20 {
   margin: 20px;
 }
+
+
+

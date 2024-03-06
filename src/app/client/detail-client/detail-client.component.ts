@@ -19,7 +19,8 @@ import { FixingClientDialogComponent } from 'src/app/etat-entreprise/fixing-clie
   styleUrls: ['./detail-client.component.css']
 })
 export class DetailClientComponent implements OnInit {
-  @ViewChild('divToPrint, divToPrint_') divToPrint: ElementRef | any
+  @ViewChild('divToPrint') divToPrint: ElementRef | any
+  @ViewChild('divToPrint_') divToPrint_: ElementRef | any
   @ViewChild('head') head: ElementRef | any
   @ViewChild(MatPaginator, { static: true })
   paginator: MatPaginator = Object.create(null)
@@ -103,13 +104,15 @@ export class DetailClientComponent implements OnInit {
 
   // GET Fournisseur
   infoClient: any = {}
-  getInfo() {
-    this.service.getUnique('client', 'getInfoOne.php', this.Id_client).subscribe({
-      next: (data: any) => {
-        console.log("Client : ", data);
-        this.infoClient = data;
-      }
-    })
+  getInfo () {
+    this.service
+      .getUnique('client', 'getInfoOne.php', this.Id_client)
+      .subscribe({
+        next: (data: any) => {
+          // console.log("Client : ", data);
+          this.infoClient = data
+        }
+      })
   }
 
   // LIST EXPEDITION
@@ -148,7 +151,6 @@ export class DetailClientComponent implements OnInit {
       })
   }
 
-
   // GET Facture by fixing...
   dataFacture: any[] = []
   getFacture (): void {
@@ -167,28 +169,28 @@ export class DetailClientComponent implements OnInit {
   MTotal = 0
   PTotal = 0
   CMoyen = 0
+  InfoFixing: any = {}
   getOneFacture (idFixing: any): void {
     this.MTotal = 0
     this.PTotal = 0
     this.CMoyen = 0
     this.factureHistorique = []
-    this.service
-      .LIST_BY_ID('client', 'getOneFacture.php', idFixing)
-      .subscribe({
-        next: (response: any) => {
-          // console.log('Valider : ', response);
-          this.factureHistorique = response[0]
-          this.MTotal = response[1]
-          let cSum = 0
-          response[0].forEach((v: any) => {
-            // console.log("V : ", v);
-            this.PTotal += parseFloat(v.poidsItem)
-            cSum += parseFloat(v.poidsItem) * parseFloat(v.carratItem)
-          })
-          this.CMoyen = cSum / this.PTotal
-        },
-        error: (err: any) => console.log('erreur : ', err)
-      })
+    this.service.LIST_BY_ID('client', 'getOneFacture.php', idFixing).subscribe({
+      next: (response: any) => {
+        console.log('Valider : ', response);
+        this.factureHistorique = response[0]
+        this.MTotal = parseFloat(response[1])
+        this.InfoFixing = response[0][0]
+        let cSum = 0
+        response[0].forEach((v: any) => {
+          // console.log("V : ", v);
+          this.PTotal += parseFloat(v.poidsItem)
+          cSum += parseFloat(v.poidsItem) * parseFloat(v.carratItem)
+        })
+        this.CMoyen = cSum / this.PTotal
+      },
+      error: (err: any) => console.log('erreur : ', err)
+    })
   }
 
   ListFixing: any[] = []
@@ -314,6 +316,19 @@ export class DetailClientComponent implements OnInit {
       window.location.reload()
     })
   }
+
+  // SHOW && HIDE FACTURE
+  showFacture: boolean = false
+  hideFacture: boolean = false
+  showDiv (): void {
+    this.hideFacture = false
+    this.showFacture = true
+  }
+  hideDiv (): void {
+    this.hideFacture = true
+    this.showFacture = false
+  }
+  // SHOW && HIDE FACTURE
 
   format2Chart (data: any) {
     let tab = data.toString().split('.')
@@ -450,6 +465,6 @@ export class DetailClientComponent implements OnInit {
   }
 
   imprimerDiv_ (): void {
-    imprimerDiv(this.divToPrint.nativeElement.innerHTML)
+    imprimerDiv(this.divToPrint_.nativeElement.innerHTML)
   }
 }

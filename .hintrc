@@ -15,6 +15,13 @@
         "label": "off"
       }
     ],
-    "button-type": "off"
+    "button-type": "off",
+    "disown-opener": "off",
+    "axe/aria": [
+      "default",
+      {
+        "aria-valid-attr-value": "off"
+      }
+    ]
   }
 }

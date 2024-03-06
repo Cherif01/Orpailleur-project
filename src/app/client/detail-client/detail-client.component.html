@@ -370,7 +370,8 @@
                 </ng-template>
                 <mat-card-content>
                   <mat-tab-group>
-                    <mat-tab label="LISTE DES FIXINGS">
+                    <mat-tab label="LISTE DES FIXINGS"
+                      *ngIf="showFacture == false">
                       <div class="separator--2"></div>
                       <h2>TOUS LES FIXINGS DE {{ infoClient.responsable }}</h2>
                       <hr>
@@ -380,7 +381,9 @@
                         <div class="col-12 col-md-4 col-lg-3"
                           *ngFor="let data of dataFacture">
                           <div class="card p-0 shadow m-2">
-                            <div class="card-head bg-secondary text-white fw-bold text-center p-2">DATE : {{
+                            <div
+                              class="card-head bg-secondary text-white fw-bold text-center p-2">DATE
+                              : {{
                               data.created_at | date: 'dd/m/YYYY' }}</div>
                             <div class="card-body">
                               <table class="table table-striped"
@@ -404,7 +407,10 @@
                             </div>
                             <div class="card-footer d-flex">
                               <div class="text-end">
-                                <button (click)="getOneFacture(data.idFixing)" class="btn btn-outline-danger w-100">Voir la facture</button>
+                                <button
+                                  (click)="getOneFacture(data.idFixing); showDiv()"
+                                  class="btn btn-outline-danger w-100">Voir la
+                                  facture</button>
                               </div>
                             </div>
                           </div>
@@ -412,17 +418,24 @@
                       </div>
 
                     </mat-tab>
-                    <mat-tab label="FACTURE VUE">
+                    <mat-tab label="FACTURE VUE" *ngIf="showFacture == true">
                       <div class="d-flex justify-content-between">
-                    <div class="col"></div>
-                    <div class="col text-end">
-                      <button class="mx-2 fw-bold" mat-flat-button color="warn"
-                        (click)="imprimerDiv_()">
-                        <span class="micon mdi mdi-printer"></span><span
-                          class="mtext mx-2"> Imprimer...</span>
-                      </button>
-                    </div>
-                  </div>
+                        <div class="col"></div>
+                        <div class="col text-end">
+                          <div class="p-2"></div>
+                          <button class="mx-2" mat-stroked-button color="warn"
+                            (click)="hideDiv()">
+                            <span
+                              class="micon mdi mdi-eye-arrow-left"></span><span
+                              class="mtext mx-2"> Retour...</span>
+                          </button>
+                          <button class="mx-2" mat-stroked-button color="primary"
+                            (click)="imprimerDiv_()">
+                            <span class="micon mdi mdi-printer"></span><span
+                              class="mtext mx-2"> Imprimer...</span>
+                          </button>
+                        </div>
+                      </div>
                       <!-- Facture entete -->
                       <div class="p-3" #divToPrint_>
                         <!-- table LIST -->
@@ -433,8 +446,7 @@
                               <div class="col-2 text-start">
                                 <!-- logo -->
                                 <div class="img-responsive">
-                                  <img
-                                    src="https://static.vecteezy.com/system/resources/previews/019/766/315/non_2x/closeup-shiny-a-gold-bullion-bar-png.png"
+                                  <img src="/assets/logo/logo.png"
                                     class="img-responsive w-100" alt>
                                 </div>
                               </div>
@@ -443,7 +455,7 @@
                                 <span class="small">Acheteur et vendeur d'or en
                                   gros
                                   et
-                                  details</span> <br>
+                                  details</span> |
                                 <span class="small">sis &#224; Mafanco
                                   Carrefour,
                                   centre
@@ -451,8 +463,8 @@
                                 <br>
                                 <span class="fw-bold">Contact : </span>
                                 <span class="text-secondary fw-bold"> <i
-                                    class="small">628-978-467 / 624-044-759 /
-                                    622-339-503</i> </span>
+                                    class="small">628-978-467 / 624-044-759</i>
+                                </span>
                               </div>
                               <div class="col-2 text-end">
                                 <!-- logo -->
@@ -463,22 +475,31 @@
                               </div>
                             </div>
                           </div>
-                          <div class="d-flex justify-content-between flex-wrap">
+                          <div class="d-flex justify-content-start flex-wrap">
                             <div class="col-6">
                               <div class>
-                                <!--
-                              <table class="table" *ngIf="InfoAchat">
-                              <tr>
-                                <th>Fournisseur</th>
-                                <th>:</th>
-                                <th class><i>{{ InfoAchat.fournisseur }}</i></th>
-                              </tr>
-                              <tr>
-                                <th>Adresse</th>
-                                <th>:</th>
-                                <th class><i>{{ InfoAchat.adresse }}</i></th>
-                              </tr>
-                            </table> -->
+                                <table class="table table-bordered"
+                                  *ngIf="InfoFixing">
+                                  <tr>
+                                    <th>Client</th>
+                                    <th>:</th>
+                                    <td class><i>{{ InfoFixing.client
+                                        }}</i></td>
+                                  </tr>
+                                  <tr>
+                                    <th>Fixing</th>
+                                    <th>:</th>
+                                    <td class><i>{{ InfoFixing.fixingBourse
+                                        +' | '+InfoFixing.discompte
+                                        }}</i></td>
+                                  </tr>
+                                  <tr>
+                                    <th>Prix Unitaire</th>
+                                    <th>:</th>
+                                    <td class><i>{{ InfoFixing.prix_unitaire
+                                        }}</i></td>
+                                  </tr>
+                                </table>
                               </div>
                             </div>
                           </div>
@@ -488,14 +509,17 @@
                             <h2
                               class="text-dark text-center fw-bold display-3">Facture
                               N<sup>o</sup>
-                              : {{ '00'+1 }}</h2>
-                            <h2 class="text-dark text-end">Date : <i>{{ '-' }}</i> </h2>
+                              : {{ InfoFixing.fixingBourse
+                              +'-'+InfoFixing.discompte
+                              }}</h2>
+                            <h2 class="text-dark text-end small">Date : <i>{{
+                                InfoFixing.created_at
+                                }}</i> </h2>
                             <table class="table table-bordered"
                               id="myDataTable">
                               <thead
-                                class="text-end bg-primary text-light fw-bold"
-                                id="enteteFacture">
-                                <th>N<sup>o Barres</sup></th>
+                                class="text-end bg-dark text-light">
+                                <th class="text-center">N<sup>o</sup>Barres</th>
                                 <th>Poids</th>
                                 <th>Carrat</th>
                                 <th>Etat</th>
@@ -504,26 +528,43 @@
                               <tbody class="text-end">
                                 <tr
                                   *ngFor="let data of factureHistorique; let i = index">
-                                  <td>{{ i + 1 }}</td>
+                                  <td class="text-center">{{ i + 1 }}</td>
                                   <td>{{ data.poidsItem }}</td>
                                   <td>{{ data.carratItem }} </td>
                                   <td
-                                    [classList]="(data.Etat=='Valider')?'text-success fw-bold':'text-danger fw-bold'">{{
+                                    [classList]="(data.Etat=='Valider')?'text-success':'text-danger'">{{
                                     data.Etat }} </td>
-                                  <td class="text-dark fw-bold">$ {{
-                                    (data.montant) | number: '2.2-2' }}</td>
+                                  <td class="text-dark "> {{
+                                    (data.montant) | number: '1.2-2' }}</td>
                                 </tr>
                               </tbody>
                             </table>
-                            <table class="table text-center" id="myDataTable">
-                              <thead>
-                                  <th>Total</th>
-                                  <th>{{ PTotal| number: '2.2-2' }} g</th>
-                                  <th>{{ CMoyen | number: '2.2-2'}}</th>
-                                  <th>{{ '* STATE * '}}</th>
-                                  <th>{{ MTotal | number: '2.2-2' }}</th>
-                              </thead>
-                            </table>
+                            <div class="col-6">
+                              <table class="table table-bordered text-start">
+                                <tr>
+                                  <th>Poids Total</th>
+                                  <th>:</th>
+                                  <td>{{ PTotal| number: '1.2-2' }} g</td>
+                                </tr>
+                                <tr>
+                                  <th>Carrat Moyen</th>
+                                  <th>:</th>
+                                  <td>{{ CMoyen | number: '1.2-2' }}</td>
+                                </tr>
+                                <tr>
+                                  <th>Legende</th>
+                                  <th>:</th>
+                                  <td><span class="text-danger">UNFIX</span> /
+                                    <span class="text-success">FIX</span></td>
+                                </tr>
+                                <tr>
+                                  <th>Montant Total</th>
+                                  <th>:</th>
+                                  <td>{{ MTotal |
+                                    currency:'USD':'symbol':'1.2-2' }}</td>
+                                </tr>
+                              </table>
+                            </div>
                           </div>
                         </div>
                       </div>
