@@ -65,6 +65,7 @@ export class ViewFactureComponent implements OnInit {
   pu: number = 0
   bourse: number = 0
   fournisseur: string = ''
+  fournisseurTel: string = ''
   created_at_in_facture: any
   idF: any
   code_facture: any
@@ -76,6 +77,7 @@ export class ViewFactureComponent implements OnInit {
         next: (data: any) => {
           this.idF = data[0].idFournisseur
           this.fournisseur = data[0].fournisseur
+          this.fournisseurTel = data[0].fournisseurTel
           this.bourse = data[0].bourse
           this.code_facture = data[0].NumeroF
           console.log('RES : ', data)

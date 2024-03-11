@@ -10,20 +10,24 @@
             <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+                <li class="breadcrumb-item active"
+                  aria-current="page">{{title}}</li>
               </ol>
             </nav>
             <hr>
           </div>
-          <div class="text-right d-flex justify-content-between align-items-center">
+          <div
+            class="text-right d-flex justify-content-between align-items-center">
             <div class="col-reply">
-              <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon
+              <button (click)="this.location.back()" mat-icon-button
+                color="warn"><mat-icon
                   class="mat-24">reply</mat-icon>
               </button>
             </div>
             <div class="col-btn">
               <button mat-flat-button color="primary" href="#" routerLink="/">
-                <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
+                <span class="micon dw dw-up-arrow"></span><span
+                  class="mtext mx-2"> Autres</span>
               </button>
             </div>
           </div>
@@ -34,15 +38,17 @@
         <mat-card class="mat-elevation-z6">
           <mat-card-content>
             <div class="col">
-              <div class="" *ngIf="objetFRS">
+              <div class *ngIf="objetFRS">
                 <div class="row">
                   <div class="col-12 col-lg-3">
                     <div class="card border-0">
                       <div class="card-body text-center">
                         <h4 class="fw-bold">{{ objetFRS.nomComplet }}</h4>
-                        <span class="fs-6 p-2">{{ objetFRS.pays }} / {{ objetFRS.ville }}</span> <br>
-                        <span class="">{{ objetFRS.email }}</span> <br>
-                        <span class="">{{ objetFRS.adresse }} / {{ objetFRS.telephone }}</span> <br>
+                        <span class="fs-6 p-2">{{ objetFRS.pays }} / {{
+                          objetFRS.ville }}</span> <br>
+                        <span class>{{ objetFRS.email }}</span> <br>
+                        <span class>{{ objetFRS.adresse }} / {{
+                          objetFRS.telephone }}</span> <br>
                       </div>
                     </div>
                   </div>
@@ -57,19 +63,27 @@
                       <tbody>
                         <tr class="text-center">
                           <td>
-                            <span *ngIf="SoldeGNF >= 0">{{ SoldeGNF | number: '2.2-2'}} GNF</span>
-                            <span *ngIf="SoldeGNF < 0" class="text-danger">{{ SoldeGNF | number: '2.2-2'}} GNF</span>
+                            <span *ngIf="SoldeGNF >= 0">{{ SoldeGNF | number:
+                              '2.2-2'}} GNF</span>
+                            <span *ngIf="SoldeGNF < 0" class="text-danger">{{
+                              SoldeGNF | number: '2.2-2'}} GNF</span>
                           </td>
                           <td>
-                            <span *ngIf="SoldeUSD >= 0">{{(SoldeUSD) | number: '2.2-2'}} USD</span>
-                            <span *ngIf="SoldeUSD < 0" class="text-danger">{{ (SoldeUSD) | number: '2.2-2'}} USD</span>
+                            <span *ngIf="SoldeUSD >= 0">{{(SoldeUSD) | number:
+                              '2.2-2'}} USD</span>
+                            <span *ngIf="SoldeUSD < 0" class="text-danger">{{
+                              (SoldeUSD) | number: '2.2-2'}} USD</span>
                           </td>
                           <td>
-                            <span *ngIf="SoldeGNF >= 0 && SoldeUSD >= 0" class="text-success fw-bold">Aucune dettes
+                            <span *ngIf="SoldeGNF >= 0 && SoldeUSD >= 0"
+                              class="text-success fw-bold">Aucune dettes
                               !</span>
-                            <span *ngIf="SoldeGNF >= 0 && SoldeUSD < 0" class="text-warning fw-bold">Dettes USD !</span>
-                            <span *ngIf="SoldeGNF < 0 && SoldeUSD >= 0" class="text-warning fw-bold">Dettes GNF !</span>
-                            <span *ngIf="SoldeGNF < 0 && SoldeUSD < 0" class="text-dagner fw-bold">Plein dettes !</span>
+                            <span *ngIf="SoldeGNF >= 0 && SoldeUSD < 0"
+                              class="text-warning fw-bold">Dettes USD !</span>
+                            <span *ngIf="SoldeGNF < 0 && SoldeUSD >= 0"
+                              class="text-warning fw-bold">Dettes GNF !</span>
+                            <span *ngIf="SoldeGNF < 0 && SoldeUSD < 0"
+                              class="text-dagner fw-bold">Plein dettes !</span>
                           </td>
                         </tr>
                       </tbody>
@@ -95,31 +109,55 @@
                           </thead>
                           <tbody>
                             <tr *ngFor="let data of fusionTab">
-                              <td>{{ data.dateOperation | date: "dd/MM/YYYY 'à' HH:mm:ss" }}</td>
-                              <td class="">
-                                <span class="text-dark" *ngIf="data.type_operation == 'credit' ">Facturation - Poids {{
+                              <td>{{ data.dateOperation | date:
+                                "dd/MM/YYYY 'à' HH:mm:ss" }}</td>
+                              <td class>
+                                <span class="text-dark"
+                                  *ngIf="data.type_operation == 'credit' && data.poidsTotal > 0 ">Facturation
+                                  - Poids {{
                                   data.poidsTotal | number: '2.2-2' }} g</span>
-                                <span class="text-dark" *ngIf="data.type_operation == 'debit' ">Paiement - <i
-                                    *ngIf="data.representant != null" class="text-uppercase fw-bold">{{
-                                    data.representant }}</i> <i *ngIf="data.representant == null">{{ data.fournisseur
+
+                                <span class="text-dark"
+                                  *ngIf="data.type_operation == 'credit' && data.poidsTotal == 0 ">{{data.motif}}</span>
+                                <span class="text-dark"
+                                  *ngIf="data.type_operation == 'debit' ">Paiement
+                                  - <i
+                                    *ngIf="data.representant != null"
+                                    class="text-uppercase fw-bold">{{
+                                    data.representant }}</i> <i
+                                    *ngIf="data.representant == null">{{
+                                    data.fournisseur
                                     }}</i> </span>
-                                <span class="text-info" *ngIf="data.type_operation == 'Conversion' ">ECHANGE : {{numberVal(data.source) + ' ==> ' +numberVal(data.destination)}}</span>
+                                <span class="text-info"
+                                  *ngIf="data.type_operation == 'Conversion' ">ECHANGE
+                                  : {{numberVal(data.source) + ' ==> '
+                                  +numberVal(data.destination)}}</span>
                               </td>
                               <td>
-                                <span *ngIf="data.type_operation == 'credit' ">{{ (data.montant) | number: '2.2-2'
+                                <span
+                                  *ngIf="data.type_operation == 'credit' ">{{
+                                  (data.montant) | number: '2.2-2'
                                   }}</span>
-                                <span *ngIf="data.type_operation == 'Conversion' ">{{ (data.on) | number: '2.2-2'
-                                }} GNF</span>
+                                <span
+                                  *ngIf="data.type_operation == 'Conversion' ">{{
+                                  (data.on) | number: '2.2-2'
+                                  }} GNF</span>
                               </td>
                               <td>
-                                <span *ngIf="data.type_operation == 'Conversion' ">{{ (data.out) | number: '2.2-2'
-                                }} USD</span>
-                                <span *ngIf="data.type_operation == 'debit'">{{ (data.montant) | number: '2.2-2'
+                                <span
+                                  *ngIf="data.type_operation == 'Conversion' ">{{
+                                  (data.out) | number: '2.2-2'
+                                  }} USD</span>
+                                <span *ngIf="data.type_operation == 'debit'">{{
+                                  (data.montant) | number: '2.2-2'
                                   }}</span>
-                                <span *ngIf="data.type_operation == 'credit'">---</span>
+                                <span
+                                  *ngIf="data.type_operation == 'credit'">---</span>
                               </td>
                               <td>
-                                <span [class]="'fw-bold text-' +(data.solde>0?'success':'danger')">$ {{ (data.solde) |
+                                <span
+                                  [class]="'fw-bold text-' +(data.solde>0?'success':'danger')">$
+                                  {{ (data.solde) |
                                   number: '2.2-2' }}</span>
                               </td>
                             </tr>
@@ -143,28 +181,47 @@
                           </thead>
                           <tbody>
                             <tr *ngFor="let data of fusionTab2">
-                              <td>{{ data.dateOperation | date: "dd/MM/YYYY 'à' HH:mm:ss" }}</td>
-                              <td class="">
-                                <span class="text-dark" *ngIf="data.type_operation == 'credit' ">Facturation - Poids {{
+                              <td>{{ data.dateOperation | date:
+                                "dd/MM/YYYY 'à' HH:mm:ss" }}</td>
+                              <td class>
+                                <span class="text-dark"
+                                  *ngIf="data.type_operation == 'credit' && data.poidsTotal > 0 ">Facturation
+                                  - Poids {{
                                   data.poidsTotal | number: '2.2-2' }} g</span>
-                                <span class="text-dark" *ngIf="data.type_operation == 'debit' ">Paiement -
-                                  <i *ngIf="data.representant != null" class="text-uppercase fw-bold">{{
-                                    data.representant }}</i> <i *ngIf="data.representant == null">{{ data.fournisseur
+                                <span class="text-dark"
+                                  *ngIf="data.type_operation == 'credit' && data.poidsTotal == 0 ">{{data.motif}}</span>
+                                <span class="text-dark"
+                                  *ngIf="data.type_operation == 'debit' ">Paiement
+                                  -
+                                  <i *ngIf="data.representant != null"
+                                    class="text-uppercase fw-bold">{{
+                                    data.representant }}</i> <i
+                                    *ngIf="data.representant == null">{{
+                                    data.fournisseur
                                     }}</i> </span>
-                                <span class="text-blue" *ngIf="data.type_operation == 'USD/GNF' ">Monnaie changer</span>
+                                <span class="text-blue"
+                                  *ngIf="data.type_operation == 'USD/GNF' ">Monnaie
+                                  changer</span>
                               </td>
                               <td>
-                                <span *ngIf="data.type_operation == 'credit' ">{{ (data.montant) | number: '2.2-2'
+                                <span
+                                  *ngIf="data.type_operation == 'credit' ">{{
+                                  (data.montant) | number: '2.2-2'
                                   }}</span>
-                                <span *ngIf="data.type_operation == 'debit' ">---</span>
+                                <span
+                                  *ngIf="data.type_operation == 'debit' ">---</span>
                               </td>
                               <td>
-                                <span *ngIf="data.type_operation == 'debit'">{{ (data.montant) | number: '2.2-2'
+                                <span *ngIf="data.type_operation == 'debit'">{{
+                                  (data.montant) | number: '2.2-2'
                                   }}</span>
-                                <span *ngIf="data.type_operation == 'credit'">---</span>
+                                <span
+                                  *ngIf="data.type_operation == 'credit'">---</span>
                               </td>
                               <td>
-                                <span [class]="'fw-bold text-' +(data.solde>0?'success':'danger')">$ {{ (data.solde) |
+                                <span
+                                  [class]="'fw-bold text-' +(data.solde>0?'success':'danger')">$
+                                  {{ (data.solde) |
                                   number: '2.2-2' }}</span>
                               </td>
                             </tr>

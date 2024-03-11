@@ -1,5 +1,5 @@
 #couvertureAll {
-  background-size: cover;
+  background-size: contain;
   /* height: 100vh; */
   background-color: black;
   background: url('https://images.pexels.com/photos/321452/pexels-photo-321452.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');

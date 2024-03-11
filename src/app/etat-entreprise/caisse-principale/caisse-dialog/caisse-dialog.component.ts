@@ -10,16 +10,19 @@ import { ApiserviceService } from 'src/app/api_service/apiservice.service'
   styleUrls: ['./caisse-dialog.component.css']
 })
 export class CaisseDialogComponent implements OnInit {
+
+  createdBy: any = localStorage.getItem('id')
+
   form = new FormGroup({
     operation: new FormControl([Validators.required]),
-    created_at: new FormControl(),
+    created_at: new FormControl('',[Validators.required]),
     fournisseur: new FormControl(),
     representant: new FormControl(null),
     devise: new FormControl([Validators.required]),
     montant: new FormControl([Validators.required]),
     montant_anterieur: new FormControl(0),
     motif: new FormControl(''),
-    created_by: new FormControl('')
+    created_by: new FormControl(this.createdBy)
   })
 
   myControl = new FormControl('')
@@ -41,7 +44,6 @@ export class CaisseDialogComponent implements OnInit {
   }
 
   ngOnInit (): void {
-    // this.getFournisseur();
     this.Finaldata = this.myControl.valueChanges.pipe(
       startWith(''),
       map(item => {
@@ -49,6 +51,12 @@ export class CaisseDialogComponent implements OnInit {
         return name ? this._filter(name as string) : this.options
       })
     )
+  }
+
+  currentDateTime(): string {
+    const now = new Date();
+    // Convertit la date actuelle en une chaîne de caractères au format ISO
+    return now.toISOString().slice(0, 16); // Vous pouvez ajuster le format de sortie au besoin
   }
 
   selection: string = ''

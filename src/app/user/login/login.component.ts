@@ -1,13 +1,8 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { AppComponent } from '../../app.component';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
-import { convertObjectInFormData } from 'src/app/etat-entreprise/caisse-principale/caisse-principale.component';
-import { error } from 'jquery';
-import { log } from 'handsontable/helpers';
-import { HttpHeaders } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 

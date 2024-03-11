@@ -67,7 +67,7 @@ export class SituationFournisseurComponent implements OnInit {
         .getUnique('fournisseur', 'operation.php', this.ID_F)
         .subscribe({
           next: (data: any) => {
-            console.log('Operation : ', data)
+            // console.log('Operation : ', data)
             // let u = 0
             // let g = 0
             // data[2].forEach((e: any) => {
@@ -80,9 +80,11 @@ export class SituationFournisseurComponent implements OnInit {
             let solde = 0
             // SOLDE GNF
             let soldegnf = 0
+
             data[0].forEach((op: any) => {
-              // console.log('Echo USD : ', op)
+              let keyToSortBy = op.dateOperation
               if (op.devise == 2) {
+                // console.log('Echo USD : ', op)
                 this.fusionTab.push(op)
                 if (op.type_operation == 'credit') {
                   // fixing
@@ -101,6 +103,7 @@ export class SituationFournisseurComponent implements OnInit {
                 op['solde'] = solde
                 this.SoldeUSD = solde
               } else if (op.devise == 1) {
+                // console.log('Echo GNF : ', op)
                 this.fusionTab2.push(op)
                 if (op.type_operation == 'debit') {
                   //caisse
@@ -115,7 +118,6 @@ export class SituationFournisseurComponent implements OnInit {
                 }
                 op['solde'] = soldegnf
               }
-              op['solde'] = solde
               this.SoldeGNF = soldegnf
             })
           },

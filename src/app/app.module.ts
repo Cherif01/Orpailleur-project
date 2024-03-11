@@ -32,7 +32,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 // DATA-TABLES
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
