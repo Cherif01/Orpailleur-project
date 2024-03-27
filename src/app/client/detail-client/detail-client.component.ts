@@ -281,6 +281,7 @@ export class DetailClientComponent implements OnInit {
         .subscribe({
           next: (data: any) => {
             // console.log("DATA : ", data);
+            this.historique = []
             data.forEach((value: any) => {
               if (this.Id_client == value.idClient) {
                 if (value.operation == 5 || value.operation == 6) {

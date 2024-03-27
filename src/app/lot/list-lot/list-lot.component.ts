@@ -23,7 +23,7 @@ export class ListLotComponent implements OnInit {
   displayedColumns = ['Date', 'Docs', 'Designation', 'Status', 'Action'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
-  displayedColumns_maj = ['Date', 'Poids', 'Carrat', 'Manquant'];
+  displayedColumns_maj = ['Date', 'Poids', 'Carrat', 'PoidsDubai', 'CarratDubai', 'Manquant'];
   dataSource_maj: MatTableDataSource<any> = new MatTableDataSource();
 
   applyFilter(event: Event) {
@@ -70,7 +70,7 @@ export class ListLotComponent implements OnInit {
     // console.log(idLotSelect);
     this.serviceLot.getOneByIdSimple('lot', 'item_by_lot.php', idLotSelect).subscribe({
       next: (data: any) => {
-        console.log(data);
+        // console.log(data);
         this.dataSource_maj.data = data;
       }
     })
@@ -78,11 +78,13 @@ export class ListLotComponent implements OnInit {
   }
 
   saveTableData(element: any) {
-    console.log("Row : ", element);
+    // console.log("Row : ", element);
     let obj = {
       id: element.idItem,
       poidsItem: element.poidsItem,
       carratItem: element.carratItem,
+      poidsDubai: element.poidsDubai,
+      carratDubai: element.carratDubai,
       manquantItem: element.manquantItem,
     }
     const objetForm = convertObjectInFormData(obj)

@@ -1,5 +1,5 @@
 *{
-  font-family: Roboto slab, sans-serif;
+  font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -16,12 +16,7 @@
 .active-sidebar{
   /* text-transform: uppercase; */
   font-weight: 560;
-  background-color: rgb(46, 70, 164);
-}
-
-.accordion-button span{
-  font-weight: normal;
-
+  background-color: rgb(6, 19, 99);
 }
 
 /* .left-side-bar{
@@ -30,11 +25,11 @@
 
 .panel{
   background-color: rgb(6, 5, 33);
-  font-weight: 540;
+  font-weight: 600;
 }
 
 .menu-block{
-  background-color: rgb(255, 255, 255);
+  /* background-color: rgb(255, 255, 255); */
   margin: 0;
   padding: 0;
   height: 100vh;
@@ -44,17 +39,17 @@
 
 .menu-block ul li a{
   color: rgb(255, 255, 255);
-  font-size: 18px;
+  font-size: 16px;
   width: 100%;
 }
 
 .menu-block ul li i{
-  color: rgb(255, 255, 255);
+  color: rgb(243, 206, 59);
   font-weight: bold;
 }
 
 .menu-block ul li a:hover{
-  background-color: rgb(36, 51, 112);
+  background-color: rgb(6, 19, 99);
   transition: 0.4s;
 }
 

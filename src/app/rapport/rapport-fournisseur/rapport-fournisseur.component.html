@@ -10,19 +10,24 @@
             <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+                <li class="breadcrumb-item active"
+                  aria-current="page">{{title}}</li>
               </ol>
             </nav>
           </div>
-          <div class="text-right d-flex justify-content-between align-items-center">
+          <div
+            class="text-right d-flex justify-content-between align-items-center">
             <div class="col-reply">
-              <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon
+              <button (click)="this.location.back()" mat-icon-button
+                color="warn"><mat-icon
                   class="mat-24">reply</mat-icon>
               </button>
             </div>
             <div class="col-btn">
-              <button class="mx-2 fw-bold" mat-flat-button color="primary" routerLink="/fournisseur">
-                <span class="micon dw dw-up-arrow"></span><span class="mtext mx-2"> Autres</span>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary"
+                routerLink="/fournisseur">
+                <span class="micon dw dw-up-arrow"></span><span
+                  class="mtext mx-2"> Autres</span>
               </button>
             </div>
           </div>
@@ -39,10 +44,12 @@
               </ng-template>
               <mat-card-content id="table_shadow">
                 <mat-form-field class="w-100 mt-3">
-                  <input [formControl]="search" placeholder="Rechercher un fournisseur ici...." matInput>
+                  <input [formControl]="search"
+                    placeholder="Rechercher un fournisseur ici...." matInput>
                   <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
-                <table mat-table [dataSource]="dataSource" id="myDataTable" class="w-100">
+                <table mat-table [dataSource]="dataSource" id="myDataTable"
+                  class="w-100">
                   <ng-container matColumnDef="Nom-complet">
                     <th mat-header-cell *matHeaderCellDef>Fournisseur</th>
                     <td mat-cell *matCellDef="let element">
@@ -74,24 +81,29 @@
                     </td>
                   </ng-container>
                   <ng-container matColumnDef="action">
-                    <th mat-header-cell *matHeaderCellDef class="text-center">Action</th>
+                    <th mat-header-cell *matHeaderCellDef
+                      class="text-center">Action</th>
                     <td mat-cell *matCellDef="let element" class="text-center">
-                      <button mat-stroked-button color="primary" (click)="goRapport(element.nomComplet, element.id)">
+                      <button mat-stroked-button color="primary"
+                        (click)="goRapport(element.nomComplet, element.id)">
                         Rapport <mat-icon>description</mat-icon></button>
                     </td>
                   </ng-container>
 
-                  <tr mat-header-row *matHeaderRowDef="displaysColums;sticky: true"></tr>
+                  <tr mat-header-row
+                    *matHeaderRowDef="displaysColums;sticky: true"></tr>
                   <tr mat-row *matRowDef="let row; columns:displaysColums"></tr>
                 </table>
-                <mat-paginator [pageSizeOptions]="[10,15,100]" showFirstLastButtons></mat-paginator>
+                <mat-paginator [pageSizeOptions]="[10,15,100]"
+                  showFirstLastButtons></mat-paginator>
               </mat-card-content>
             </mat-tab>
 
             <!-- DETAILS -->
             <mat-tab *ngIf="clickEvent">
               <ng-template mat-tab-label>
-                <span class="fw-bold text-start text-uppercase">RAPPORT FOURNISSEUR : <span class="text-blue">{{ Name
+                <span class="fw-bold text-start text-uppercase">RAPPORT
+                  FOURNISSEUR : <span class="text-blue">{{ Name
                     }}</span></span>
               </ng-template>
               <!-- Sub-Detail -->
@@ -103,7 +115,9 @@
                   </ng-template>
                   <mat-card-content id="table_shadow">
                     <mat-form-field class="w-100 mt-3">
-                      <input [formControl]="search" placeholder="Rechercher un fournisseur ici...." matInput>
+                      <input [formControl]="search"
+                        placeholder="Rechercher un fournisseur ici...."
+                        matInput>
                       <mat-icon matSuffix>search</mat-icon>
                     </mat-form-field>
                     <table class="table" id="myDataTable">
@@ -116,30 +130,45 @@
                       </thead>
                       <tbody>
                         <tr *ngFor="let data of fusionTab">
-                          <td>{{ data.dateOperation | date: "dd/MM/YYYY 'a' HH:mm:ss" }}</td>
-                          <td class="">
-                            <span class="text-dark" *ngIf="data.type_operation == 'credit' ">Facturation - Poids {{
+                          <td>{{ data.dateOperation | date:
+                            "dd/MM/YYYY 'a' HH:mm:ss" }}</td>
+                          <td class>
+                            <span class="text-dark"
+                              *ngIf="data.type_operation == 'credit' ">Facturation
+                              - Poids {{
                               data.poidsTotal | number: '2.2-2' }} g</span>
-                            <span class="text-dark" *ngIf="data.type_operation == 'debit' ">Paiement - <i
-                                *ngIf="data.representant != null" class="text-uppercase fw-bold">{{ data.representant
-                                }}</i> <i *ngIf="data.representant == null">{{ data.fournisseur }}</i> </span>
+                            <span class="text-dark"
+                              *ngIf="data.type_operation == 'debit' ">Paiement -
+                              <i
+                                *ngIf="data.representant != null"
+                                class="text-uppercase fw-bold">{{
+                                data.representant
+                                }}</i> <i *ngIf="data.representant == null">{{
+                                data.fournisseur }}</i> </span>
                           </td>
                           <td>
-                            <span *ngIf="data.type_operation == 'credit' ">{{ (data.montant) | number: '2.2-2' }}</span>
-                            <span *ngIf="data.type_operation == 'debit' ">---</span>
+                            <span *ngIf="data.type_operation == 'credit' ">{{
+                              (data.montant) | number: '2.2-2' }}</span>
+                            <span
+                              *ngIf="data.type_operation == 'debit' ">---</span>
                           </td>
                           <td>
-                            <span *ngIf="data.type_operation == 'debit'">{{ (data.montant) | number: '2.2-2' }}</span>
-                            <span *ngIf="data.type_operation == 'credit'">---</span>
+                            <span *ngIf="data.type_operation == 'debit'">{{
+                              (data.montant) | number: '2.2-2' }}</span>
+                            <span
+                              *ngIf="data.type_operation == 'credit'">---</span>
                           </td>
                           <td>
-                            <span [class]="'fw-bold text-' +(data.solde>0?'success':'danger')">$ {{ (data.solde) |
+                            <span
+                              [class]="'fw-bold text-' +(data.solde>0?'success':'danger')">$
+                              {{ (data.solde) |
                               number: '2.2-2' }}</span>
                           </td>
                         </tr>
                       </tbody>
                     </table>
-                    <mat-paginator [pageSizeOptions]="[5, 10,15,100]" showFirstLastButtons></mat-paginator>
+                    <mat-paginator [pageSizeOptions]="[5, 10,15,100]"
+                      showFirstLastButtons></mat-paginator>
                   </mat-card-content>
                 </mat-tab>
 
@@ -150,49 +179,62 @@
                   </ng-template>
                   <mat-card-content id="table_shadow">
                     <mat-form-field class="w-100 mt-3">
-                      <input [formControl]="search" placeholder="Rechercher un fournisseur ici...." matInput>
+                      <input [formControl]="search"
+                        placeholder="Rechercher un fournisseur ici...."
+                        matInput>
                       <mat-icon matSuffix>search</mat-icon>
                     </mat-form-field>
-                    <table mat-table [dataSource]="dataSource2" class="mat-elevation-z4 w-100" id="myDataTable">
+                    <table mat-table [dataSource]="dataSource2"
+                      class="mat-elevation-z4 w-100" id="myDataTable">
                       <!-- Position Column -->
                       <ng-container matColumnDef="Date">
                         <th mat-header-cell *matHeaderCellDef> Date </th>
-                        <td mat-cell *matCellDef="let element"> {{element.created_at_achat | date:'dd/MM/YYYY'}} </td>
+                        <td mat-cell *matCellDef="let element">
+                          {{element.created_at_achat | date:'dd/MM/YYYY'}} </td>
                       </ng-container>
 
                       <!-- Weight Column -->
                       <ng-container matColumnDef="Fournisseur">
                         <th mat-header-cell *matHeaderCellDef> Fournisseur </th>
-                        <td mat-cell *matCellDef="let element"> {{element.fournisseur}} </td>
+                        <td mat-cell *matCellDef="let element">
+                          {{element.fournisseur}} </td>
                       </ng-container>
 
                       <!-- Weight Column -->
                       <ng-container matColumnDef="Arrivage">
                         <th mat-header-cell *matHeaderCellDef> Arrivage </th>
-                        <td mat-cell *matCellDef="let element"> {{element.arrivage}} </td>
+                        <td mat-cell *matCellDef="let element">
+                          {{element.arrivage}} </td>
                       </ng-container>
 
                       <!-- Weight Column -->
                       <ng-container matColumnDef="Poids_total">
                         <th mat-header-cell *matHeaderCellDef> Poids total </th>
-                        <td mat-cell *matCellDef="let element"> {{element.poidsTotal}} </td>
+                        <td mat-cell *matCellDef="let element">
+                          {{element.poidsTotal}} </td>
                       </ng-container>
 
                       <!-- Weight Column -->
                       <ng-container matColumnDef="Carrat_moyen">
-                        <th mat-header-cell *matHeaderCellDef> Carrat moyen </th>
-                        <td mat-cell *matCellDef="let element"> {{element.carratMoyen}} </td>
+                        <th mat-header-cell *matHeaderCellDef> Carrat moyen
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                          {{element.carratMoyen}} </td>
                       </ng-container>
 
-                      <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
-                      <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+                      <tr mat-header-row
+                        *matHeaderRowDef="displayedColumns2"></tr>
+                      <tr mat-row
+                        *matRowDef="let row; columns: displayedColumns2;"></tr>
 
                       <!-- Row shown when there is no matching data. -->
                       <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" colspan="4">Aucune donn&#233;es... </td>
+                        <td class="mat-cell" colspan="4">Aucune donn&#233;es...
+                        </td>
                       </tr>
                     </table>
-                    <mat-paginator tor [pageSizeOptions]="[5, 10,15,100]" showFirstLastButtons></mat-paginator>
+                    <mat-paginator tor [pageSizeOptions]="[5, 10,15,100]"
+                      showFirstLastButtons></mat-paginator>
                   </mat-card-content>
                 </mat-tab>
 
@@ -204,14 +246,18 @@
                   <mat-card-content id="table_shadow">
                     <!-- Impression -->
 
-                    <div class="d-flex justify-content-between mt-3 align-items-center">
+                    <div
+                      class="d-flex justify-content-between mt-3 align-items-center">
                       <div class="col">
                         <div class="m-2 mx-0 px-0 shadow">
-                          <form action="" [formGroup]="rechercheIntervalleForm">
+                          <form action [formGroup]="rechercheIntervalleForm">
                             <div class="col-12 d-flex input-group m-0 p-0">
-                              <input type="date" formControlName="dateStart" class="form-control border-dark fw-bold">
-                              <input type="date" formControlName="dateEnd" class="mx-1 form-control border-dark fw-bold">
-                              <button mat-flat-button color="primary" class="border-dark"
+                              <input type="date" formControlName="dateStart"
+                                class="form-control border-dark fw-bold">
+                              <input type="date" formControlName="dateEnd"
+                                class="mx-1 form-control border-dark fw-bold">
+                              <button mat-flat-button color="primary"
+                                class="border-dark"
                                 (click)="rapportPersonnaliser(rechercheIntervalleForm)">
                                 Afficher
                               </button>
@@ -220,34 +266,42 @@
                         </div>
                       </div>
                       <div class="col text-end">
-                        <button class="mx-2 fw-bold btn-secondary" mat-stroked-button color="">
-                          <mat-icon>printer</mat-icon><span class="mtext mx-2" (click)="imprimerDiv()"> Imprimer</span>
+                        <button class="mx-2 fw-bold btn-secondary"
+                          mat-stroked-button color>
+                          <mat-icon>printer</mat-icon><span class="mtext mx-2"
+                            (click)="imprimerDiv()"> Imprimer</span>
                         </button>
                       </div>
                     </div>
                     <hr>
-                    <div class="" #divToPrint>
+                    <div class #divToPrint>
                       <div class="entete">
-                        <div class="d-flex justify-content-between flex-wrap m-0 p-0 align-items-center">
+                        <div
+                          class="d-flex justify-content-between flex-wrap m-0 p-0 align-items-center">
                           <div class="col-2 text-start">
                             <!-- logo -->
                             <div class="img-responsive">
-                              <img src="/assets/logo/coins.png" class="img-responsive w-100" alt="">
+                              <img src="/assets/logo/coins.png"
+                                class="img-responsive w-100" alt>
                             </div>
                           </div>
                           <div class="col offset-1  text-center">
                             <h2 class="m-0 p-0">LIMANAYA BUSINESS</h2>
-                            <span class="small">Acheteur et vendeur d'or en gros et details</span> <br>
-                            <span class="small">sis &#224; Mafanco Carrefour, centre commercial Bayo et frères au 2e
+                            <span class="small">Acheteur et vendeur d'or en gros
+                              et details</span> <br>
+                            <span class="small">sis &#224; Mafanco Carrefour,
+                              centre commercial Bayo et frères au 2e
                               étage</span>
                             <br>
                             <span class="fw-bold">Adresse : </span>
-                            <span class="text-primary"> 628-978-467 / 624-044-759 </span>
+                            <span class="text-primary"> 628-978-467 /
+                              624-044-759 </span>
                           </div>
                           <div class="col-2 offset-1 text-end">
                             <!-- logo -->
                             <div class="img-responsive">
-                              <img src="/assets/logo/logo.png" class="img-responsive w-100" alt="">
+                              <img src="/assets/logo/logo.png"
+                                class="img-responsive w-100" alt>
                             </div>
                           </div>
                         </div>
@@ -255,84 +309,104 @@
                       <hr>
                       <div class="text-center text-dark p-2">
                         <h2>Rapport : {{ Name }}</h2>
-                        <h3 class="fw-bold text-uppercse">SOLDE : {{ SoldeUSD | number: '2.2-2' }}</h3>
+                        <h3 class="fw-bold text-uppercse">SOLDE : {{ SoldeUSD |
+                          number: '2.2-2' }}</h3>
                       </div>
-                      <!-- SOLDE RAPPORT FOURNISSEUR -->
-                      <table class="table table-striped table-bordered">
-                        <thead class="text-dark">
-                          <th>Date d'operation</th>
-                          <th>Mouvement</th>
-                          <th>Credit</th>
-                          <th>Debit</th>
-                          <th>Solde A</th>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let data of fusionTab">
-                            <td>{{ data.dateOperation | date: "dd/MM/YYYY 'a' HH:mm:ss" }}</td>
-                            <td class="">
-                              <span class="text-dark" *ngIf="data.type_operation == 'credit' ">Facturation - Poids {{
-                                data.poidsTotal | number: '2.2-2' }} g</span>
-                              <span class="text-dark" *ngIf="data.type_operation == 'debit' ">Paiement - <i
-                                  *ngIf="data.representant != null" class="text-uppercase fw-bold">{{ data.representant
-                                  }}</i> <i *ngIf="data.representant == null">{{ data.fournisseur }}</i> </span>
-                            </td>
-                            <td>
-                              <span *ngIf="data.type_operation == 'credit' ">{{ (data.montant) | number: '2.2-2' }}</span>
-                              <span *ngIf="data.type_operation == 'debit' ">---</span>
-                            </td>
-                            <td>
-                              <span *ngIf="data.type_operation == 'debit'">{{ (data.montant) | number: '2.2-2' }}</span>
-                              <span *ngIf="data.type_operation == 'credit'">---</span>
-                            </td>
-                            <td>
-                              <span [class]="'fw-bold text-' +(data.solde>0?'success':'danger')">$ {{ (data.solde) |
-                                number: '2.2-2' }}</span>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <div class="table-responsive">
+                        <!-- SOLDE RAPPORT FOURNISSEUR -->
+                        <table class="table table-hover table-bordered">
+                          <thead class="text-dark">
+                            <th>Date d'operation</th>
+                            <th>Mouvement</th>
+                            <th>Credit</th>
+                            <th>Debit</th>
+                            <th>Solde</th>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let data of fusionTab">
+                              <td>{{ data.dateOperation | date:
+                                "dd/MM/YYYY 'a' HH:mm:ss" }}</td>
+                              <td class>
+                                <span class="text-dark"
+                                  *ngIf="data.type_operation == 'credit' ">Facturation
+                                  - Poids {{
+                                  data.poidsTotal | number: '2.2-2' }} g</span>
+                                <span class="text-dark"
+                                  *ngIf="data.type_operation == 'debit' ">Paiement
+                                  - <i
+                                    *ngIf="data.representant != null"
+                                    class="text-uppercase fw-bold">{{
+                                    data.representant
+                                    }}</i> <i
+                                    *ngIf="data.representant == null">{{
+                                    data.fournisseur }}</i> </span>
+                              </td>
+                              <td>
+                                <span
+                                  *ngIf="data.type_operation == 'credit' ">{{
+                                  (data.montant) | number: '2.2-2' }}</span>
+                                <span
+                                  *ngIf="data.type_operation == 'debit' ">---</span>
+                              </td>
+                              <td>
+                                <span *ngIf="data.type_operation == 'debit'">{{
+                                  (data.montant) | number: '2.2-2' }}</span>
+                                <span
+                                  *ngIf="data.type_operation == 'credit'">---</span>
+                              </td>
+                              <td>
+                                <span
+                                  [class]="'fw-bold text-' +(data.solde>0?'success':'danger')">$
+                                  {{ (data.solde) |
+                                  number: '2.2-2' }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                       <hr>
+
                       <!-- ITEMS -->
-                      <div class="text-center text-dark p-2">
-                        <h3>Barres</h3>
+                      <div class="table-responsive d-none">
+                        <div class="text-center text-dark p-2">
+                          <h3>Barres</h3>
+                        </div>
+
+                        <table class="table table-striped">
+                          <thead>
+                            <th>Date</th>
+                            <th>Barre</th>
+                            <th>Fournisseur</th>
+                            <!-- <th>Info-Achat</th> -->
+                            <th>Poids</th>
+                            <th>Carrat</th>
+                            <th>Manquant</th>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let data of ListItem; let i = index">
+                              <td>{{ data.created_at | date:
+                                "dd/MM/YYYY 'a' HH:mm:ss" }}</td>
+                              <td>{{ i+1 }}</td>
+                              <td>{{ data.fournisseur }}</td>
+                              <!-- <td>{{ data.achat }}</td> -->
+                              <td>{{ data.poids }} g</td>
+                              <td>{{ data.carrat }}</td>
+                              <td>{{ data.manquant }}</td>
+                            </tr>
+                          </tbody>
+                          <tfoot class="text-danger fw-bold">
+                            <th>Total</th>
+                            <th>---</th>
+                            <!-- <th>---</th> -->
+                            <th>---</th>
+                            <th>{{ PoidsTotal_barre | number: '2.2-2' }} g</th>
+                            <th>{{ CMoyen }}</th>
+                            <th>{{ manquantTotal | number: '2.2-2' }}</th>
+                          </tfoot>
+                        </table>
                       </div>
-
-                      <table class="table table-striped">
-                        <thead>
-                          <th>Date</th>
-                          <th>Barre</th>
-                          <th>Fournisseur</th>
-                          <!-- <th>Info-Achat</th> -->
-                          <th>Poids</th>
-                          <th>Carrat</th>
-                          <th>Manquant</th>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let data of ListItem; let i = index">
-                            <td>{{ data.created_at | date: "dd/MM/YYYY 'a' HH:mm:ss" }}</td>
-                            <td>{{ i+1 }}</td>
-                            <td>{{ data.fournisseur }}</td>
-                            <!-- <td>{{ data.achat }}</td> -->
-                            <td>{{ data.poids }} g</td>
-                            <td>{{ data.carrat }}</td>
-                            <td>{{ data.manquant }}</td>
-                          </tr>
-                        </tbody>
-                        <tfoot class="text-danger fw-bold">
-                          <th>Total</th>
-                          <th>---</th>
-                          <!-- <th>---</th> -->
-                          <th>---</th>
-                          <th>{{ PoidsTotal_barre | number: '2.2-2' }} g</th>
-                          <th>{{ CMoyen }}</th>
-                          <th>{{ manquantTotal | number: '2.2-2' }}</th>
-                        </tfoot>
-                      </table>
-
-
 
                     </div>
-
 
                   </mat-card-content>
                 </mat-tab>

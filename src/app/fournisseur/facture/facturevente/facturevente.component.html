@@ -227,7 +227,7 @@
                         <mat-card-content>
                           <mat-form-field class="w-100">
                             <input [formControl]="search"
-                              placeholder="Rechercher un fixing ici...."
+                              placeholder="Rechercher une barre ici...."
                               matInput>
                             <mat-icon matSuffix>search</mat-icon>
                           </mat-form-field>
@@ -299,74 +299,7 @@
                   </mat-tab>
 
                   <!-- DEBUT ETAPE PAR POIDS -->
-                  <!-- <mat-tab label="ENVOIE PAR POIDS...">
-                    <div class="col p-4 m-2">
-                      <div
-                        class="d-flex justify-content-between flex-wrap align-items-center">
-                        <div class="col">
-                          <h2 class="text-secondary text-center">Fixing / Poids
-                            direct</h2>
-                        </div>
-                        <div class="col">
-                          <form [formGroup]="FixingPoids"
-                            (ngSubmit)="PFix(FixingPoids, infoAchatView.id_achat, format2Chart((cMoyenActif)))">
-                            <div class="col">
-                              <input type="number" hidden
-                                formControlName="carrat_moyen_restant">
-                              <mat-form-field class="w-100">
-                                <mat-label>Poids &#224; vendre</mat-label>
-                                <input matInput type="number" min="0"
-                                  max="{{ poids_fixer -
-                                    poidsAttribuer
-                                    }}" formControlName="poids_select"
-                                  class="w-100"
-                                  placeholder="Entrer le poids &#224; prendre (Ex : 1xx) g">
-                                <mat-hint class="text-primary">Vente possible :
-                                  {{ poids_fixer -
-                                  poidsAttribuer
-                                  }} g</mat-hint>
-                              </mat-form-field>
-                            </div>
-                            <div class="col text-center">
-                              <button type="submit" class="w-100 p-2"
-                                [disabled]="!FixingPoids.valid"
-                                mat-raised-button
-                                color="primary">
-                                <span
-                                  class="mdi mdi-plus-thick text-light mx-2"></span>
-                                Confirmer l'envoie
-                              </button>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-
-                      <table class="table table-striped" id="myDataTable">
-                        <thead>
-                          <th>Achat No</th>
-                          <th>ACHAT/VENTE</th>
-                          <th>POIDS FIXER</th>
-                          <th>POIDS RESTANT (FIXING)</th>
-                          <th>CARRAT</th>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>{{ infoAchatView.id_achat }}</td>
-                            <td>{{ infoAchatView.PoidsTotal | number: '2.2-2' }}
-                              g / <span class="text-danger"> {{
-                                infoAchatView.PoidsTotal - poidsAttribuer |
-                                number: '2.2-2' }}g</span></td>
-                            <td>{{ poids_fixer | number: '2.2-2' }} g</td>
-                            <td class="text-danger">{{ poids_fixer -
-                              poidsAttribuer | number: '2.2-2'
-                              }} g</td>
-                            <td>{{ (cMoyenActif) }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </mat-tab> -->
-                </mat-tab-group>
+               </mat-tab-group>
               </div>
             </div>
           </div>

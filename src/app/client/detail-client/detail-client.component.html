@@ -384,7 +384,7 @@
                             <div
                               class="card-head bg-secondary text-white fw-bold text-center p-2">DATE
                               : {{
-                              data.created_at | date: 'dd/m/YYYY' }}</div>
+                              data.created_at | date: 'd/M/Y' }}</div>
                             <div class="card-body">
                               <table class="table table-striped"
                                 id="myDataTable">
@@ -457,7 +457,7 @@
                                   et
                                   details</span> |
                                 <span class="small">sis &#224; Mafanco
-                                  Carrefour,
+                                  Carrefour,<br>
                                   centre
                                   commercial Bayo et frères au 2e:ET</span>
                                 <br>
@@ -518,7 +518,7 @@
                             <table class="table table-bordered"
                               id="myDataTable">
                               <thead
-                                class="text-end bg-dark text-light">
+                                class="text-end text-primary fw-bold">
                                 <th class="text-center">N<sup>o</sup>Barres</th>
                                 <th>Poids</th>
                                 <th>Carrat</th>
@@ -532,8 +532,9 @@
                                   <td>{{ data.poidsItem }}</td>
                                   <td>{{ data.carratItem }} </td>
                                   <td
-                                    [classList]="(data.Etat=='Valider')?'text-success':'text-danger'">{{
-                                    data.Etat }} </td>
+                                    [classList]="(data.Etat=='Valider')?'text-success':'text-danger'">
+                                    <mat-icon class="mat-18">checked</mat-icon>
+                                  </td>
                                   <td class="text-dark "> {{
                                     (data.montant) | number: '1.2-2' }}</td>
                                 </tr>

@@ -92,7 +92,8 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('role', data[0].role);
             localStorage.setItem('state', data[0].state);
             localStorage.setItem('username', data[0].username);
-            this.router.navigate(['/home']);
+            // this.router.navigate(['/home']);
+            window.location.href = '/home'
           }
           else {
             this.noLogin = true

@@ -17,11 +17,11 @@
               </button>
             </div>
             <div class="col-btn">
-              <button class="mx-2 fw-bold" mat-flat-button color="accent"
+              <!-- <button class="mx-2 fw-bold" mat-flat-button color="warn"
                 routerLink="/fixing/add-fixing">
                 <span class="micon dw dw-add"></span><span class="mtext mx-2">
                   Fix&#233; un poids </span>
-              </button>
+              </button> -->
               <button class="mx-2 fw-bold" mat-flat-button color="primary"
                 routerLink="/fixing/list-fixing">
                 <span class="micon dw dw-list"></span><span class="mtext mx-2">
@@ -40,68 +40,84 @@
           <div
             class="d-flex justify-content-between flex-wrap align-items-center">
             <div class="col">
-              <h2 class="text-center fw-bold h5">Fixing en cours...</h2>
-
+              <h2
+                class="text-center fw-bold p-2 m-3 card bg-secondary text-warning">FIXER
+                UN POIDS</h2>
               <div class [formGroup]="Fixing">
                 <div
                   class="d-flex justify-content-between flex-wrap flex-row align-items-center mb-2">
                   <div class="col-12">
 
-                    <h4 class="text-primary fw-bold">SELECTIONNER : <i
-                        class="text-dark">{{ selection }}</i></h4>
-
-                    <mat-form-field class="example-full-width w-100 mb-2"
-                      appearance="outline">
-                      <mat-label>Fournisseur</mat-label>
-                      <input type="text"
-                        placeholder="Choisir un fournisseur"
-                        aria-label="Number"
-                        matInput
-                        [formControl]="myControl"
-                        [matAutocomplete]="auto"
-                        formControlName="idFournisseur">
-                      <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option *ngFor="let data of Finaldata | async"
-                          (onSelectionChange)="selectCustomer(data.id+'-'+data.nomComplet)">
-                          {{data.nomComplet}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-
-                    <!-- POIDS -->
-                    <mat-form-field appearance="outline" class="w-100 mb-2 fs-5">
-                      <mat-label>Poids fixing</mat-label>
-                      <input required formControlName="poidsFixer" matInput
-                        placeholder="Ex : 157.12">
-                      <mat-hint>Exemple : 500</mat-hint>
-                    </mat-form-field>
+                    <!-- <h4 class="text-primary fw-bold">SELECTIONNER : <i
+                        class="text-dark">{{ selection }}</i></h4> -->
 
                     <div class="d-flex justify-content-between flex-wrap">
-                      <!-- FIXING BOURSE -->
-                      <mat-form-field appearance="outline" class="mb-2 w-100 fs-5">
-                        <mat-label>FIXING</mat-label>
-                        <input required formControlName="fixingBourse" matInput
-                          placeholder="Ex : 1905">
-                        <mat-hint>Exemple : 1 905</mat-hint>
-                      </mat-form-field>
-                      <!-- DISCOUNT -->
-                      <mat-form-field appearance="outline" class="mb-2 w-100 fs-5">
-                        <mat-label>DISCOMPTE</mat-label>
-                        <input required formControlName="discompte" matInput
-                          placeholder="Ex : 0.6" min="0" max="1">
-                        <mat-hint>Varie entre : 0 et 0.9</mat-hint>
-                      </mat-form-field>
-                    </div>
-                  </div>
+                      <!-- NOM DU FOURNISSEUR -->
+                      <div class="col-md-12">
+                        <mat-form-field
+                          class="example-full-width w-100 mb-2 fs-5"
+                          appearance="outline">
+                          <mat-label>Fournisseur</mat-label>
+                          <input type="text"
+                            placeholder="Choisir un fournisseur"
+                            aria-label="Number"
+                            matInput
+                            [formControl]="myControl"
+                            [matAutocomplete]="auto"
+                            formControlName="idFournisseur">
+                          <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let data of Finaldata | async"
+                              (onSelectionChange)="selectCustomer(data.id+'-'+data.nomComplet)">
+                              {{data.nomComplet}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                      </div>
 
-                  <div class="col-12">
-                    <button type="submit" mat-raised-button class="w-100 p-2 fs-3 fw-bold"
-                      color="accent"
-                      [disabled]="!Fixing.valid" (click)="fixingPOST(Fixing)"><span
-                        class="mx-2">
-                        Ajouter dans la liste </span>
-                      <mat-icon>add</mat-icon>
-                    </button>
+                      <div class="col-md-12">
+                        <!-- POIDS -->
+                        <mat-form-field appearance="outline"
+                          class="w-100 mb-2 fs-5">
+                          <mat-label>Poids fixing</mat-label>
+                          <input type="number" required formControlName="poidsFixer" matInput
+                            placeholder="Ex : 157.12">
+                          <!-- <mat-hint>Exemple : 500</mat-hint> -->
+                        </mat-form-field>
+                      </div>
+
+                      <!-- FIXING BOURSE -->
+                      <div class="col-12 col-md-6">
+                        <mat-form-field appearance="outline"
+                          class="mb-2 w-100 fs-5">
+                          <mat-label>FIXING</mat-label>
+                          <input type="number" required formControlName="fixingBourse"
+                            matInput
+                            placeholder="Ex : 1905">
+                          <!-- <mat-hint>Exemple : 1 905</mat-hint> -->
+                        </mat-form-field>
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <!-- DISCOUNT -->
+                        <mat-form-field appearance="outline"
+                          class="mb-2 w-100 fs-5">
+                          <mat-label>DISCOMPTE</mat-label>
+                          <input type="number" required formControlName="discompte" matInput
+                            placeholder="Varie entre : 0.1 et 0.9" min="0" max="1">
+                          <!-- <mat-hint>Varie entre : 0.1 et 0.9</mat-hint> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <hr>
+                      <button id="button" type="submit" mat-raised-button
+                        class="border-success btn btn-outline-success p-2 fs-3 fw-bold"
+                        [disabled]="!Fixing.valid"
+                        (click)="fixingPOST(Fixing)"><span
+                          class="mx-2">
+                          Enregistrer </span>
+                        <mat-icon>add</mat-icon>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

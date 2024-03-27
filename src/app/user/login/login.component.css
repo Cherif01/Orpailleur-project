@@ -1,8 +1,8 @@
 #couvertureAll {
   background-size: contain;
   /* height: 100vh; */
-  background-color: black;
-  background: url('https://images.pexels.com/photos/321452/pexels-photo-321452.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+  background-color: rgb(244, 180, 112);
+  /* background: url('https://images.pexels.com/photos/321452/pexels-photo-321452.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'); */
   /* background: url('https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=600'); */
   background-position: right;
   background-repeat: no-repeat;

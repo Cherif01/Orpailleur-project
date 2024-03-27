@@ -75,6 +75,7 @@ export class ViewFactureComponent implements OnInit {
       .getUnique('facturevente', 'facture.php', parseInt(this.idFixing))
       .subscribe({
         next: (data: any) => {
+
           this.idF = data[0].idFournisseur
           this.fournisseur = data[0].fournisseur
           this.fournisseurTel = data[0].fournisseurTel

@@ -25,15 +25,6 @@ export class AddFixingComponent implements OnInit {
 
   id_session = localStorage.getItem('id_session')
 
-  // Fixing = this.fb.group({
-  //   idFournisseur: ['', Validators.required],
-  //   poidsFixer: [, Validators.required],
-  //   fournisseur: [''],
-  //   fixingBourse: [, Validators.required],
-  //   discompte: [, Validators.required],
-  //   created_by: [1]
-  // })
-
   title = 'Nouveau / Fixing'
   // Control
   myControl = new FormControl('')
@@ -91,6 +82,8 @@ export class AddFixingComponent implements OnInit {
 
   // ADD FIXING
   fixingPOST (form: FormGroup): void {
+    const btn = document.getElementById('button')
+    btn?.classList.add('d-none')
     this.Fixing.controls.idFournisseur.setValue(this.explodedString[0])
     if (form.valid) {
       //Envoyer dans la Base
@@ -100,9 +93,10 @@ export class AddFixingComponent implements OnInit {
       formData.append('poidsFixer', form.value.poidsFixer)
       formData.append('fixingBourse', form.value.fixingBourse)
       formData.append('discompte', form.value.discompte)
+
       this.service.create('fixing', 'add.php', formData).subscribe({
         next: (reponse: any) => {
-          console.log('Poids fixe avec success...', reponse)
+          // console.log('Poids fixe avec success...', reponse)
           this.router.navigate(['fixing/list-fixing'])
         },
         error: (err: any) => console.log(err)
