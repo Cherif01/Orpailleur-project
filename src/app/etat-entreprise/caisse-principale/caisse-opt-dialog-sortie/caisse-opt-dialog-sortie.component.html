@@ -1,0 +1,40 @@
+<h1 matDialogTitle class="text-primary" id="text">Sortie de caisse</h1>
+
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <!-- Type -->
+    <mat-form-field appearance="outline" class="w-100 mb-2">
+      <mat-label>--- Type de l'op&#233;ration ---</mat-label>
+      <mat-select formControlName="operation">
+        <!-- <mat-option>-- Ne rien faire ---</mat-option> -->
+        <!-- <mat-option [value]="1">Entrer de caisse</mat-option> -->
+        <mat-option [value]="2">Sortie de caisse</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- Devise -->
+    <mat-form-field appearance="outline" class="w-100 mb-2">
+      <mat-label>--- Devise de l'op&#233;ration ---</mat-label>
+      <mat-select formControlName="devise">
+        <mat-option>-- Ne rien faire ---</mat-option>
+        <mat-option [value]="1">GNF</mat-option>
+        <mat-option [value]="2">USD</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- Montant -->
+    <mat-form-field class="w-100">
+      <mat-label>Montant de l'op&#233;ration</mat-label>
+      <input matInput type="number" formControlName="montant" class="w-100" placeholder="Montant de l'op&#233;ration">
+    </mat-form-field>
+    <!-- Motif -->
+    <mat-form-field class="w-100">
+      <mat-label>Motif</mat-label>
+      <textarea matInput matTextareaAutosize required placeholder="Motif" formControlName="motif"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="saveData()">Valider</button>
+  <button mat-raised-button color="warn" matDialogClose>Fermer</button>
+
+</mat-dialog-actions>

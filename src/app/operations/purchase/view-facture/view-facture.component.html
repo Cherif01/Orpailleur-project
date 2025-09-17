@@ -1,0 +1,160 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+          </div>
+          <div class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button color="warn"><mat-icon
+                  class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIG -->
+      <mat-card class="mat-elevation-z0">
+
+        <mat-tab-group>
+          <!-- F/Achat -->
+          <mat-tab label="DETAILS FACTURATION">
+            <div class="d-flex p-2">
+              <div class="col text-end">
+                <button mat-flat-button color="primary" class="m-1" (click)="imprimerDiv()">
+                  <mat-icon>printer</mat-icon><span class="mtext mx-2">
+                    Imprimer</span>
+                </button>
+                <button mat-flat-button color="warn" class="m-1"
+                  (click)="generatePDF('fournisseur' +' - fixing:$'+'bourse')">
+                  <mat-icon>folder</mat-icon><span class="mtext mx-2">
+                    Enregistrer (PDF)...</span>
+                </button>
+                <hr>
+              </div>
+            </div>
+            <!-- Export Datatable start -->
+            <!-- <mat-card class="m-2"> -->
+            <!-- Facture entete -->
+            <div class="container-fluid">
+              <div class="filigranne">
+                <div class="facture-container" #divToPrint id="facture">
+                  <!-- En-tête -->
+                  <div class="facture-header d-flex justify-content-between align-items-center">
+                    <div class="logo">
+                      <img src="https://guardian-gold.com.au/wp-content/uploads/2021/11/1-kilo-gold.jpg"
+                        alt="Logo gauche" />
+                    </div>
+                    <div class="header-text text-center">
+                      <h2 class="title">Facture de Vente</h2>
+                      <p class="subtitle">Acheteur & Vendeur d’Or - Gros & Détails</p>
+                      <p class="adresse">Mafanco Carrefour, Centre commercial Bayo et frères, 2e étage</p>
+                      <p class="contact">📞 628-978-467 / 624-044-759</p>
+                    </div>
+                    <div class="logo">
+                      <img src="https://boghos.com/assets/img/cast-bars_au_3d_1kg_9999_q_800px_web_01.jpg"
+                        alt="Logo droit" />
+                    </div>
+                  </div>
+
+                  <hr class="divider" />
+
+                  <!-- Informations -->
+                  <div class="facture-infos d-flex justify-content-between align-items-center">
+                    <div class="col-md-7">
+                      <div class="details-box">
+                        <h3 class="box-title">Détails Vente</h3>
+                        <table class="table table-sm">
+                          <tr>
+                            <th>Fournisseur</th>
+                            <td>{{fournisseur}} <br><span class="small">📞 {{ fournisseurTel }}</span></td>
+                          </tr>
+                          <tr>
+                            <th>Fixing | P.Unitaire</th>
+                            <td>$ {{ bourse | number }} | <span class="text-primary">{{ pu }}</span></td>
+                          </tr>
+                          <tr>
+                            <th>Solde Actuel</th>
+                            <td [ngClass]="SoldeUSD >= 0 ? 'text-success' : 'text-danger'">
+                              $ {{ SoldeUSD | number }}
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="col text-end">
+                      <h5><strong>Facture N° :</strong> <span class="text-danger">{{ code_facture }}</span></h5>
+                      <p><strong>Date :</strong> {{ created_at_in_facture | date: 'dd/MM/YYYY - HH:mm' }}</p>
+                      <p><strong>Différence :</strong> <span *ngIf="MontantFacture2 > 0" class="text-danger">
+                          $ {{ MontantFacture - MontantFacture2 | number: '1.2-2' }}
+                        </span></p>
+                    </div>
+                  </div>
+
+                  <!-- Tableau -->
+                  <div class="facture-table mt-3">
+                    <table class="table table-bordered text-center">
+                      <thead class="table-light" id="maTable">
+                        <tr>
+                          <th>#</th>
+                          <th>Poids (🇬🇳 | 🇦🇪)</th>
+                          <th>Carats (🇬🇳 | 🇦🇪)</th>
+                          <th>P.Unit (🇬🇳 | 🇦🇪)</th>
+                          <th>Montant (🇬🇳 | 🇦🇪)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let data of dataItemOneFacture; let i = index">
+                          <td>{{ i+1 }}</td>
+                          <td>
+                            Initial : {{ data.poids | currency: ' ' }} <br>
+                            Résultat : <span class="text-success" *ngIf="data.poidsDubai">{{ data.poidsDubai |
+                              currency: ' ' }}</span>
+                          </td>
+                          <td>
+                            Initial : {{ data.carrat | currency: ' ' }} <br>
+                            Résultat : <span class="text-success" *ngIf="data.carratDubai">{{ data.carratDubai |
+                              currency: ' '
+                              }}</span>
+                          </td>
+                          <td>{{ pu | currency: ' ' }}</td>
+                          <td>
+                            Initial : {{ ((pu/22) * data.poids * data.carrat) | currency: ' ' }} <br>
+                            Résultat : <span class="text-success" *ngIf="data.poidsDubai">{{
+                              ((pu/22)*data.poidsDubai*data.carratDubai)
+                              | currency: ' ' }}</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tfoot class="table-secondary fw-bold">
+                        <tr>
+                          <td colspan="2">Poids Total : {{ poids_total | currency: ' ' }} g</td>
+                          <td>Carat Moyen : {{ format2Chart(carra_moyen) }}</td>
+                          <td colspan="2">Montant Total : {{ (MontantFacture+MontantFacturePoids) | currency: ' ' }} $
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+
+                  <!-- Footer -->
+                  <div class="facture-footer text-center mt-3">
+                    <p class="fw-bold">Merci pour votre confiance 💎</p>
+                    <p class="small text-muted">Contactez-nous pour toute question relative à cette facture</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <!-- Export Datatable End -->
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card>
+      <!-- CONFIG -->
+    </div>
+  </div>

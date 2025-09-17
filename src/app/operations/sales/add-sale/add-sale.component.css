@@ -1,0 +1,46 @@
+
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 0 2px 10px;
+}
+
+
+/* Card LOT */
+.card-custom {
+  /* background-color: #f8f9fa; Light background for elegance */
+  /* transition: transform 0.2s, box-shadow 0.2s; */
+  border: 1px solid #230505;
+  box-shadow: #ddd(0, 0, 0, 0.15) 0px 2px 8px;
+}
+
+.card_{
+  box-shadow: #ddd(0, 0, 0, 0.15) 0px 2px 8px;
+}
+
+.card-custom:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-custom mat-card-header {
+  border-bottom: 1px solid #ddd;
+}
+
+.card-custom mat-card-title {
+  font-size: 14px;
+}
+
+.card-custom mat-card-content h4 {
+  font-size: 18px;
+}
+
+.card-custom button {
+  font-weight: bold;
+}

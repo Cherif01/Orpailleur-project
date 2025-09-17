@@ -1,0 +1,49 @@
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #divToPrint,
+  #divToPrint * {
+    visibility: visible;
+  }
+
+  #divToPrint {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  input {
+    border: none;
+    width: auto !important;
+    padding: 0;
+    font-weight: bold;
+    background-color: transparent !important;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 12px;
+  }
+
+  th,
+  td {
+    border: 1px solid #000;
+    padding: 5px;
+    text-align: center;
+  }
+
+  thead {
+    background-color: #ccc !important;
+    -webkit-print-color-adjust: exact;
+  }
+
+  tfoot {
+    background-color: #eee !important;
+    font-weight: bold;
+    -webkit-print-color-adjust: exact;
+  }
+}

@@ -1,0 +1,126 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+          </div>
+          <div
+            class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button
+                color="warn"><mat-icon
+                  class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+            <!-- <div class="col-btn">
+              <button class="mx-2 fw-bold" mat-flat-button color="accent"
+                routerLink="/operation/facture-fournisseur">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2">
+                  Liste</span>
+              </button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIG -->
+      <mat-card class="mat-elevation-z0">
+        <div class="d-flex justify-content-between flex-wrap">
+          <!-- <div class="col-12 col-lg-6 mt-1"
+            [hidden]="selection.selected.length > 1 || selection.selected.length < 1">
+            <button mat-flat-button color="primary" (click)="factureElement()">
+              <span class="mdi mdi-eye-plus-outline"></span> <span
+                class="mtext mx-2">Voir la facture</span></button>
+          </div> -->
+          <div class="col-12 col-lg-6 mt-1 d-flex input-group">
+            <input type="date" class="form-control">
+            <input type="date" class="mx-1 form-control">
+            <button mat-button color="warn" title="Rechercher"><span
+                class="dw dw-search fs-4 fw-bold text-primary"></span></button>
+          </div>
+        </div>
+        <!-- <hr> -->
+        <mat-tab-group>
+          <mat-tab label="FACTURE PAR FIXING">
+            <mat-card-content>
+              <mat-form-field class="w-100 mt-3">
+                <input [formControl]="search"
+                  placeholder="Rechercher dans le tableau..." matInput>
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+              <table mat-table [dataSource]="dataSource" class="w-100"
+                class="table table-hover border-dark w-100 mt-3 maTable"
+                id="maTable">
+                <!-- Checkbox Column -->
+
+                <ng-container matColumnDef="Date">
+                  <th mat-header-cell *matHeaderCellDef>Date</th>
+                  <td *matCellDef="let element">{{ element.created_at | date:
+                    'dd/MM/YYYY - HH:mm' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Fournisseur">
+                  <th mat-header-cell *matHeaderCellDef>Fournisseur</th>
+                  <td *matCellDef="let element">{{ element.fournisseur }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Poids_total">
+                  <th mat-header-cell *matHeaderCellDef>PT Achats</th>
+                  <td *matCellDef="let element">{{ element.poidsTotalAchat |
+                    number: '2.2-2' }} (g)</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Fixing">
+                  <th mat-header-cell *matHeaderCellDef>Fixing($)</th>
+                  <td *matCellDef="let element">{{ element.fixingBourse |
+                    number: '2.2-2' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="P_Fixing">
+                  <th mat-header-cell *matHeaderCellDef>Pds fix&#233;</th>
+                  <td *matCellDef="let element">{{ element.poidsFixer | number:
+                    '2.2-2' }} (g)</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Poids vendu">
+                  <th mat-header-cell *matHeaderCellDef>Pds vendu</th>
+                  <td *matCellDef="let element">
+                    <span>{{ element.poidsVendu | number: '2.2-2' }} (g)</span>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Poids_restant">
+                  <th mat-header-cell *matHeaderCellDef>Reste</th>
+                  <td *matCellDef="let element">
+                    <span class="text-danger">{{ (element.poidsTotalAchat -
+                      element.poidsVendu) | number: '2.2-2'
+                      }} (g)</span>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Action">
+                  <th mat-header-cell *matHeaderCellDef>Action</th>
+                  <td *matCellDef="let element" class="text-success">
+                    <a routerLink="/operation/create-facture/{{element.idFixing}}"
+                      mat-raised-button color="accent">Facture</a>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row
+                  *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns:displayedColumns">
+                </tr>
+              </table>
+              <mat-paginator [pageSizeOptions]="[5, 10, 15, 50, 100]"
+                showFirstLastButtons></mat-paginator>
+            </mat-card-content>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card>
+      <!-- CONFIG -->
+    </div>
+  </div>

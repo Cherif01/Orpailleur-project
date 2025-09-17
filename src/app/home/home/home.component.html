@@ -1,0 +1,333 @@
+<div class="main-container">
+  <div class="pd-ltr-20">
+    <!-- Introduction -->
+    <div class="card-box mb-3 p-3">
+      <div class="row align-items-center">
+        <div class="col-md-3">
+          <div style="text-align:center;padding:1em 0;">
+            <!-- <h3><a style="text-decoration:none;"><span style="color:rgb(10, 139, 154);">Heure
+                  actuelle</span><br />Conakry, Guinée</a></h3> <iframe
+              src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=fr&size=medium&timezone=Africa%2FConakry"
+              width="100%" height="115" frameborder="0" seamless></iframe> -->
+            <!-- <img
+              src="https://www.orobel.biz/wp-content/uploads/2016/04/135-Lingot-de-100-Grammes-dOr.jpg"
+              class="w-50" alt> -->
+            <canvas id="polarChart"></canvas>
+          </div>
+        </div>
+        <div class="col">
+          <h3 class="text-primary">Découvrez l'excellence avec notre application
+            révolutionnaire <br> d'achat et de vente d'or !</h3>
+          <hr>
+          <div class="text-container">
+            <span class="animated-text" [ngClass]="{'fade-out': isFading}">{{
+              currentText }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="alert alert-danger p-2">
+      <marquee behavior="alternate" direction="">Ne vous fiez pas au tableau de bord pour le moment, il est en
+        developpement...</marquee>
+    </div> -->
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-3 col-xl-3 mb-30">
+        <div class="card-box height-100-p widget-style1">
+          <div class="d-flex flex-wrap align-items-center">
+            <div class="progress-data">
+              <div class="img-responsive">
+                <img class="w-100"
+                  src="https://cdn-icons-png.flaticon.com/512/606/606533.png"
+                  alt>
+              </div>
+            </div>
+            <div class="widget-data">
+              <div class="h4 mb-0">{{ nbFournisseur }} |
+                <mat-icon>person</mat-icon>
+              </div>
+              <div class="weight-600 font-14">Fournisseur</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3 col-xl-3 mb-30">
+        <div class="card-box height-100-p widget-style1">
+          <div class="d-flex flex-wrap align-items-center">
+            <div class="progress-data">
+              <div class="img-responsive">
+                <img class="w-100"
+                  src="https://cdn1.iconfinder.com/data/icons/bokbokstars-121-classic-stock-icons-1/512/person-man.png"
+                  alt>
+              </div>
+            </div>
+            <div class="widget-data">
+              <div class="h4 mb-0">{{ nbClient }} | <mat-icon>person</mat-icon>
+              </div>
+              <div class="weight-600 font-14">Client</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3 col-xl-3 mb-30">
+        <div class="card-box height-100-p pd-20">
+          <h2 class="h4 mb-0 fw-bold">Poids fix&#233;</h2>
+          <h5 style="font-size: 14px;">{{ poidsFixer | number: '2.2-2' }} g</h5>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3 col-xl-3 mb-30">
+        <div class="card-box height-100-p widget-style1">
+          <div class="d-flex flex-wrap align-items-center">
+            <div class="progress-data">
+              <div class="img-responsive">
+                <img class="w-100"
+                  src="https://www.prix-lingot-or.com/wp-content/uploads/2022/11/Prix-Lingot-Or.png"
+                  alt>
+              </div>
+            </div>
+            <div class="widget-data">
+              <div class="h5 text-dark"><span class="text-secondary">Total
+                  : </span> {{ TotalPoidsToday }} g </div>
+              <div class="weight-600 font-14 h4">{{nbAchatToday}} achat(s)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 2e -->
+    <div class="d-flex align-items-center justify-content-between flex-wrap">
+      <div class="col row">
+        <div class="col-12 mb-30">
+          <div class="card-box height-100-p pd-20">
+            <h2 class="h4 text-success">Encaissement</h2>
+            <div id="chart5">{{ caisse.EntrerUSD | currency: 'USD : ' }}</div>
+            <!-- <div id="chart5">{{ caisse.EntrerGNF | number }} GNF</div> -->
+          </div>
+        </div>
+        <div class="col-12 mb-30">
+          <div class="card-box height-100-p pd-20">
+            <h2 class="h4 text-danger">D&#233;caissement</h2>
+            <div id="chart6">{{ caisse.SortieUSD | currency: 'USD : ' }}</div>
+            <!-- <div id="chart6">{{ caisse.SortieGNF | number }} GNF</div> -->
+          </div>
+        </div>
+        <div class="col-12 mb-30">
+          <div class="card-box height-100-p pd-20">
+            <h2 class="h4 text-warning">Retour en caisse</h2>
+            <div id="chart6">{{ 0 | currency: 'USD : ' }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="col card-box height-100-p pd-20 d-flex justify-content-center mb-30">
+        <div class="col-md-6">
+          <canvas id="secteurChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-box mb-30">
+      <h2 class="h4 pd-20 text-blue">Tous les achats du jour</h2>
+      <!-- <table class="data-table table nowrap">
+                <thead>
+                    <tr>
+                        <th class="table-plus datatable-nosort">Product</th>
+                        <th>Name</th>
+                        <th>Color</th>
+                        <th>Size</th>
+                        <th>Price</th>
+                        <th>Oty</th>
+                        <th class="datatable-nosort">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="table-plus">
+                            <img src="../../../assets/vendors/images/product-1.jpg" width="70" height="70" alt="">
+                        </td>
+                        <td>
+                            <h5 class="font-16">Shirt</h5>
+                            by John Doe
+                        </td>
+                        <td>Black</td>
+                        <td>M</td>
+                        <td>$1000</td>
+                        <td>1</td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#"
+                                    role="button" data-toggle="dropdown">
+                                    <i class="dw dw-more"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                    <a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
+                                    <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="table-plus">
+                            <img src="../../../assets/vendors/images/product-2.jpg" width="70" height="70" alt="">
+                        </td>
+                        <td>
+                            <h5 class="font-16">Boots</h5>
+                            by Lea R. Frith
+                        </td>
+                        <td>brown</td>
+                        <td>9UK</td>
+                        <td>$900</td>
+                        <td>1</td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#"
+                                    role="button" data-toggle="dropdown">
+                                    <i class="dw dw-more"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                    <a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
+                                    <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="table-plus">
+                            <img src="../../../assets/vendors/images/product-3.jpg" width="70" height="70" alt="">
+                        </td>
+                        <td>
+                            <h5 class="font-16">Hat</h5>
+                            by Erik L. Richards
+                        </td>
+                        <td>Orange</td>
+                        <td>M</td>
+                        <td>$100</td>
+                        <td>4</td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#"
+                                    role="button" data-toggle="dropdown">
+                                    <i class="dw dw-more"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                    <a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
+                                    <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="table-plus">
+                            <img src="../../../assets/vendors/images/product-4.jpg" width="70" height="70" alt="">
+                        </td>
+                        <td>
+                            <h5 class="font-16">Long Dress</h5>
+                            by Renee I. Hansen
+                        </td>
+                        <td>Gray</td>
+                        <td>L</td>
+                        <td>$1000</td>
+                        <td>1</td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#"
+                                    role="button" data-toggle="dropdown">
+                                    <i class="dw dw-more"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                    <a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
+                                    <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="table-plus">
+                            <img src="../../../assets/vendors/images/product-5.jpg" width="70" height="70" alt="">
+                        </td>
+                        <td>
+                            <h5 class="font-16">Blazer</h5>
+                            by Vicki M. Coleman
+                        </td>
+                        <td>Blue</td>
+                        <td>M</td>
+                        <td>$1000</td>
+                        <td>1</td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#"
+                                    role="button" data-toggle="dropdown">
+                                    <i class="dw dw-more"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                    <a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
+                                    <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table> -->
+      <mat-card class="mat-elevation-z0 table-responsive">
+        <mat-card-content id="table_shadow">
+          <table mat-table [dataSource]="dataSource" class="w-100" id="maTable">
+            <ng-container matColumnDef="created_at">
+              <th mat-header-cell *matHeaderCellDef>Achat du : </th>
+              <td mat-cell *matCellDef="let element">Le : {{element.created_at |
+                date: 'dd/MM/yyyy' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="fournisseur">
+              <th mat-header-cell *matHeaderCellDef>Fournisseur</th>
+              <td mat-cell *matCellDef="let element">{{element.fournisseur}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="telephone">
+              <th mat-header-cell *matHeaderCellDef>Telephone</th>
+              <td mat-cell *matCellDef="let element">{{element.telephone}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="poids_total">
+              <th mat-header-cell *matHeaderCellDef>Poids Total</th>
+              <td mat-cell *matCellDef="let element">{{ element.poidsTotal
+                }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="carrat_achat">
+              <th mat-header-cell *matHeaderCellDef>Carrat Moyen</th>
+              <td mat-cell *matCellDef="let element">{{ element.carratMoyen
+                }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef
+                class="text-center">Action</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                <a *ngIf="Access__ == true"
+                  routerLink="/operation/facturepurchase/{{element.idAchat}}"
+                  mat-raised-button color="primary">
+                  <span class="micon dw dw-eye"></span></a>
+                <span *ngIf="Access__ == false" class="text-center"><i
+                    class="micon dw dw-delete"></i></span>
+              </td>
+            </ng-container>
+            <tr mat-header-row
+              *matHeaderRowDef="displaysColums;sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns:displaysColums"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 15, 50, 100]"
+            showFirstLastButtons></mat-paginator>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="footer-wrap pd-20 mb-20 card-box">
+      Des difficult&#233;s - <a href="https://spa-dev.com"
+        target="_blank">Contactez nous au : 626 37 01 38</a>
+    </div>
+  </div>
+</div>

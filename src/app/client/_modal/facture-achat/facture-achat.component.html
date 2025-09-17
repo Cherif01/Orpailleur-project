@@ -1,0 +1,103 @@
+<!-- Bouton d'impression -->
+<div class="bg-primary p-2 text-end">
+	<button (click)="imprimerDiv()"
+		class="btn btn-light">
+		Imprimer
+	</button>
+</div>
+<hr>
+
+<!-- Zone à imprimer -->
+<div #divToPrint
+	id="divToPrint"
+	class="p-4">
+	<!-- En-tête de la facture -->
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<div>
+			<h2 class="fw-bold text-uppercase">
+				FACTURE DE CORRECTION
+			</h2>
+			<p>
+				Date : {{ today | date: 'dd/MM/yyyy' }}
+			</p>
+			<p>
+				Référence : #FC-{{ factureId }}
+			</p>
+		</div>
+		<div>
+			<img [src]="'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=' + qrData"
+				alt="QR Code">
+		</div>
+	</div>
+
+	<!-- Tableau principal -->
+	<table class="table table-bordered table-striped text-center align-middle"
+		id="maTable">
+		<thead class="table-dark">
+			<tr>
+				<th>Barres</th>
+				<th>Poids</th>
+				<th>Carat</th>
+				<th>Rés. Poids</th>
+				<th>Rés. Carat</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let item of filteredData; let i = index">
+				<td>{{ i + 1 }}</td>
+				<td>{{ item.poids }} g</td>
+				<td>{{ item.carrat }} k</td>
+				<td>
+					{{ item.res_poids }} g
+				</td>
+				<td>
+					{{ item.res_carrat }} k
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- Zone de pied de page affichée uniquement à la dernière page -->
+	<div class="tfoot-wrapper mt-3">
+		<table class="table w-100 table-bordered text-center">
+			<tbody>
+				<tr class="table-info">
+					<td>
+						<strong>INFORMATION :</strong>
+					</td>
+					<td>
+						<strong>Pds | CONAKRY</strong>
+					</td>
+					<td>
+						<strong>K | CONAKRY</strong>
+					</td>
+					<td>
+						<strong>Pds | DUBAI</strong>
+					</td>
+					<td>
+						<strong>K | DUBAI</strong>
+					</td>
+				</tr>
+				<tr class="fw-bold">
+					<td>TOTAL :</td>
+					<td class="text-primary">
+						{{ poidsConakry | number: '1.2-2' }} g
+					</td>
+					<td class="text-primary">
+						{{ carratConakry | number: '1.2-2' }} k
+					</td>
+					<td class="text-danger">
+						{{ poidsDubai | number: '1.2-2' }} g
+					</td>
+					<td class="text-danger">
+						{{ carratDubai | number: '1.2-2' }} k
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<p class="mt-4">
+		Signature et cachet :
+	</p>
+</div>

@@ -1,0 +1,147 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text- fs-3">{{title}}</h4>
+            </div>
+          </div>
+          <div
+            class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button
+                color="warn"><mat-icon
+                  class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+            <div class="col-btn">
+              <button class="mx-2 fw-bold" mat-flat-button color="primary"
+                routerLink="/operation/add-purchase">
+                <span class="micon mdi mdi-plus-thick"></span><span
+                  class="mtext mx-2"> Nouveau achat</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary"
+                routerLink="/operation/purchase">
+                <span
+                  class="micon mdi mdi-format-list-numbered-rtl"></span><span
+                  class="mtext mx-2"> Liste achat</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary"
+                routerLink="/operation/facture-fournisseur">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2">
+                  Voir les fixings</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="warn"
+                (click)="imprimerDiv()">
+                <span class="micon mdi mdi-printer"></span><span
+                  class="mtext mx-2"> Imprimer...</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Export Datatable start -->
+      <div class="...-box pd-ltr-20">
+        <!-- Facture -->
+        <!-- Facture -->
+        <div class="facture-container" id="facture" #divToPrint>
+          <!-- Header with logos -->
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="logo-container col-2">
+              <img src="/assets/logo/logo.png" alt="Logo"
+                class="img-fluid w-100">
+            </div>
+            <div class="facture-header-text text-center">
+              <h2 class="facture-title">Facture N°: {{ InfoAchat2.idAchat
+                }}</h2>
+              <p class="m-0 small">Acheteur et vendeur d'or en
+                gros
+                et détails</p>
+              <p class="m-0 small">Sis à Mafanco Carrefour,
+                Centre
+                commercial Bayo et frères, 2e étage</p>
+              <p class="fw-bold m-0">Contact : <span
+                  class="text-primary">628-978-467 /
+                  624-044-759</span>
+              </p>
+            </div>
+            <div class="logo-container col-2 text-end">
+              <img src="/assets/logo/logo.png" alt="Logo"
+                class="img-fluid w-100">
+            </div>
+          </div>
+
+          <hr>
+          <!-- Supplier info between header and table -->
+          <div class="supplier-info">
+            <div class="d-flex justify-content-between">
+              <div class="col">
+                <table class="table table-borderless">
+                  <tr>
+                    <th class="text-primary text-start">Fournisseur</th>
+                    <th>:</th>
+                    <td>{{ InfoAchat.fournisseur }}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-primary text-start">Adresse</th>
+                    <th>:</th>
+                    <td>{{ InfoAchat.adresse }}</td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col text-end">
+                <h5 class="facture-date">Date : <i>{{ InfoAchat.created_at |
+                    date: 'dd/MM/YYYY' }}</i></h5>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table for products -->
+          <div class="facture-details">
+            <table
+              class="table table-bordered double-border-table">
+              <thead>
+                <tr>
+                  <th>Barres</th>
+                  <th>Poids</th>
+                  <th>Carrat</th>
+                  <th>Densité</th>
+                  <!-- <th>Manquant</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of ACHAT_TAB; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ data.poidsItem | number }}</td>
+                  <td>{{ data.carratItem }}</td>
+                  <td class="text-center">{{ 22 }}</td>
+                  <!-- <td class="text-danger fw-bold">{{ data.manquantItem }}</td> -->
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Total</th>
+                  <th>{{ InfoAchat.itemTotal | number }} g</th>
+                  <th>{{ InfoAchat.carratMoyen }}</th>
+                  <th>-</th>
+                  <!-- <th>-</th> -->
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <!-- Footer -->
+          <div class="facture-footer text-center">
+            <p class="footer-text">Merci pour votre achat. Veuillez nous
+              contacter pour toute question.</p>
+          </div>
+        </div>
+
+      </div>
+      <!-- Export Datatable End -->
+    </div>
+  </div>
+</div>

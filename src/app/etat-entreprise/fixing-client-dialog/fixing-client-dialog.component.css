@@ -1,0 +1,10 @@
+.mat-radio-group {
+  display: flex;
+  align-items: center;
+}
+
+.disabled-radio {
+    color: gray !important;
+    background-color: #f0f0f0 !important;
+  }
+  

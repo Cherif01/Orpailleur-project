@@ -1,0 +1,152 @@
+/* Facture Container */
+.facture-container {
+  padding: 30px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 900px;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Watermark effect with gold text */
+.facture-container::before {
+  content: "OR EN GROS ET DETAIL";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80px;
+  color: rgba(255, 165, 0, 0.1); /* Light golden color */
+  font-weight: bold;
+  z-index: -1;
+  font-family: 'Arial', sans-serif;
+  text-transform: uppercase;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.facture-header-text {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.facture-title {
+  font-size: 26px;
+  font-weight: bold;
+  color: #001E6C;
+  margin: 10px 0;
+}
+
+.supplier-description,
+.supplier-address,
+.supplier-contact {
+  font-size: 12px;
+  color: #393a3b;
+}
+
+/* Supplier info between header and table */
+.supplier-info {
+  margin-top: 10px;
+}
+
+.supplier-info .table th {
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+}
+
+.supplier-info .table td {
+  background-color: white;
+  color: #191818;
+}
+
+/* Table styling */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 3px; /* Ajout de l'espace entre les bordures doubles */
+  margin-top: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table th, .table td {
+  padding: 10px;
+  text-align: center;
+  border: 2px solid #a59b9b; /* Bordure simple de 2px */
+}
+
+.table th {
+  background-color: #c18b3b;
+  color: white;
+}
+
+.table tbody tr td {
+  background-color: white;
+  color: #333;
+}
+
+.table tfoot {
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+/* Bordures doublées (espacées) */
+.table .double-border {
+  position: relative;
+  border: 3px double #919598; /* Bordure double avec un espace entre */
+}
+
+.table .double-border:before, .table .double-border:after {
+  content: "";
+  position: absolute;
+  left: -5px;
+  right: -5px;
+  top: -5px;
+  bottom: -5px;
+  border: 3px solid #7d868f;
+  pointer-events: none;
+}
+
+/* Bordure double entre les cellules */
+.table .double-border td, .table .double-border th {
+  border: 3px solid #757f88;
+}
+
+/* Footer */
+.facture-footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.facture-footer .footer-text {
+  color: #333;
+  font-weight: normal;
+}
+
+/* Text danger */
+.text-danger {
+  color: #dc3545;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .facture-container {
+    padding: 20px;
+  }
+
+  .logo-container img {
+    max-width: 100px;
+  }
+
+  .facture-title {
+    font-size: 20px;
+  }
+
+  .table th, .table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+}

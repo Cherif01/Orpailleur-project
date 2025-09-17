@@ -1,0 +1,49 @@
+<h1 matDialogTitle class="bg-secondary rounded text-uppercase p-2 text-white fw-bold"
+    id="text">Modification du Fixing !</h1>
+<mat-dialog-content style="width: 400px;">
+    <table class="table" id="maTable">
+        <thead>
+            <th>1<sup>er</sup> Fixing</th>
+            <th>R&#233;sultat</th>
+            <th>Bourse</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Poids : {{ InfoFixing.poids_vendu| currency: ' ' }} <br> Carrat : <strong>{{
+                        InfoFixing.carrat_vendu| currency: ' ' }}</strong></td>
+                <td>Poids : {{ InfoFixing.res_poids| currency: ' ' }} <br> Carrat : <strong>{{
+                        InfoFixing.res_carrat| currency: ' ' }}</strong></td>
+                <td>$: {{ InfoFixing.fixingBourse | currency: ' ' }} <br>
+                    <strong>{{ InfoFixing.discompte }}</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <form action [formGroup]="updateFixingClient">
+        <div
+            class="pt-3 pb-3 d-flex justify-content-start flex-wrap align-items-center">
+
+            <!-- Champs visibles uniquement si "Partiel" est sélectionné -->
+            <div class="w-100">
+                <mat-form-field class="w-100 mb-2" appearance="outline">
+                    <mat-label>Nouveau Poids (grammes)</mat-label>
+                    <input matInput type="number" formControlName="res_poids"
+                        placeholder="Exemple : 1000">
+                </mat-form-field>
+
+                <mat-form-field class="w-100 mb-2" appearance="outline">
+                    <mat-label>Nouveau carrat</mat-label>
+                    <input matInput type="number" formControlName="res_carrat"
+                        placeholder="Exemple : 22.00">
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-raised-button color="primary"
+        [disabled]="updateFixingClient.invalid"
+        (click)="saveData()">Valider la modification</button>
+    <button mat-raised-button color="warn" matDialogClose>Fermer</button>
+</mat-dialog-actions>

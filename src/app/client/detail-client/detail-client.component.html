@@ -1,0 +1,776 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-6 col-sm-12">
+            <div class="title">
+              <h4 class="fs-4">
+                {{title}}
+                <i class=" text-secondary">
+                  <u>
+                    {{
+                    infoClient.raison_sociale }}
+                  </u>
+                </i>
+                <br>
+                Representer par :
+                <i class="text-primary ">
+                  {{ infoClient.responsable }}
+                </i>
+              </h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="#">Home</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  {{'Accueil'}}
+                </li>
+              </ol>
+              <ol class="pt-2">
+                <li [classList]="(SoldeUSD > 0)?'fs-3 text-success':'text-danger fw-bold'">
+                  <span class="text-dark">
+                    SOLDE
+                    GENERALE
+                    :
+                  </span>
+                  {{ (SoldeUSD) | number:
+                  '2.2-2' }}
+                </li>
+              </ol>
+            </nav>
+            <hr>
+            <button *ngIf="infoExpedition.etat == true" (click)="endExpedtion()"
+              class="mx-2 btn btn-outline-success btn-sm">
+              <span class="mtext">Terminer</span>
+              <i class="dw dw-check mx-2"></i>
+            </button>
+            <button *ngIf="infoExpedition.etat == true" (click)="deleteExpedtion()" class="mx-2 btn btn-danger btn-sm">
+              <span class="mtext">Annuler</span>
+              <i class="dw dw-delete-2 text-light mx-2"></i>
+            </button>
+          </div>
+          <div class="text-right">
+            <!-- Fixer un poids -->
+            <button (click)="openDialogFix()" mat-stroked-button color="primary" class="mx-2 border border-secondary">
+              <i class="mdi mdi-border-radius mx-2"></i>
+              <span class="mtext">Fixer un poids</span>
+            </button>
+            <button (click)="openDialog()" mat-raised-button color="primary" class="mx-2">
+              <i class="dw dw-money text-light mx-2"></i>
+              <span class="mtext">Paiement</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable start -->
+      <div class="card-box mb-30">
+        <mat-card>
+          <mat-card-content>
+            <mat-tab-group>
+
+              <!-- RAPPORT -->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <h4>RAPPORT</h4>
+                </ng-template>
+                <mat-card-content>
+                  <div class="d-flex justify-content-between">
+                    <div class="col text-end m-2">
+                      <button (click)="imprimerDiv()" class="mx-2 fw-bold btn-lg" mat-flat-button color="accent">
+                        <span class="micon mdi mdi-printer"></span>
+                        <span class="mtext mx-2">Imprimer...</span>
+                      </button>
+
+                      <button *ngIf="reverse_statut == true" (click)="goRapport('operation_reverse.php')"
+                        class="mx-2 fw-bold" mat-stroked-button color="warn">
+                        <mat-icon>download</mat-icon>
+                        <span class="mtext mx-2">
+                          Renverser le tableau
+                        </span>
+                      </button>
+
+                      <button *ngIf="reverse_statut == false" (click)="goRapport('operation.php')" class="mx-2 fw-bold"
+                        mat-flat-button color="primary">
+                        <mat-icon class="mat-18">arrow_upward</mat-icon>
+                        <span class="mtext mx-2">Ordonner le tableau</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div #divToPrint id="facture" class="p-3" style="font-family: Arial, sans-serif;">
+                    <!-- En-tête -->
+                    <div class="entete">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <!-- Logo gauche -->
+                        <div class="col-2">
+                          <img src="/assets/logo/coins.png" class="w-100" alt="Logo gauche">
+                        </div>
+
+                        <!-- Informations principales -->
+                        <div class="col text-center">
+                          <h2 class="m-0 p-0">MOUVEMENT CLIENT</h2>
+                          <p class="m-0 ">
+                            Acheteur et vendeur d'or en
+                            gros
+                            et détails
+                          </p>
+                          <p class="m-0 ">
+                            Sis à Mafanco Carrefour,
+                            Centre
+                            commercial Bayo et frères, 2e étage
+                          </p>
+                          <p class="fw-bold m-0">
+                            Contact :
+                            <span class="text-primary">
+                              628-978-467 /
+                              624-044-759
+                            </span>
+                          </p>
+                        </div>
+
+                        <!-- Logo droit -->
+                        <div class="col-2">
+                          <img src="/assets/logo/logo.png" class="w-100" alt="Logo droit">
+                        </div>
+                      </div>
+                    </div>
+                    <hr>
+                    <!-- Détails Client -->
+                    <div class="text-center text-dark my-3">
+                      <h2 class="fs-4 fw-bold">
+                        CLIENT :
+                        <u class="text-secondary">
+                          {{ infoClient.responsable
+                          }}
+                        </u>
+                      </h2>
+                      <h4 class="fw-bold text-dark">
+                        SOLDE : $ {{ SoldeUSD
+                        |
+                        number: '1.2-2' }}
+                      </h4>
+                    </div>
+                    <!-- Tableau des opérations -->
+                    <!-- Tableau -->
+                    <table class="table table-bordered">
+                      <thead class="bg-light text-uppercase text-primary" id="maTable">
+                        <tr>
+                          <th>Date d'opération</th>
+                          <th>Mouvement</th>
+                          <th>Credit</th>
+                          <th>Debit</th>
+                          <th>Solde A</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let data of fusionTab" (click)="deleteFunction('operation_client', data.id)">
+                          <td [ngClass]="
+                                                data.poidsTotal > 18170 ? 'text-danger' : 'text-dark'
+                                              ">
+                            {{
+                            data.dateOperation
+                            | date: "dd/MM/yyyy 'à' HH:mm:ss"
+                            }}
+                          </td>
+                          <td>{{ data.motif }}</td>
+                          <td>{{ data.credit | currency: ' ' }}</td>
+                          <td>{{ data.debit | currency: ' ' }}</td>
+                          <td>
+                            <span [class]="'fw-bold text-' + (data.solde > 0 ? 'success' : 'danger')">
+                              $ {{ data.solde | currency: ' ' }}
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </mat-card-content>
+              </mat-tab>
+
+              <!-- ACHAT -->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <h4 class="fw-bold">ACHETER</h4>
+                </ng-template>
+                <mat-card-content>
+                  <div *ngIf="infoExpedition.etat == false" class="d-flex justify-content-center align-items-center"
+                    style="height: 100%;">
+                    <div class="p-5 text-center">
+                      <img src="https://media.lordicon.com/icons/wired/lineal/2755-arrow-big-down.gif" class="w-50" alt>
+                      <hr>
+                      <div class="formulaire-init">
+                        <div class="col-12">
+                          <button (click)="initExpedition()" mat-raised-button color="accent">
+                            Nouvelle
+                            enregistrement !
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End init -->
+
+                  <!-- Formulaire enregistrement -->
+                  <div *ngIf="infoExpedition.etat == true" class="enregistrement">
+                    <div class="container mt-4">
+                      <div class="row">
+                        <!-- Formulaire -->
+                        <div class="col-md-4">
+                          <mat-card class="border border-dark p-3">
+                            <mat-card-title class="mb-3 shadow-sm p-2 text-center">
+                              Ajouter une
+                              barre
+                            </mat-card-title>
+                            <mat-card-content>
+                              <form [formGroup]="formAddItems" class>
+                                <mat-form-field class="w-100 mb-3">
+                                  <mat-label>Poids (grammes)</mat-label>
+                                  <input matInput formControlName="poids" type="number" placeholder="Ex : 100">
+                                </mat-form-field>
+                                <mat-form-field class="w-100 mb-3">
+                                  <mat-label>Carat</mat-label>
+                                  <input matInput formControlName="carrat" type="number" placeholder="Exemple : 22.4">
+                                </mat-form-field>
+                                <button [disabled]="formAddItems.invalid" (click)="ajouter()" mat-raised-button
+                                  color="primary">
+                                  Ajouter |
+                                  <mat-icon>arrow_right</mat-icon>
+                                </button>
+                              </form>
+                            </mat-card-content>
+                          </mat-card>
+                        </div>
+
+                        <!-- Tableau -->
+                        <div class="col-md-8">
+                          <table class="table table-striped">
+                            <thead class="table-primary">
+                              <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Poids</th>
+                                <th scope="col">Carat</th>
+                                <th scope="col">Result|Poids</th>
+                                <th scope="col">Result|Carrat</th>
+                                <th scope="col">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let element of Liste; let i = index">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ element.poids }}</td>
+                                <td>
+                                  {{ element.carrat }}
+                                </td>
+                                <td>
+                                  <input [(ngModel)]="element.res_poids" (blur)="saveTableData(element)" matInput>
+                                </td>
+                                <td>
+                                  <input [(ngModel)]="element.res_carrat" (blur)="saveTableData(element)" matInput>
+                                </td>
+                                <td>
+                                  <button (click)="deleteLine(element.id)" mat-stroked-button color="warn">
+                                    <mat-icon>delete-1</mat-icon>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-tab>
+
+              <!-- EXPEDITION -->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <h4 class="fw-bold">EXPEDITIONS</h4>
+                </ng-template>
+                <mat-card-content>
+                  <div class="d-flex justify-content-between my-2 flex-wrap">
+                    <div class="col">
+                      <mat-form-field class="w-100" appearance="outline">
+                        <input [formControl]="search" placeholder="Rechercher ici...." matInput>
+                        <mat-icon matSuffix>search</mat-icon>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between flex-wrap align-items-center">
+                    <div class="col text-start">
+                      <h4 class="p-2">
+                        GESTION DES
+                        EXPEDITIONS
+                      </h4>
+                    </div>
+                    <hr>
+                    <table [dataSource]="dataSource" mat-table class="w-100" id="maTable">
+                      <ng-container matColumnDef="Date">
+                        <th *matHeaderCellDef mat-header-cell>
+                          Date
+                        </th>
+                        <td *matCellDef="let element" class mat-cell>
+                          {{
+                          element.created_at | date: 'dd/MM/YYYY' }}
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="Poids">
+                        <th *matHeaderCellDef mat-header-cell>
+                          Poids
+                        </th>
+                        <td *matCellDef="let element" class mat-cell>
+                          <strong>Total :</strong>
+                          {{
+                          element.Poids | currency: ' ' }} g
+                          <br>
+                          <strong>
+                            Reste
+                            :
+                          </strong>
+                          <span class="text-danger fw-bold ">
+                            {{
+                            element.Poids_restant | currency: ' ' }} g
+                          </span>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="CarratMoyen">
+                        <th *matHeaderCellDef mat-header-cell class="text-center">
+                          Carrat
+                          Moyen
+                        </th>
+                        <td *matCellDef="let element" class mat-cell class="text-center">
+                          {{
+                          element.Carrat }}
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="Vendu">
+                        <th *matHeaderCellDef mat-header-cell class="text-center">
+                          Vendu
+                        </th>
+                        <td *matCellDef="let element" class mat-cell class="text-center">
+                          <span class="text-dark fw-bold">
+                            {{element.Poids_vendu |
+                            currency: ' '}} g
+                          </span>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="Status">
+                        <th *matHeaderCellDef mat-header-cell class="text-center">
+                          Status
+                        </th>
+                        <td *matCellDef="let element" class mat-cell class="text-center">
+                          <span *ngIf="element.Poids_restant > 0 && element.Poids_restant != element.Poids "
+                            class="badge badge-warning">
+                            En
+                            cours
+                          </span>
+
+                          <span *ngIf="element.Poids_restant == 0" class="badge badge-success">
+                            Terminer
+                          </span>
+
+                          <span *ngIf="element.Poids == element.Poids_restant" class="badge badge-danger">
+                            Aucune vente
+                          </span>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="Action">
+                        <th *matHeaderCellDef mat-header-cell class="text-center">
+                          Action
+                        </th>
+                        <td *matCellDef="let element" class mat-cell class="text-center">
+                          <button (click)="facture_achat(element.id)" mat-flat-button class="mx-1" color="accent">
+                            <mat-icon>printer</mat-icon>
+                          </button>
+                          <button (click)="editExpedition(element.id)" mat-stroked-button class="mx-1" color="primary">
+                            <mat-icon>edit</mat-icon>
+                          </button>
+                          <button (click)="deleteFunction('table_init_expedition', element.id)" mat-stroked-button
+                            class="mx-1" color="warn">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </td>
+                      </ng-container>
+                      <tbody>
+                        <tr *matHeaderRowDef="displaysColums;sticky: true" mat-header-row></tr>
+                        <tr *matRowDef="let row; columns:displaysColums" mat-row></tr>
+                      </tbody>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5,10,15,100]" showFirstLastButtons></mat-paginator>
+                  </div>
+                </mat-card-content>
+              </mat-tab>
+
+              <!-- FACTURE VALIDÉE -->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <h4 class="fw-bold text-dark">FACTURE</h4>
+                </ng-template>
+                <mat-card-content>
+                  <mat-tab-group>
+
+                    <mat-tab *ngIf="!showFacture" label="LISTE DES FACTURES">
+                      <div class="p-3 d-flex justify-content-between flex-wrap">
+                        <div class="col">
+                          <h4 class="my-2">TOUTES LES FACTURES</h4>
+                        </div>
+                        <div class="text-right mt-2">
+                          <button [disabled]="selectedFactures.length === 0" (click)="generateFactureGroup()"
+                            mat-raised-button color="primary">
+                            Générer la facture
+                          </button>
+                        </div>
+                      </div>
+                      <hr>
+
+                      <div class="search-container">
+                        <input [(ngModel)]="searchTerm" (input)="applyFilter()" type="text" placeholder="Rechercher..."
+                          class="form-control mb-2">
+
+                      </div>
+
+                      <div class="table-responsive">
+                        <table class="table table-hover table-bordered align-middle" id="maTable">
+                          <thead>
+                            <tr class="table-primary">
+                              <th>
+                                <mat-checkbox (change)="toggleSelectAll($event)"></mat-checkbox>
+                              </th>
+                              <th class="text-start">Date</th>
+                              <th class="text-start">Poids de base</th>
+                              <th class="text-start">Fixing</th>
+                              <th class="text-start">Poids fixer</th>
+                              <th class="text-start">Carrat Utilisé</th>
+                              <th class="text-center">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let data of pagedData; trackBy: trackById">
+                              <td>
+                                <mat-checkbox [(ngModel)]="data.selected"
+                                  (change)="updateSelectedFactures(data)"></mat-checkbox>
+                              </td>
+                              <td class="text-start">
+                                {{ data.created_at | date: 'd/M/Y' }}
+                                <br>
+                                <strong>Client :</strong>
+                                <span class="text-secondary ">
+                                  {{ data.client
+                                  }}
+                                </span>
+                              </td>
+                              <td class="fw-bold text-start">
+                                Poids :
+                                <span class="text-primary ">
+                                  {{
+                                  data.poids }}
+                                </span>
+                                <br>
+                                Carrat :
+                                <span class="text-primary ">
+                                  {{
+                                  data.carrat }}
+                                </span>
+                              </td>
+                              <td class="text-start">
+                                {{ data.fixingBourse | currency: ' '}} | {{
+                                data.discompte }}
+                              </td>
+                              <td class="fw-bold text-start">
+                                Poids :
+                                <span class="text-primary ">
+                                  {{
+                                  data.poids_vendu | currency: ' ' }}
+                                </span>
+                                <br>
+                                Résultat :
+                                <span class="text-primary ">
+                                  {{
+                                  data.res_poids | currency: ' ' }}
+                                </span>
+                              </td>
+                              <td class="fw-bold text-start">
+                                Carrat :
+                                <span class="text-primary ">
+                                  {{
+                                  data.carrat_vendu }}
+                                </span>
+                                <br>
+                                Résultat :
+                                <span class="text-primary ">
+                                  {{
+                                  data.res_carrat }}
+                                </span>
+                              </td>
+                              <td class="text-center">
+                                <button mat-stroked-button color="primary" class="border-primary">
+                                  <mat-icon (click)="openEditionDialog(data.idFixing)">visibility</mat-icon>
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <mat-paginator [length]="filteredDataArray.length" [pageSize]="pageSize"
+                          (page)="onPageChange($event)">
+                        </mat-paginator>
+                      </div>
+
+                    </mat-tab>
+
+                    <!-- Facture vue -->
+                    <mat-tab *ngIf="showFacture" label="FACTURE GÉNÉRÉE">
+                      <div class="p-3">
+                        <div class="d-flex justify-content-between flex-wrap">
+                          <div class="col">
+                            <h4>Facture Générée</h4>
+                          </div>
+                          <div class="col text-right">
+                            <div class="d-flex">
+                              <div class="text-right mt-2 mx-2">
+                                <button (click)="imprimerDiv_()" mat-raised-button color="accent">
+                                  Imprimer
+                                </button>
+                              </div>
+                              <div class="text-right mt-2 mx-2">
+                                <button (click)="showFacture = false" mat-raised-button color="warn">
+                                  Retour
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <hr>
+                        <!-- FACTURE -->
+                        <div *ngIf="generatedFacture; else loading">
+                          <div class="table-responsive">
+                            <!-- Conteneur de la facture -->
+                            <div #divToPrint_ class="facture-container">
+                              <!-- En-tête de la facture -->
+                              <div class="facture-header">
+                                <div class="logo">
+                                  <img src="https://limanaya-grp365.com/assets/logo/logo.png" alt="Logo">
+                                </div>
+                                <div class="title">
+                                  <h1>Facture de vente</h1>
+                                  <span>
+                                    Groupe Limanaya Business : Acheteur et
+                                    vendeur d'or en Gros
+                                  </span>
+                                </div>
+                                <div class="numero text-right">
+                                  REF: #
+                                  <span *ngFor="let ref of generatedFacture.info[0].Ref;">{{ref.Ref}}</span>
+                                </div>
+                              </div>
+
+                              <!-- Informations client et entreprise -->
+                              <div class="facture-info">
+                                <div class="client">
+                                  <h5 class="p-2 w-100 bg-secondary text-white fw-bold text-center">Informations</h5>
+                                  <hr>
+                                  <p *ngFor="let info of generatedFacture.info[0].fixing; let j = index" class="mb-2">
+                                    <strong>
+                                      Base
+                                      {{ j + 1 }} :
+                                    </strong>
+                                    <span class="text-secondary">
+                                      {{
+                                      info.fixingBourse | currency: '$: '
+                                      }}
+                                    </span>
+                                    |
+                                    <strong>PU :</strong>
+                                    <span class="text-primary">
+                                      {{
+                                      info.pu | currency: ' '}}
+                                    </span>
+                                  </p>
+                                </div>
+                                <div class="entreprise">
+                                  <h4>Entreprise</h4>
+                                  <p>
+                                    Groupe Limanaya Business
+                                  </p>
+                                  <p>
+                                    Sis a Kaloum, Almamya
+                                  </p>
+                                  <p>
+                                    <strong>Email :</strong>
+                                    {{'morytouraman@gmail.com'}}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <!-- Tableau de la facture -->
+                              <div class="table-responsive">
+                                <table class="table w-100" id="maTable">
+                                  <thead>
+                                    <tr>
+                                      <th class="text-center">Barres</th>
+                                      <th>Poids</th>
+                                      <th>Carrat</th>
+                                      <th>Prix Unitaire</th>
+                                      <th>Montant</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr
+                                      *ngFor="let facture of generatedFacture.factures; let i = index; trackBy: trackById">
+                                      <td class="text-center">{{ i + 1 }}</td>
+                                      <td>
+                                        <strong class="text-primary">Poids :</strong>
+                                        {{ facture.poids | currency:
+                                        ' ' }}
+                                        <br>
+                                        <strong>
+                                          Res
+                                          :
+                                        </strong>
+                                        {{facture.res_poids}}
+                                      </td>
+                                      <td>
+                                        <strong class="text-primary">Carrat :</strong>
+                                        {{ facture.carrat }}
+                                        <br>
+                                        <strong>
+                                          Res
+                                          :
+                                        </strong>
+                                        {{facture.res_carrat}}
+                                      </td>
+                                      <td>{{ facture.pu }}</td>
+                                      <td>
+                                        <strong class="text-primary">USD :</strong>
+                                        {{ facture.montant }}
+                                        <br>
+                                        <strong>
+                                          Res
+                                          :
+                                        </strong>
+                                        {{facture.montant2}}
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                  <tfoot>
+                                    <tr>
+                                      <td>Total</td>
+                                      <td>
+                                        {{ generatedFacture.info[0].PTotal |
+                                        currency: ' ' }} g
+                                      </td>
+                                      <td>
+                                        {{
+                                        generatedFacture.info[0].carratMoyen |
+                                        currency: ' ' }}
+                                      </td>
+                                      <td>-</td>
+                                      <td>
+                                        {{
+                                        generatedFacture.info[0].montantTotal |
+                                        currency: ' ' }}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>Resultat</td>
+                                      <td>
+                                        {{ generatedFacture.info[0].PTotal2 |
+                                        currency: ' ' }} g
+                                      </td>
+                                      <td>
+                                        {{
+                                        generatedFacture.info[0].carratMoyen2 |
+                                        currency: ' ' }}
+                                      </td>
+                                      <td>-</td>
+                                      <td>
+                                        {{
+                                        generatedFacture.info[0].montantTotal2 |
+                                        currency: ' ' }}
+                                      </td>
+                                    </tr>
+                                  </tfoot>
+                                </table>
+                                <!-- Section de paiement et totaux -->
+                                <div class="payment-info">
+                                  <div class="totals">
+                                    <div>
+                                      <strong>Total Conakry :</strong>
+                                    </div>
+                                    <div>
+                                      $ : {{
+                                      generatedFacture.info[0].montantTotal |
+                                      currency: ' ' }}
+                                    </div>
+                                  </div>
+                                  <div class="totals">
+                                    <div>
+                                      <strong class="text-primary">
+                                        Resultat
+                                        :
+                                      </strong>
+                                    </div>
+                                    <div>
+                                      $ : {{
+                                      generatedFacture.info[0].montantTotal2
+                                      |currency: ' ' }}
+                                    </div>
+                                  </div>
+                                  <div *ngIf="generatedFacture.info[0].montantTotal2 > 0" class="totals">
+                                    <div>
+                                      <strong class="text-danger">
+                                        Diff&#233;rence
+                                        :
+                                      </strong>
+                                    </div>
+                                    <div class="text-danger">
+                                      $ : {{
+                                      (generatedFacture.info[0].montantTotal-generatedFacture.info[0].montantTotal2)
+                                      |currency: ' ' }}
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="terms border border-dark p-3">
+                                    <h4 class="m-0 pb-2">
+                                      Termes et
+                                      conditions
+                                    </h4>
+                                    <p class="m-0">
+                                      Delivery dates are
+                                      not guaranteed and Seller has no liability
+                                      for damages that may be
+                                      incurred due to any delay in shipment of
+                                      goods hereunder. Taxes
+                                      are excluded unless otherwise stated.
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- Fin facture -->
+                            </div>
+
+                          </div>
+                        </div>
+                        <ng-template #loading>
+                          <p>
+                            Chargement de la facture...
+                          </p>
+                        </ng-template>
+                        <!-- Fin facture -->
+                      </div>
+                    </mat-tab>
+
+                  </mat-tab-group>
+                </mat-card-content>
+              </mat-tab>
+
+            </mat-tab-group>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <!-- Export Datatable End -->
+    </div>
+  </div>
+</div>

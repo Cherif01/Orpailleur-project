@@ -1,0 +1,361 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-5 col-sm-12">
+            <div class="title">
+              <h4 class="text fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active"
+                  aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div
+            class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button
+                color="warn"><mat-icon
+                  class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+            <div class="col-btn">
+              <button class="mx-2 fw-bold" mat-flat-button color="accent"
+                routerLink="/operation/add-sales">
+                <span class="micon dw dw-add"></span><span class="mtext mx-2">
+                  Ajouter</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary"
+                routerLink="/operation/sales">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2">
+                  Liste vente</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable start -->
+      <mat-card class="mat-card">
+        <mat-card-header>
+          <mat-card-title
+            class="text-uppercase p-2 text-center text-blue w-100 fw-bold">Initialiser
+            une
+            expedition</mat-card-title>
+        </mat-card-header>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+          <!-- Contenu  -->
+          <mat-tab-group>
+            <!-- AJOUT TABS -->
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="text-primary">add </mat-icon>
+                NOUVELLE EXPEDITION
+              </ng-template>
+              <div class="d-flex justify-content-start align-items-end w-100">
+                <div class="col">
+                  <!-- CARTE CLIENT -->
+                  <div class="col" *ngIf="statExpedition == true">
+                    <div class="card m-2">
+                      <div class="card-head bg-info fs-5 text-light p-2">
+                        <marquee behavior="alternate">En cours...</marquee>
+                      </div>
+                      <div class="card-body">
+                        <table class="table table-striped">
+                          <tr>
+                            <th>Societe</th>
+                            <th>:</th>
+                            <td>{{ infoCL.raison_sociale }}</td>
+                          </tr>
+                          <tr>
+                            <th>Responsable</th>
+                            <th>:</th>
+                            <td>{{ infoCL.responsable }}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="m-2">
+                      <div class="card p-2">
+                        <div
+                          class="d-flex align-items-center justify-content-center flex-wrap">
+                          <button mat-flat-button color="primary" class="ms-2"
+                            (click)="endExpedtion()">TERMINER
+                          </button>
+                          <button mat-stroked-button color="warn" class="ms-2"
+                            (click)="deleteExpedtion()">SUPPRIMER
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- FORMULAIRE INIT -->
+                  <div class="col text-center" [formGroup]="formInit"
+                    *ngIf="statExpedition == false">
+                    <h2 class="text-light fw-bold mx-0 m-3 bg-info">SELECTIONNER
+                      UN CLIENT</h2>
+                    <mat-form-field class="w-100" appearance="outline">
+                      <mat-label>--- Listes ---</mat-label>
+                      <mat-select formControlName="idClient">
+                        <mat-option *ngFor="let data of TabClient"
+                          value="{{ data.id }}"><i
+                            class="text-primary">Societe:
+                          </i> {{ data.raison_sociale }} | <i
+                            class="text-danger">Representant: </i> {{
+                          data.responsable
+                          }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" class="w-100"
+                      [disabled]="formInit.invalid"
+                      (click)="initExpedition(formInit)">Cr&#233;er
+                      l'exp&#233;dition
+                    </button>
+                  </div>
+                </div>
+                <div class="col text-end">
+                  <button mat-raised-button color="warn" class="mx-2"
+                    [hidden]="!btnSend" (click)="viewListLot()">RETOUR
+                    Listes des arrivages
+                    <mat-icon>reply</mat-icon></button>
+                </div>
+              </div>
+              <hr>
+
+              <!-- CONFIG -->
+              <div class="d-flex justify-content-start flex-wrap"
+                *ngIf="cacherListLot == false && statExpedition == true">
+                <div class="col-12 col-md-4 col-lg-4"
+                  *ngFor="let data of TabLot">
+                  <div
+                    class="m-3 shadow-sm rounded overflow-hidden border border-secondary">
+                    <mat-card class="card-custom border-0">
+                      <mat-card-header class="bg-light">
+                        <div
+                          class="d-flex align-items-center justify-content-between">
+                          <img matCardImage
+                            src="https://cdn-icons-png.flaticon.com/512/9239/9239159.png"
+                            alt="Image Sac"
+                            class="rounded-circle me-3"
+                            style="width: 50px; height: 50px;" />
+                          <div>
+                            <mat-card-title class="small text-uppercase mb-1">
+                              <strong>Total :</strong>
+                              <span class="text-primary">{{ data.poids_total |
+                                number: '1.2-2' }} g</span>
+                            </mat-card-title>
+                            <mat-card-subtitle class="text-muted small">
+                              Créé le {{ data.created_at | date: 'dd/M/Y' }}
+                            </mat-card-subtitle>
+                            Reste : <span class="text-danger">{{
+                              data.poids_restant | number: '1.2-2' }} g</span>
+                          </div>
+                        </div>
+                      </mat-card-header>
+
+                      <mat-card-content class="text-center py-3">
+                        <h4 class="text-success fw-bold">{{ data.designation
+                          }}</h4>
+                      </mat-card-content>
+
+                      <mat-card-actions class="w-100 d-flex">
+                        <button mat-stroked-button color="primary"
+                          class="border-primary me-1"
+                          (click)="parAchat(data.idLot)">
+                          PAR ACHAT
+                        </button>
+                        
+                        <button mat-flat-button color="warn"
+                          class="border-secondary ms-1"
+                          (click)="parItems(data.idLot)">
+                          PAR BARRES
+                        </button>
+                      </mat-card-actions>
+                    </mat-card>
+                  </div>
+                </div>
+              </div>
+              <!-- FIN LISTE -->
+
+              <hr>
+              <h2 class="text-center text-danger"
+                *ngIf="dataSource2.data.length < 1">{{ message }}</h2>
+
+              <div class="p-2" *ngIf="dataSource2.data.length > 0">
+                <h2 class="text-start fw-bold text-uppercase mb-2">{{
+                  title_message }}</h2>
+
+                <div class="d-flex justify-content-start flex-wrap">
+                  <div class="col text-start">
+                    <button class="mx-2" mat-raised-button color="primary"
+                      *ngIf="statExpedition == true" [disabled]="!btnSend"
+                      (click)="sendExpedition()">VALIDER LA SELECTION</button>                    
+                  </div>
+                </div>
+
+                <!-- Tableau Tous les items du lot en details -->
+                <mat-form-field class="w-100">
+                  <mat-label>Rechercher</mat-label>
+                  <input matInput (keyup)="applyFilter($event)" class="w-100"
+                    placeholder="Rechercher dans le tableau ici..." #input>
+                </mat-form-field>
+                <table mat-table [dataSource]="dataSource2"
+                  class="mat-elevation-z8 w-100">
+                  <!-- Checkbox Column -->
+                  <ng-container matColumnDef="Select">
+                    <th mat-header-cell *matHeaderCellDef>
+                      <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        [aria-label]="checkboxLabel()">
+                      </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                      <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)"
+                        [aria-label]="checkboxLabel(row)">
+                      </mat-checkbox>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Date">
+                    <th class mat-header-cell *matHeaderCellDef>Date</th>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.created_at | date: 'dd/MM/YYYY' }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Achat">
+                    <th class mat-header-cell *matHeaderCellDef>Information Arrivage | Achat</th>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.achat }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Fournisseur">
+                    <th class mat-header-cell *matHeaderCellDef>Fournisseur</th>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.fournisseur }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Poids">
+                    <th class mat-header-cell *matHeaderCellDef>Poids</th>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.poids }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Carrat">
+                    <th class mat-header-cell *matHeaderCellDef>Carrat</th>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.carrat }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Manquant">
+                    <th class mat-header-cell *matHeaderCellDef>Manquant</th>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.manquant }}</td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displaysColums2;"></tr>
+                  <tr mat-row *matRowDef="let row; columns:displaysColums2"
+                    (click)="selection.toggle(row)">
+                  </tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 50, 100, 500]"
+                  showFirstLastButtons></mat-paginator>
+              </div>
+            </mat-tab>
+
+            <!-- LIST TABS -->
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="text-primary"> list </mat-icon>
+                LISTE EXPEDITION
+              </ng-template>
+              <mat-card-title>
+                <h2 class="text-blue mt-2">Toutes les expeditions...</h2>
+              </mat-card-title>
+              <mat-card-content>
+                <mat-form-field class="w-100">
+                  <input [formControl]="search" placeholder="Rechercher"
+                    matInput>
+                  <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+                <table mat-table [dataSource]="dataSource" class="w-100">
+                  <ng-container matColumnDef="Date">
+                    <th mat-header-cell *matHeaderCellDef>Date</th>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.created_at | date: 'dd/MM/YYYY' }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Client">
+                    <th mat-header-cell *matHeaderCellDef>Expedier au
+                      Client</th>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.Client }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Poids">
+                    <th mat-header-cell *matHeaderCellDef>Pds Total</th>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.Poids | number: '2.2-2' }} g</td>
+                  </ng-container>
+                  <ng-container matColumnDef="CarratMoyen">
+                    <th mat-header-cell *matHeaderCellDef>Carrat</th>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.Carrat }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Status">
+                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                    <td class mat-cell *matCellDef="let element">
+                      <span *ngIf="element.Statut == 1" class="text-warning">En
+                        cours</span>
+                      <span *ngIf="element.Statut == 2"
+                        class="text-success">Expédier</span>
+                      <span *ngIf="element.Statut == 3"
+                        class="text-danger">Annuler</span>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="Action">
+                    <th mat-header-cell *matHeaderCellDef
+                      class="text-center">Action</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                      <button mat-button color="warn"
+                        [matMenuTriggerFor]="menu">
+                        Voir + <span class="dw dw-down-chevron"></span></button>
+                      <mat-menu #menu="matMenu">
+                        <a mat-menu-item
+                          routerLink="/client/detail-client/{{element.idClient}}"
+                          class="text-start">
+                          <strong>
+                            <span class="dw dw-user-1 mx-3"></span>
+                            <span>Afficher</span>
+                          </strong>
+                        </a>
+                      </mat-menu>
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row
+                    *matHeaderRowDef="displaysColums;sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns:displaysColums"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5,10,15,100]"
+                  showFirstLastButtons></mat-paginator>
+              </mat-card-content>
+            </mat-tab>
+          </mat-tab-group>
+          <!-- FIN - Contenu  -->
+        </mat-card-content>
+        <!-- <mat-card-footer>
+          <div class="text-center p-3 fs-6">
+            <marquee behavior="" direction="">
+              Commencer par param&#233;trer une vente pour voir le formulaire d'ajout
+              des achats...
+            </marquee>
+          </div>
+        </mat-card-footer> -->
+      </mat-card>
+      <!-- Export Datatable End -->
+    </div>
+  </div>
+</div>

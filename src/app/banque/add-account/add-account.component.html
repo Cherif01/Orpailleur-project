@@ -1,0 +1,138 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="text-right">
+            <!-- <a class="btn btn-primary btn-sm mx-2" href="#" routerLink="/bank/add-account">
+              <span class="micon dw dw-user-3"></span><span class="mtext mx-2">Cr&#233;er un compte</span>
+            </a>
+            <a class="btn btn-outline-primary btn-sm mx-2" href="#" routerLink="/bank/list-account">
+              <span class="micon dw dw-list"></span><span class="mtext mx-2">Liste Generale</span>
+            </a> -->
+            <a class="btn btn-outline-primary btn-sm mx-2" href="#" routerLink="/operation-bank/depot">
+              <span class="micon dw dw-mouse"></span><span class="mtext mx-2">D&#233;pôt</span>
+            </a>
+            <a class="btn btn-outline-primary btn-sm mx-2" href="#" routerLink="/operation-bank/retrait">
+              <span class="micon dw dw-mouse"></span><span class="mtext mx-2">R&#233;trait</span>
+            </a>
+            <a class="btn btn-outline-primary btn-sm mx-2" href="#" routerLink="/operation-bank/virement">
+              <span class="micon dw dw-mouse"></span><span class="mtext mx-2">Virement</span>
+            </a>
+            <a class="btn btn-outline-primary btn-sm mx-2" href="#" routerLink="/bank">
+              <span class="micon dw dw-mouse"></span><span class="mtext mx-2">Autres</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Add -->
+      <div class="card-box mb-30">
+        <!-- <div class="pd-20">
+                <h4 class="text-blue h4">Ajout d'un fournisseurs</h4>
+             </div> -->
+        <div class="pb-20">
+          <div class="d-flex justify-content-between flex-wrap align-items-center">
+            <div class="col-12 col-lg-4 p-2">
+              <div class="img-responsive">
+                <img src="/assets/image/create_account.png" class="img-responsive w-100" alt="">
+              </div>
+            </div>
+            <div class="col p-3">
+              <form class="mx-1 mx-md-4" [formGroup]="Particulier" (ngSubmit)="ParticulierAdd(Particulier)">
+
+                <!-- Nom et Prenom -->
+                <div class="d-flex justify-content-between flex-row align-items-center mb-2">
+                  <div class="col mx-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Nom </mat-label>
+                      <input formControlName="nom" matInput placeholder="Ex : Cherif">
+                      <mat-hint>Exemple : Cherif</mat-hint>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- Prenom -->
+                  <div class="col mx-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Pr&#233;om</mat-label>
+                      <input formControlName="prenom" matInput placeholder="Ex : Imourane">
+                      <mat-hint>Exemple : Imourane</mat-hint>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+
+                <!-- Pays et Ville -->
+                <div class="d-flex justify-content-between flex-row align-items-center mb-2">
+                  <div class="col mx-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Pays de residence</mat-label>
+                      <input formControlName="pays" matInput placeholder="Ex : Guinea">
+                      <mat-hint>Exemple : Guinea</mat-hint>
+                    </mat-form-field>
+                  </div>
+                  <!-- Ville de residence -->
+                  <div class="col mx-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Ville de residence</mat-label>
+                      <input formControlName="ville" matInput placeholder="Ex : Conakry">
+                      <mat-hint>Exemple : Conakry</mat-hint>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <!-- Adresse et Ville -->
+                <div class="d-flex justify-content-between flex-row align-items-center mb-2">
+                  <div class="col mx-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Adresse ville du fournisseur</mat-label>
+                      <input formControlName="adresse" matInput placeholder="Ex : C/Matam...">
+                      <mat-hint>Exemple : C/Matam...</mat-hint>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- Mail et Phone -->
+                  <div class="col mx-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Adresse email du fournisseur</mat-label>
+                      <input formControlName="email" matInput placeholder="Ex : imouranach@gmail.com">
+                      <mat-hint>Exemple : imouranach@gmail.com</mat-hint>
+                      <span class="small"
+                          *ngIf="Particulier.get('email')?.invalid && (Particulier.get('email')?.dirty || Particulier.get('email')?.touched)"
+                          class="text-danger small">Adresse mail invalid !</span>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <!-- Numero de telephone -->
+                <div class="col mx-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Numero de telephone</mat-label>
+                    <input formControlName="telephone" matInput placeholder="Exemple : 626 37 01 38">
+                    <mat-hint>Exemple : 626 37 01 38</mat-hint>
+                  </mat-form-field>
+                </div>
+                <div class="d-flex justify-content-center mx- mb-2 mb-lg-2">
+                  <button type="submit" mat-flat-button color="primary" [disabled]="!Particulier.valid"><span
+                      id="text_contact">Ajouter le compte</span></button>
+                </div>
+              </form>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Fin ajout -->
+    </div>
+  </div>
+</div>

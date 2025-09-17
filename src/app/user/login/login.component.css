@@ -1,0 +1,180 @@
+/* Section globale */
+.logi-page {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 100vh;
+}
+
+/* Colonne gauche avec image et overlay */
+.logi-page .col {
+  flex: 1;
+  /* background: url("https://media.istockphoto.com/id/490693469/fr/photo/lingots-or.jpg?s=612x612&w=0&k=20&c=q0Le-nCoCJ1VFet-xJUltZ54NAhSbJSIgWo1l22p7ZA=")
+    no-repeat center center; */
+  /* background: url("https://image.lexica.art/full_webp/1d93988b-c42c-4284-81f7-d865fb2dc36f")
+    no-repeat center center; */
+  background-size: cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logi-page .col .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(71, 70, 70, 0.317);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
+
+.logi-page .col .overlay h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.logi-page .col .overlay p {
+  color: gold;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Colonne droite pour le formulaire */
+.logi-page .col-12 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+/* Style de la carte contenant le formulaire */
+.card-body {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Logo centré */
+.card-body .text-center img {
+  width: 150px;
+  margin-bottom: 20px;
+}
+
+/* Boutons toggle de rôle */
+.select-role #btn-group {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.select-role .btn {
+  /* background: #035397; */
+  /* color: #fff; */
+  text-align: center;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.select-role #btn:hover {
+  background: #5089c6;
+}
+
+.select-role #btn .icon img {
+  width: 30px;
+  margin-bottom: 5px;
+}
+
+.select-role #btn input {
+  display: none;
+}
+
+/* Champs de formulaire */
+.form-outline {
+  margin-bottom: 20px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.input-group .form-control {
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.input-group .input-group-append {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+}
+
+.input-group .input-group-append .input-group-text {
+  background: none;
+  border: none;
+  color: #888;
+}
+
+.input-group .input-group-append .input-group-text:hover {
+  color: #035397;
+  cursor: pointer;
+}
+
+/* Bouton de connexion */
+.text-center #btn {
+  background: linear-gradient(90deg, #035397, #5089c6);
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.text-center #btn:hover {
+  background: linear-gradient(90deg, #5089c6, #035397);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Lien vers le site du développeur */
+.text-center hr {
+  margin: 20px 0;
+}
+
+.text-center h5 {
+  font-size: 0.9rem;
+  font-weight: normal;
+}
+
+.text-center h5 a {
+  text-decoration: none;
+  color: #035397;
+}
+
+.text-center h5 a:hover {
+  text-decoration: underline;
+}

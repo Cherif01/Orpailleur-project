@@ -1,0 +1,184 @@
+<div class="right-sidebar">s
+  <div class="sidebar-title">
+    <h3 class="weight-600 font-16 text-blue">
+      Parametres de l'application
+      <span class="btn-block font-weight-400 font-12">Interface
+        Utilisateur</span>
+    </h3>
+    <div class="close-sidebar" data-toggle="right-sidebar-close">
+      <i class="icon-copy ion-close-round"></i>
+    </div>
+  </div>
+  <div class="right-sidebar-body customscroll">
+    <div class="right-sidebar-body-content">
+      <h4 class="weight-600 font-18 pb-10">Ari&#224;re plan du haut</h4>
+      <div class="sidebar-btn-group pb-30 mb-10">
+        <a href="javascript:void(0);" class="btn btn-outline-primary header-white active">White</a>
+        <a href="javascript:void(0);" class="btn btn-outline-primary header-dark">Dark</a>
+      </div>
+
+      <h4 class="weight-600 font-18 pb-10">Arri&#232;re plan du menu</h4>
+      <div class="sidebar-btn-group pb-30 mb-10">
+        <a href="javascript:void(0);" class="btn btn-outline-primary sidebar-light ">White</a>
+        <a href="javascript:void(0);" class="btn btn-outline-primary sidebar-dark active">Dark</a>
+      </div>
+
+      <div class="reset-options pt-5 text-center">
+        <button class="btn p-2 btn-danger" id="reset-settings">Par
+          Defaut</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="left-side-bar bg-transparent">
+  <div class="brand-logo">
+    <a routerLink="/home">
+      <img src="./assets/logo/logo.png" alt class="dark-logo w-50">
+      <img src="./assets/logo/logo.png" alt class="light-logo w-50">
+    </a>
+    <div class="close-sidebar" data-bs-toggle="left-sidebar-close">
+      <i class="icon-close-round"></i>
+    </div>
+  </div>
+  <hr>
+  <div class="menu-block mt-lg-4 mt-md-4">
+    <!-- <hr> -->
+    <div class="sidebar-menu">
+      <ul id="menu" class="w-100">
+        <!-- OPERATION -->
+        <mat-accordion>
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+            *ngIf="ListAccess_onglet.includes('operation')">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="text-uppercase">
+                Op&#233;ration
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="panel p-0 m-0">
+              <li class="p-0" *ngFor="let menu of menuOperation">
+                <a *ngIf="ListAccess_menu_url.includes(menu.url)" routerLink="{{menu.url}}"
+                  routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow">
+                  <i class="micon {{menu.icons}} "></i>
+                  <span class>{{menu.libelle}}</span>
+                </a>
+              </li>
+            </div>
+          </mat-expansion-panel>
+          <!-- SITUATION -->
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+            *ngIf="ListAccess_onglet.includes('situation')">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="text-uppercase">
+                COMPTABILITE <span class="text-danger mx-1"> *</span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="panel p-0 m-0">
+              <li class="p-0" *ngFor="let menu of menuSituation">
+                <a *ngIf="ListAccess_menu_url.includes(menu.url)" routerLink="{{menu.url}}"
+                  routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow">
+                  <i class="micon {{menu.icons}} "></i>
+                  <span class>{{menu.libelle}}</span>
+                </a>
+              </li>
+            </div>
+          </mat-expansion-panel>
+          <!-- FOURNISSEUR -->
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+            *ngIf="ListAccess_onglet.includes('fournisseur')">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="text-uppercase">
+                Fournisseur
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="panel p-0 m-0">
+              <li *ngFor="let menu of menuFournisseur">
+                <a *ngIf="ListAccess_menu_url.includes(menu.url)" routerLink="{{menu.url}}"
+                  routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow">
+                  <i class="micon {{menu.icons}} "></i>
+                  <span class>{{menu.libelle}}</span>
+                </a>
+              </li>
+            </div>
+          </mat-expansion-panel>
+          <!-- FIXING -->
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+            *ngIf="ListAccess_onglet.includes('fixing')">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="text-uppercase">
+                FIXING
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="panel p-0 m-0">
+              <li *ngFor="let menu of menuFixing">
+                <a *ngIf="ListAccess_menu_url.includes(menu.url)" routerLink="{{menu.url}}"
+                  routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow">
+                  <i class="micon {{menu.icons}} "></i>
+                  <span class>{{menu.libelle}}</span>
+                </a>
+              </li>
+            </div>
+          </mat-expansion-panel>
+          <!-- PARTENAIRES -->
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+            *ngIf="ListAccess_onglet.includes('client')">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="text-uppercase">
+                Part&#233;naires
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="panel p-0 m-0">
+              <li *ngFor="let menu of menuClient">
+                <a *ngIf="ListAccess_menu_url.includes(menu.url)" routerLink="{{menu.url}}"
+                  routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow">
+                  <i class="micon {{menu.icons}} "></i>
+                  <span class>{{menu.libelle}}</span>
+                </a>
+              </li>
+            </div>
+          </mat-expansion-panel>
+          <!-- RAPPORT -->
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+            *ngIf="ListAccess_onglet.includes('rapport')">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="text-uppercase">
+                Rapport
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="panel p-0 m-0">
+              <li *ngFor="let menu of menuRapport">
+                <a *ngIf="ListAccess_menu_url.includes(menu.url)" routerLink="{{menu.url}}"
+                  routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow">
+                  <i class="micon {{menu.icons}} "></i>
+                  <span class>{{menu.libelle}}</span>
+                </a>
+              </li>
+            </div>
+          </mat-expansion-panel>
+          <!-- SETTINGS -->
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+            *ngIf="ListAccess_onglet.includes('settings')">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="text-uppercase">
+                CONFIGURATION
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="panel">
+              <li *ngFor="let menu of menuSettings">
+                <a *ngIf="ListAccess_menu_url.includes(menu.url)" routerLink="{{menu.url}}"
+                  routerLinkActive="active-sidebar" class="dropdown-toggle no-arrow">
+                  <i class="micon {{menu.icons}} "></i>
+                  <span class>{{menu.libelle}}</span>
+                </a>
+              </li>
+            </div>
+          </mat-expansion-panel>
+          <!-- END -->
+        </mat-accordion>
+        <!-- end -->
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-menu-overlay"></div>

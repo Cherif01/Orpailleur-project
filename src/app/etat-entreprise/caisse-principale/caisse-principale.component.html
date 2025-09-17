@@ -1,0 +1,373 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+    
+      <div class="page-header mb-4 bg-light py-3 px-3 rounded shadow-sm">
+        <div class="row d-flex justify-content-between align-items-center">
+          <!-- Colonne Solde du Compte -->
+          <div class="col-md-4 col-12 text-md-start text-center mb-3 mb-md-0">
+            <h4 class="text-capitalize mb-0 fw-bold">Solde du Compte</h4>
+            <h2 class="text-primary fs-4 mt-1">
+              <span class="text-dark">USD : </span> {{ soldeUSD }}
+            </h2>
+            <hr>
+            <button mat-flat-button color="warn" (click)="depenseDialog()" class="btn-action mb-2">
+              <i class="dw dw-money-1 me-1 text-light"></i> Ajouter une dépense
+            </button>
+            <button mat-raised-button color="primary" (click)="openDialog()" class="btn-action mb-2">
+              <i class="dw dw-add text-light"></i> Nouvelle opération
+            </button>
+          </div>
+
+          <!-- Colonne Chart -->
+          <div class="col-12 col-md-6 col-lg-6 currency-converter">
+            <canvas id="polarChart" style="height: 200px;width: auto;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- History -->
+      <div class="table-responsive bg-white">
+        <!-- Les Operations de l'entreprise -->
+        <div class="row m-2 bg-light" id="card-info">
+          <!-- Première Carte -->
+          <div class="col-12 col-md-6 col-lg-4 col-xl-4 mb-30">
+            <div class="card-box height-100-p widget-style1">
+              <div class="d-flex flex-wrap align-items-center">
+                <div class="icon-data">
+                  <i class="dw dw-money-1 fa-3x text-danger"></i>
+                </div>
+                <div class="widget-data">
+                  <div class="h4 mb-0">{{ extra | currency: 'USD: ' }}</div>
+                  <div class="weight-600 font-16">D&#233;penses Extra</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Deuxième Carte -->
+          <div class="col-12 col-md-6 col-lg-4 col-xl-4 mb-30">
+            <div class="card-box height-100-p widget-style1">
+              <div class="d-flex flex-wrap align-items-center">
+                <div class="icon-data">
+                  <i class="dw dw-money fa-3x text-success"></i>
+                </div>
+                <div class="widget-data">
+                  <div class="h4 mb-0">{{ facture | currency: 'USD: ' }}</div>
+                  <div class="weight-600 font-16">Facture(s) Pay&#233;(s)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Troisième Carte -->
+          <div class="col-12 col-md-6 col-lg-4 col-xl-4 mb-30 third-card">
+            <div class="card-box height-100-p widget-style1">
+              <div class="d-flex flex-wrap align-items-center">
+                <div class="icon-data">
+                  <i class="dw dw-money-2 fa-3x text-warning"></i>
+                </div>
+                <div class="widget-data">
+                  <div class="h4 mb-0">{{ salaire | currency: 'USD: ' }}</div>
+                  <div class="weight-600 font-16">Salaire Pay&#233;</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="h1 text-danger"> NB : <span class="h4 text-dark">Ces Op&#233;rations concerne votre entreprise
+                et seront actualiser a la fin de
+                chaque mois...</span> </div>
+          </div>
+        </div>
+
+        <hr>
+        <mat-card class="p-2 bg-white">
+          <mat-tab-group class="bg-white">
+            <mat-tab label="OPERATION (USD)" *ngIf="infosLine.id == null">
+              <mat-card class="mat-elevation-z8">
+                <mat-card-content>
+                  <h4 class="text-blue text-center text-uppercase mb-2">Historique des op&#233;rations</h4>
+                  <hr>
+                  <form action [formGroup]="rechercheIntervalleForm" class="w-100">
+                    <div class="d-flex justify-content-center flex-wrap input-group m-0 p-0">
+                      <input type="date" formControlName="dateStart"
+                        class="p-2 border-primary fw-bold col-12 col-md-6 col-lg-3 col-sm-12 mb-2">
+                      <input type="date" formControlName="dateEnd"
+                        class="mx-1 p-2 border-primary fw-bold col-12 col-md-6 col-lg-3 col-sm-12 mb-2">
+                      <button mat-flat-button color="primary"
+                        class="border-dark col-12 col-md-6 col-lg-3 col-sm-12 mb-2" (click)="getCaisse()">
+                        Rechercher
+                      </button>
+                    </div>
+                  </form>
+                  <hr>
+                  <div class="mat-elevation-z8 p-2 table-responsive" id="myTable">
+                    <mat-form-field class="w-100 mt-2" appearance="outline">
+                      <input [formControl]="search" placeholder="Rechercher une oper&#233;tion..." matInput>
+                      <mat-icon matSuffix>search</mat-icon>
+                    </mat-form-field>
+                    <table mat-table [dataSource]="dataSource" class="w-100" id="maTable">
+                      <ng-container matColumnDef="created_at">
+                        <th mat-header-cell *matHeaderCellDef>Date</th>
+                        <td mat-cell *matCellDef="let element">
+                          {{ element.created_at }} <br>
+                          Emetteur :
+                          <span class="text-primary small ms-2">{{ element.users }}</span>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="operation">
+                        <th mat-header-cell *matHeaderCellDef>Opération</th>
+                        <td mat-cell *matCellDef="let element" class="px-2">
+                          {{ element.operation }} <br>
+                          <span class="text-primary small">{{ element.fournisseur }}</span>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="montant">
+                        <th mat-header-cell *matHeaderCellDef>Montant</th>
+                        <td mat-cell *matCellDef="let element" class="px-2">
+                          {{ element.montant | currency: 'USD: ' }}
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="montant_anterieur">
+                        <th mat-header-cell *matHeaderCellDef>Solde Anterieur</th>
+                        <td mat-cell *matCellDef="let element" class="px-2">
+                          {{ element.montant_anterieur | currency: 'USD: ' }}
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="motif">
+                        <th mat-header-cell *matHeaderCellDef>Motif</th>
+                        <td mat-cell *matCellDef="let element" class="px-2">
+                          {{ element.motif }}
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef>Action</th>
+                        <td mat-cell *matCellDef="let element">
+                          <div class="d-flex justify-content-between flex-wrap align-items-center w-100">
+                            <a mat-flat-button (click)="getInfo(element.id)" color="primary" class="m-1">
+                              <mat-icon>visibility</mat-icon></a>
+                            <a mat-flat-button (click)="deleteFunction(element.id)" color="warn" class="m-1">
+                              <mat-icon>delete</mat-icon></a>
+                          </div>
+                        </td>
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="displaysColums"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displaysColums;"></tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[10, 15, 100]" showFirstLastButtons></mat-paginator>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </mat-tab>
+
+            <!-- <div class="d-none">
+              <mat-tab label="Historique caisse GNF" *ngIf="infosLine.id == null">
+                <mat-card class="mat-elevation-z8" id="table_shadow">
+                  <mat-card-title>
+                    <h2 class="text-blue">Historique des op&#233;rations</h2>
+                  </mat-card-title>
+                  <mat-card-content>
+                    <mat-form-field class="w-100">
+                      <input [formControl]="search" placeholder="Rechercher une oper&#233;tion..." matInput>
+                      <mat-icon matSuffix>Limanaya Business</mat-icon>
+                    </mat-form-field>
+                    <div class="table-responsive">
+                      <table mat-table class="table table-responsive-md">
+                        <thead>
+                          <th>#</th>
+                          <th>Date Operation</th>
+                          <th>Op&#233;ration</th>
+                          <th>Credit</th>
+                          <th>Debit</th>
+                          <th>Solde A</th>
+                          <th>Utilisateur</th>
+                          <th class="text-center">Action</th>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let data of historique; let i = index">
+                            <td *ngIf="data.devise == 1"><a style="cursor: pointer" (click)="getInfo(data.id)"
+                                class="border rounded-circle btn-info fs-3"><span class="dw dw-print"></span></a></td>
+                            <td *ngIf="data.devise == 1">Le : {{ data.created_at
+                              |
+                              date: "dd/MM/YYYY - H:m" }}</td>
+                            <td *ngIf="data.devise == 1" class="m-0 p-0 text-start">
+                              <span class="text-dark" *ngIf="data.operation == 1"><span
+                                  class="dw dw-down-arrow2"></span>
+                                Entrer</span>
+                              <span class="text-danger" *ngIf="data.operation == 2">Sortie <span
+                                  class="dw dw-share-2"></span></span>
+                              <span class="text-dark" *ngIf="data.operation == 3">Retour Fournisseur
+                                <span class="dw dw-share-2"></span></span>
+                              <span class="text-danger" *ngIf="data.operation == 4">D&#233;caissement
+                                <span class="dw dw-share-2"></span></span>
+                            </td>
+                            <td *ngIf="data.devise == 1">
+                              <span *ngIf="data.operation == 1 || data.operation == 3">{{
+                                data.montant | number }}</span>
+                            </td>
+                            <td *ngIf="data.devise == 1">
+                              <span *ngIf="data.operation == 2 || data.operation == 4">{{
+                                data.montant | number }}</span>
+                            </td>
+                            <td *ngIf="data.devise == 1">{{
+                              (data.montant_anterieur) | number }}</td>
+                            <td *ngIf="data.devise == 1" class="text-secondary fw-bold text-capitalize">{{data.users}}
+                            </td>
+                            <td class="text-center" *ngIf="data.devise == 1">
+                              <button mat-stroked-button color="warn" (click)="deleteFunction(data.id)"><span
+                                  class="mdi mdi-close-thick"></span></button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <mat-paginator [pageSizeOptions]="[10,15,100]" showFirstLastButtons></mat-paginator>
+                  </mat-card-content>
+                </mat-card>
+              </mat-tab>
+            </div> -->
+
+            <mat-tab label="Reçu d'opération" *ngIf="infosLine.id != null">
+              <div class="d-felx justity-content-end mt-2">
+                <div class="col text-end">
+                  <button class="mx-2 mb-3 fw-bold" mat-stroked-button color="primary" (click)="reply()">
+                    <mat-icon>reply</mat-icon><span class="mtext mx-2">
+                      Retour</span>
+                  </button>
+                  <!-- <button class="mx-2 mb-3 fw-bold" mat-stroked-button
+                      color="warn" (click)="generatePDF()">
+                      <mat-icon>folder</mat-icon><span class="mtext mx-2">
+                        Telecharger au format (PDF)...</span>
+                    </button> -->
+                  <button class="mx-2 fw-bold" mat-stroked-button color="primary" (click)="imprimerDiv()">
+                    <mat-icon>printer</mat-icon><span class="mtext mx-2">
+                      Imprimer ici...</span>
+                  </button>
+                  <button class="mx-2 fw-bold" mat-stroked-button color="warn" (click)="dupliquerElement()">
+                    <mat-icon>home</mat-icon><span class="mtext mx-2"> COPIER
+                      L'ELEMENT</span>
+                  </button>
+                </div>
+              </div>
+              <hr>
+
+              <!-- RECU DE CAISSE -->
+              <div class="d-flex justify-content-center align-items-center m-4" style="margin-bottom: 100px;"
+                #elementADupliquer>
+                <div class="col-12 bg-white duplication " id="recu">
+
+                  <div class="d-flex align-items-center justify-content-between flex-wrap" id="entete">
+                    <div class="col text-start" id="centerRecu">
+                      <img
+                        src="https://api.qrserver.com/v1/create-qr-code/?size=75x75&data=Date réçu:{{infosLine.created_at+'/ Fournisseur:'+FounisseurName+'/ Operation:'+getTypeOperation(infosLine.operation)+' / '+ ' MONTANT : ' + infosLine.montant }}">
+                    </div>
+                    <div class="col text-center" id="leftRecu">
+                      <h3 class="text-uppercase">Réçu N<sup>o</sup>: {{
+                        infosLine.id }} <br> <span class="small text-uppercase text-dark fw-bold">{{
+                          getTypeOperation(infosLine.operation)
+                          }}</span> | du {{ infosLine.created_at | date:
+                        'dd/MM/YYYY' }}</h3>
+                    </div>
+                    <div class="col-md-3" id="rightRecu">
+                      <!-- logo -->
+                      <div class="img-responsive text-end">
+                        <img src="/assets/logo/logo.png" class="img-responsive w-50" alt="Logo Limanaya">
+                      </div>
+                    </div>
+                  </div>
+                  <!-- FIN ENTETE -->
+
+                  <!-- 3 / 4 -->
+                  <table class="table m-0 table-recu" *ngIf="infosLine.operation == 3 || infosLine.operation == 4">
+                    <tr>
+                      <th>Fournisseur</th>
+                      <td class="fw-bold text-dark">{{ FounisseurName }}</td>
+                    </tr>
+                    <tr>
+                      <th>Mode de r&#233;gl&#233;ment</th>
+                      <td>CASH</td>
+                    </tr>
+                    <tr>
+                      <th>Nom du r&#233;presentant</th>
+                      <td>{{ infosLine.representant }}</td>
+                    </tr>
+                    <tr>
+                      <th>Montant</th>
+                      <td>{{ infosLine.montant | number: '2.2-2' }} <span *ngIf="infosLine.devise == 1">GNF</span><span
+                          *ngIf="infosLine.devise == 2">USD</span></td>
+                    </tr>
+                    <!-- <tr>
+                        <th>Montant en lettres</th>
+                        <td>...</td>
+                      </tr> -->
+                    <tr>
+                      <th>Motif</th>
+                      <td>{{ infosLine.motif }}</td>
+                    </tr>
+                    <tfoot class="border-0 border-light">
+                      <th class="text-start fs-5 pb-3 p-3 text-secondary">Le
+                        caissier</th>
+                      <th class="text-center fs-5 pb-3 p-3 text-secondary">Le
+                        client</th>
+                    </tfoot>
+                  </table>
+
+                  <!-- 1 / 2 -->
+                  <table class="table fs-5 table-recu" *ngIf="infosLine.operation == 1 || infosLine.operation == 2">
+                    <tr>
+                      <th>Payer &#224;</th>
+                      <td>created - by </td>
+                    </tr>
+                    <tr>
+                      <th>S/C</th>
+                      <td>Representant </td>
+                    </tr>
+                    <tr>
+                      <th>Montant</th>
+                      <td>{{ infosLine.montant | number: '2.2-2' }} <span *ngIf="infosLine.devise == 1">GNF</span><span
+                          *ngIf="infosLine.devise == 2">USD</span></td>
+                    </tr>
+                    <tr>
+                      <th>Motif</th>
+                      <td>{{ infosLine.motif }}</td>
+                    </tr>
+                    <tfoot class="border-light">
+                      <th class="text-start fs-5 pb-5 p-3">Le client</th>
+                      <th class="text-end fs-5 pb-5 p-3">Le caissier</th>
+                    </tfoot>
+                  </table>
+
+                  <!-- PIED DE RECU -->
+                  <!-- <hr> -->
+                  <div class="infoLimanaya mt-5 mb-3">
+                    <div class="row d-flex justify-content-between align-items-center">
+                      <div class="col">
+                        <h5 class="m-0 p-0 fw-bold">ENTREPRISE</h5>
+                        <span class>Acheteur et vendeur d'or en gros et
+                          details</span> <br>
+                        <span class="text-dark">Mafanco Carrefour, centre
+                          commercial Bayo et frères (2<sup>e</sup>E)</span>
+                      </div>
+                      <div class="col text-end">
+                        <span class="text-dark fw-bold">Line 1 : +224 628 978
+                          467 </span> <br>
+                        <span class="text-dark fw-bold">Line 2 : +224 624 044
+                          759 </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </mat-tab>
+          </mat-tab-group>
+        </mat-card>
+      </div>
+    </div>
+    <!-- Export Datatable End -->
+  </div>
+</div>

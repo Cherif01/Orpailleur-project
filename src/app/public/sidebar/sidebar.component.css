@@ -1,0 +1,48 @@
+.brand-logo{
+  background-color: rgb(244, 238, 238);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.active-sidebar{
+  /* text-transform: uppercase; */
+  font-weight: 560;
+  background-color: rgb(64, 79, 174);
+}
+
+/* .left-side-bar{
+  background-color: rgb(13, 10, 57);
+} */
+
+.panel{
+  background-color: rgb(6, 5, 33);
+  font-weight: 600;
+}
+
+.menu-block{
+  /* background-color: rgb(255, 255, 255); */
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  /* overflow-y: scroll;
+  margin-bottom: 10%; */
+}
+
+.menu-block ul li a{
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  width: 100%;
+}
+
+.menu-block ul li i{
+  color: rgb(243, 206, 59);
+  font-weight: bold;
+}
+
+.menu-block ul li a:hover{
+  background-color: rgb(6, 19, 99);
+  transition: 0.4s;
+}
+

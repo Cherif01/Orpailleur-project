@@ -1,0 +1,71 @@
+<section class="logi-page">
+  <!-- <div class="col d-none d-lg-block d-md-block">
+    <div class="overlay">
+      <h1>Plateforme d'achat et de vente d'or...!</h1>
+      <p class="m-0 p-0">Acc&#233;der &#224; votre compte pour commencer ! <br> <i class="text-light small m-0 p-0">La solution N<sup>o</sup>:1 en Afrique pour les orpailleurs</i></p>
+    </div>
+  </div> -->
+  <div class="col">
+    <div class="card-body mx-md-4">
+      <div class="text-center">
+        <img src="/assets/logo/logo.png" style="width: 170px;" alt="logo">
+      </div>
+      <form [formGroup]="userLogin">
+        <div class="select-role w-100">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn" (click)="updateRole('Administrateur')">
+              <input type="radio" id="admin" />
+              <div class="icon"><img src="https://img.icons8.com/?size=160&id=BT11Prj5bg6w&format=png" class="svg"
+                  alt></div>
+              Manager
+            </label>
+            <label class="btn" (click)="updateRole('Utilisateur')">
+              <input type="radio" id="user">
+              <div class="icon"><img src="https://img.freepik.com/premium-vector/admin-clerk-with-laptop-icon_1076610-101107.jpg" class="svg"
+                  alt></div>
+              Utilisateur
+            </label>
+          </div>
+        </div>
+
+        <div data-mdb-input-init class="form-outline mb-4">
+          <div class="input-group custom">
+            <input type="text" class="form-control form-control-lg fw-bold"
+              placeholder="Votre Nom d'utilisateur"
+              formControlName="username">
+            <div class="input-group-append custom">
+              <span class="input-group-text"><i
+                  class="icon-copy dw dw-user1"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <div data-mdb-input-init class="form-outline mb-4">
+          <div class="input-group custom">
+            <input type="password" id="password_"
+              class="form-control form-control-lg fw-bold"
+              placeholder="Mot de passe" formControlName="motDePasse">
+            <div class="input-group-append custom">
+              <span class="input-group-text">
+                <i class="dw dw-lock" id="passwordControl"
+                  (click)="viewPassword()" *ngIf="viewPass == false"></i>
+                <i class="dw dw-unlock" id="passwordControl"
+                  (click)="hiddenPassword()" *ngIf="viewPass == true"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="text-center pt-1 mb-5 pb-1">
+          <button data-mdb-button-init data-mdb-ripple-init id="btn"
+            class="btn btn-primary btn-block p-3 fa-lg gradient-custom-2 mb-3"
+            (click)="authFunction(userLogin)"
+            [disabled]="userLogin.invalid">Connexion</button>
+        </div>
+        <hr>
+        <h5 class="text-dark small text-center">Mot de passe oubli&#233;, <a
+            href="tel:+224626370138"
+            target="_blank"><i class="text-primary">+224 626 37 01 38</i></a></h5>
+      </form>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,123 @@
+<h1 matDialogTitle
+	class="bg-secondary rounded text-uppercase p-4 text-white fw-bold"
+	id="text">
+	TABLEAU DE CORRECTION
+</h1>
+<hr>
+<mat-dialog-content style="height: 400px;overflow-y: scroll;">
+	<!-- Champ de recherche -->
+	<input [(ngModel)]="searchTerm"
+		(input)="filterData()"
+		type="text"
+		class="form-control"
+		placeholder="Rechercher par Poids ou Carat">
+	<div class="table-responsive">
+		<table class="table table-bordered"
+			id="maTable">
+			<thead>
+				<tr>
+					<th>Barres</th>
+					<th>Poids</th>
+					<th>Carat</th>
+					<th>Rés. Poids</th>
+					<th>Rés. Carat</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let item of filteredData; let i = index">
+					<td>{{ i+ 1 }}</td>
+					<td>
+						<input [(ngModel)]="item.poids"
+							type="number"
+							class="form-control"
+							tabIndex="1">
+					</td>
+					<td>
+						<input [(ngModel)]="item.carrat"
+							type="number"
+							class="form-control"
+							tabIndex="2">
+					</td>
+					<td>
+						<input [(ngModel)]="item.res_poids"
+							type="number"
+							class="form-control"
+							tabIndex="3">
+					</td>
+					<td>
+						<input [(ngModel)]="item.res_carrat"
+							type="number"
+							class="form-control"
+							tabIndex="4">
+					</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr class="bg-info">
+					<td>INFORMATION :</td>
+					<td class="text-dark fw-bold">{{ 'Pds|CONAKRY' }}</td>
+					<td class="text-dark fw-bold">{{ 'K | COANKRY' }}</td>
+					<td class="text-dark fw-bold">{{ 'Pds | DUBAI' }}</td>
+					<td class="text-dark fw-bold">{{ 'K | DUBAI' }}</td>
+				</tr>
+				<tr>
+					<td>TOTAL :</td>
+					<td class="text-primary">
+						{{ poidsConakry | currency: ' ' }} g
+					</td>
+					<td class="text-primary">
+						{{ carratConakry | currency: ' ' }} k
+					</td>
+					<td class="text-danger">
+						{{ poidsDubai | currency: ' ' }} g
+					</td>
+					<td class="text-danger">
+						{{ carratDubai | currency: ' ' }} k
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+	<table class="table"
+		id="maTable">
+		<tfoot>
+			<tr class="bg-info">
+				<td>INFORMATION :</td>
+				<td class="text-dark fw-bold">{{ 'Pds|CONAKRY' }}</td>
+				<td class="text-dark fw-bold">{{ 'K | COANKRY' }}</td>
+				<td class="text-dark fw-bold">{{ 'Pds | DUBAI' }}</td>
+				<td class="text-dark fw-bold">{{ 'K | DUBAI' }}</td>
+			</tr>
+			<tr>
+				<td>TOTAL :</td>
+				<td class="text-primary">
+					{{ poidsConakry | currency: ' ' }} g
+				</td>
+				<td class="text-primary">
+					{{ carratConakry | currency: ' ' }} k
+				</td>
+				<td class="text-danger">
+					{{ poidsDubai | currency: ' ' }} g
+				</td>
+				<td class="text-danger">
+					{{ carratDubai | currency: ' ' }} k
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+	<hr>
+	<button (click)="updateRow()"
+		mat-raised-button
+		color="primary">
+		Valider la
+        modification
+	</button>
+	<button mat-raised-button
+		color="warn"
+		matDialogClose>
+		Fermer
+	</button>
+</mat-dialog-actions>

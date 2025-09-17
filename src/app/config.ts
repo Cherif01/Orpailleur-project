@@ -1,0 +1,21 @@
+// Environnement de developpement
+import { environment } from 'src/environments/environment';
+// SOSSIM
+// export const BASE_URL = environment.production?"https://sossim.spa-dev.com/api/":"http://192.168.1.169/limanaya_api/api/";
+// url de base
+// export const BASE_URL = environment.production?"https://demo.dsg-gn.com/api/":"https://demo.dsg-gn.com/api/";
+export const BASE_URL = environment.production
+  ? 'https://dblimanaya.dsg-gn.com/api/'
+  : 'http://192.168.1.169/limanaya_api/api/';
+
+// application
+export const LINK_BASE_CREATE = 'create.php';
+export const LINK_BASE_READ = 'read.php';
+export const LINK_BASE = 'api';
+export const LINK_BASE_CLIENT = 'client_api_';
+
+// Table
+export const T_ACHAT = 'achat';
+export const T_ITEMS = 'achat_items';
+export const T_FOURNISSEUR = 'fournisseur';
+export const T_CompteF = 'compte_fournisseur';

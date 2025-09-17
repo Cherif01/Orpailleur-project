@@ -1,0 +1,296 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-5 col-sm-12">
+            <div class="title">
+              <h4 class="text fs-3">{{title}}</h4>
+            </div>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active"
+                  aria-current="page">{{title}}</li>
+              </ol>
+            </nav>
+          </div>
+          <div
+            class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button
+                color="warn"><mat-icon
+                  class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+            <div class="col-btn">
+              <button class="mx-2 fw-bold" mat-flat-button color="accent"
+                routerLink="/operation/add-sales">
+                <span class="micon dw dw-add"></span><span class="mtext mx-2">
+                  Ajouter</span>
+              </button>
+              <button class="mx-2 fw-bold" mat-flat-button color="primary"
+                routerLink="/operation/sales">
+                <span class="micon dw dw-list"></span><span class="mtext mx-2">
+                  Liste vente</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable start -->
+      <mat-card class="mat-card">
+        <mat-card-header>
+          <mat-card-title
+            class="text-uppercase p-2 text-center text-blue w-100 fw-bold">Initialiser
+            une
+            expedition</mat-card-title>
+        </mat-card-header>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+          <!-- Contenu  -->
+          <mat-tab-group>
+            <!-- AJOUT TABS -->
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="text-primary">add </mat-icon>
+                NOUVELLE EXPEDITION
+              </ng-template>
+              <div class="d-flex justify-content-start align-items-end w-100">
+                <div class="col">
+                  <!-- CARTE CLIENT -->
+                  <div class="col" *ngIf="statExpedition == true">
+                    <div class="card m-2">
+                      <div class="card-head bg-info fs-5 text-light p-2">
+                        <marquee behavior="alternate">En cours...</marquee>
+                      </div>
+                      <div class="card-body">
+                        <table class="table table-striped">
+                          <tr>
+                            <th>Societe</th>
+                            <th>:</th>
+                            <td>{{ infoCL.raison_sociale }}</td>
+                          </tr>
+                          <tr>
+                            <th>Responsable</th>
+                            <th>:</th>
+                            <td>{{ infoCL.responsable }}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="m-2">
+                      <div class="card p-2">
+                        <div
+                          class="d-flex align-items-center justify-content-center flex-wrap">
+                          <button mat-flat-button color="primary" class="ms-2"
+                            (click)="endExpedtion()">TERMINER
+                          </button>
+                          <button mat-stroked-button color="warn" class="ms-2"
+                            (click)="deleteExpedtion()">SUPPRIMER
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- FORMULAIRE INIT -->
+                  <div class="col text-center" [formGroup]="formInit"
+                    *ngIf="statExpedition == false">
+                    <h2
+                      class="fw-bold mx-0 m-2 p-3 border border-success shadow text-uppercase">Choisir
+                      un client ici</h2>
+                    <mat-form-field class="w-100" appearance="outline">
+                      <mat-label>--- Listes des clients ---</mat-label>
+                      <mat-select formControlName="idClient">
+                        <mat-option value>*** Trouvez le client dans la liste
+                          ***</mat-option>
+                        <mat-option *ngFor="let data of TabClient"
+                          value="{{ data.id }}"><i
+                            class="text-primary">Societe:
+                          </i> {{ data.raison_sociale }} | <i
+                            class="text-danger">Representant: </i> {{
+                          data.responsable
+                          }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" class="w-100"
+                      [disabled]="formInit.invalid"
+                      (click)="initExpedition(formInit)">Cr&#233;er
+                      l'exp&#233;dition
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <hr>
+
+              <!-- Add items -->
+              <div class="d-flex justify-content-between w-100"
+                *ngIf="statExpedition == true">
+                <div class="col-12 col-md-4 col-lg-3 col-xxl-3">
+                  <div class="formulaire-add-items" [formGroup]="formAddItems">
+                    <div class="card shadow border border-secondary"
+                      style="height: 420px;">
+                      <div class="card-header bg-warning text-center">AJOUTER
+                        UNE BARRE</div>
+                      <div class="card-body p-1 my-3">
+
+                        <div class="img-responsive text-center mb-3">
+                          <img
+                            src="https://img.joomcdn.net/31217de167bc4aa6881f299e8d777deda82a2381_original.jpeg"
+                            class="rounded-circle border shadow"
+                            style="height: auto;width: 100px;" alt>
+                        </div>
+
+                        <!-- Poids -->
+                        <mat-form-field class="w-100" appearance="outline">
+                          <mat-label>- Poids -</mat-label>
+                          <input type="number" formControlName="poids" matInput
+                            placeholder="Exemple : 100 (g)" />
+                        </mat-form-field>
+
+                        <!-- carrat -->
+                        <mat-form-field class="w-100" appearance="outline">
+                          <mat-label>- Carrat -</mat-label>
+                          <input type="number" formControlName="carrat" matInput
+                            placeholder="Exemple : 22.4" />
+                        </mat-form-field>
+                      </div>
+                      <div class="card-footer">
+                        <div class="col text-center">
+                          <button [disabled]="formAddItems.invalid"
+                            (click)="addItems()"
+                            mat-raised-button
+                            color="primary"
+                            class="w-100">AJouter au
+                            panier | <mat-icon>arrow_right</mat-icon></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="p-2 text-center">
+                    <h2>LIMANAYA BUSINESS</h2>
+                  </div>
+                  <hr>
+                  <table class="table table-hover">
+                    <thead class="bg-secondary text-light">
+                      <th>#</th>
+                      <th>Poids</th>
+                      <th>Carrat</th>
+                      <th>Action</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of TabItems_added; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ item.poids }}</td>
+                        <td>{{ item.carrat }}</td>
+                        <td>
+                          <mat-icon
+                            class="text-danger text-center border"
+                            style="cursor: pointer;"
+                            (click)="deleteLine(item.id)">close</mat-icon>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>Total</th>
+                        <th>{{ infoCL.PTotal | currency: ' ' }}</th>
+                        <th>{{ infoCL.CarratMoyen | currency: ' ' }}</th>
+                        <th>...</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+
+            </mat-tab>
+
+            <!-- LIST TABS -->
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="text-primary"> list </mat-icon>
+                LISTE EXPEDITION
+              </ng-template>
+              <mat-card-title>
+                <h2 class="text-blue mt-2">Toutes les expeditions...</h2>
+              </mat-card-title>
+              <mat-card-content>
+                <mat-form-field class="w-100">
+                  <input [formControl]="search" placeholder="Rechercher"
+                    matInput>
+                  <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+                <table mat-table [dataSource]="dataSource" class="w-100"
+                  id="maTable">
+                  <ng-container matColumnDef="Date">
+                    <th mat-header-cell *matHeaderCellDef>Date</th>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.created_at | date: 'dd/MM/YYYY' }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Client">
+                    <th mat-header-cell *matHeaderCellDef>Expedier au
+                      Client</th>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.Client }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Poids">
+                    <th mat-header-cell *matHeaderCellDef>Pds Total</th>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.Poids | number: '2.2-2' }} g</td>
+                  </ng-container>
+                  <ng-container matColumnDef="CarratMoyen">
+                    <th mat-header-cell *matHeaderCellDef>Carrat</th>
+                    <td class mat-cell *matCellDef="let element">{{
+                      element.Carrat }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Status">
+                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                    <td class mat-cell *matCellDef="let element">
+                      <span *ngIf="element.Statut == 1" class="text-warning">En
+                        cours</span>
+                      <span *ngIf="element.Statut == 2"
+                        class="text-success">Expédier</span>
+                      <span *ngIf="element.Statut == 3"
+                        class="text-danger">Annuler</span>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="Action">
+                    <th mat-header-cell *matHeaderCellDef
+                      class="text-center">Action</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                      <button mat-button color="warn"
+                        [matMenuTriggerFor]="menu">
+                        Voir + <span class="dw dw-down-chevron"></span></button>
+                      <mat-menu #menu="matMenu">
+                        <a mat-menu-item
+                          routerLink="/client/detail-client/{{element.idClient}}"
+                          class="text-start">
+                          <strong>
+                            <span class="dw dw-user-1 mx-3"></span>
+                            <span>Afficher</span>
+                          </strong>
+                        </a>
+                      </mat-menu>
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row
+                    *matHeaderRowDef="displaysColums;sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns:displaysColums"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[10,15,100]"
+                  showFirstLastButtons></mat-paginator>
+              </mat-card-content>
+            </mat-tab>
+          </mat-tab-group>
+          <!-- FIN - Contenu  -->
+        </mat-card-content>
+      </mat-card>
+      <!-- Export Datatable End -->
+    </div>
+  </div>
+</div>

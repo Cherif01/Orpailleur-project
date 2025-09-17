@@ -1,0 +1,167 @@
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-12 col-md-4 col-sm-12">
+            <div class="title">
+              <h4 class="text-capitalize fs-3">{{ title }}</h4>
+            </div>
+          </div>
+          <div class="text-right d-flex justify-content-between align-items-center">
+            <div class="col-reply">
+              <button (click)="this.location.back()" mat-icon-button color="warn">
+                <mat-icon class="mat-24">reply</mat-icon>
+              </button>
+            </div>
+            <div class="col-btn">
+              <button class="mx-2" mat-flat-button color="primary" routerLink="/operation/purchase">
+                <span class="micon mdi mdi-format-list-numbered-rtl"></span><span class="mtext mx-2"> Liste achat</span>
+              </button>
+              <button class="mx-2" mat-flat-button color="accent" routerLink="/operation/add-purchase">
+                <span class="micon dw dw-add"></span><span class="mtext mx-2"> Placer un achat </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Export Datatable start  mat-elevation-z2-->
+      <div class="...-box">
+        <div class="" *ngIf="LastAchat">
+          <div class="d-flex justify-content-between flex-wrap align-items-top">
+            <div class="col-12 col-lg-3 p-2" id="form-add">
+              <h2 class="text-center fw-bold">Ajouter une barre</h2>
+              <form class="" [formGroup]="Achat" (ngSubmit)="AchatAddItemsForm(Achat)">
+                <div class="d-flex justify-content-between flex-wrap flex-row align-items-center mb-1">
+                  <!-- POIDS -->
+                  <div id="app" class="col-12 col-lg-12 mb-3 p-1">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Poids</mat-label>
+                      <input type="number" formControlName="poidsItem" class="fs-3 fw-bold" matInput placeholder="Ex : 00.00" />
+                      <mat-hint>Exemple : 157.12</mat-hint>
+                      <mat-error *ngIf="Achat.controls.poidsItem.errors">
+                        Le poids est obliatoire
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- CARRAT -->
+                  <div id="app" class="col-12 col-lg-12 mb-3 p-1">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Carrat</mat-label>
+                      <input type="number" formControlName="carratItem" class="fs-3 fw-bold" [min]="10" [max]="24" step="0.01" matInput
+                        placeholder="Ex : 20.12" />
+                      <mat-hint>Exemple : 21.04</mat-hint>
+                      <mat-error *ngIf="Achat.controls.carratItem.hasError('required')">
+                        Le carrat est obliatoire
+                      </mat-error>
+                      <mat-error *ngIf="Achat.controls.carratItem.hasError('max')">
+                        Le carrat doit être inférieur à 25
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- MANQUANT -->
+                  <div id="app" class="col-12 col-lg-12 mb-3 p-1">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Manquant Achat</mat-label>
+                      <input type="number" formControlName="manquantItem" class="fs-3 fw-bold" matInput placeholder="Ex : 0.1" />
+                      <mat-hint>Ex : 0.1</mat-hint>
+                      <!-- <mat-error *ngIf="Achat.controls.manquant.errors">
+                        Renseigner un manquant si existant...
+                      </mat-error> -->
+                    </mat-form-field>
+                  </div>
+
+                  <button type="submit" mat-raised-button class="w-100" color="primary" (click)="getItem()"
+                    [disabled]="Achat.invalid">
+                    <span class="mx-2"> Enregistrer </span>
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- table LIST -->
+            <div class="col card card-separate">
+              <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div class="col">
+                  <form [formGroup]="validerAchatForm" (ngSubmit)="updateAchat(validerAchatForm)">
+                    <div class="d-flex justify-content-start flex-wrap align-items-top mt-2">
+                      <div class="col-12 col-lg-3 col-md-4 text-start">
+                        <span class="text-dark">Poids :
+                          <i class="text-primary">{{ PTotal_this | number : "2.2-2" }} g</i></span>
+                        <br />
+                        <span class="text-dark">Carrat :
+                          <i class="text-primary">{{
+                            format2Chart(CAR_Total_this / PTotal_this)
+                            }}</i></span><br>
+                        <button type="button" (click)="deleteAchat()" class="text-danger border-0 mt-1"><u>Supprimer cet
+                            achat <span class="dw dw-delete text-primary"></span></u></button>
+                      </div>
+                      <div class="col d-flex align-items-center">
+                        <mat-form-field appearance="fill">
+                          <mat-label>--- Placer dans un Lot ---</mat-label>
+                          <mat-select placeholder="" formControlName="arrivage" required>
+                            <mat-option value="">--- Aujourd'hui ---
+                            </mat-option>
+                            <mat-option class="text-success text-uppercase" [value]="listLot.id">{{ listLot.designation
+                              }}
+                            </mat-option>
+                            <mat-option>--- Historique --- </mat-option>
+                            <mat-option ngClass="text-uppercase text-secondary" [value]="l.id"
+                              *ngFor="let l of archivesLot">
+                              {{ l.designation }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <!-- <div class="col">
+                            <ngx-select [items]="lot" [(ngModel)]="selectedOption"
+                              [placeholder]="'Recherche...'" (select)="onOptionSelected()" [ngModelOptions]="{standalone: true}">
+                            </ngx-select>
+                          </div> -->
+                        <button type="submit" class="mx-2 w-100" [hidden]="validerAchatForm.invalid" mat-flat-button
+                          color="primary">
+                          <span class="mtext">Terminer & Valider </span>
+                          <i class="micon mdi mdi-check-bold small"> OK</i>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- <hr> -->
+              <div class="table-responsive-sm" style="height: 350px; overflow-y: scroll">
+                <table class="table table-info" id="table_shadow">
+                  <thead class="bg-secondary text-light">
+                    <th class="text-center">Nb/Barres</th>
+                    <th>Poids</th>
+                    <th>Carrat</th>
+                    <th>Densite</th>
+                    <th>Manquant</th>
+                    <th class="text-center">Action</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let d of dataItemsList; let i = index">
+                      <td class="text-center">{{ i + 1 }}</td>
+                      <td>{{ d.poidsItem }}</td>
+                      <td>{{ d.carratItem }}</td>
+                      <td class="text-center">22</td>
+                      <td class="text-danger fw-bold text-center">
+                        {{ d.manquantItem }}
+                      </td>
+                      <td class="text-center" style="cursor: pointer" (click)="deleteItems(d.id)">
+                        <span class="micon dw dw-trash text-danger"></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Export Datatable End -->
+      </div>
+    </div>
+  </div>
+</div>

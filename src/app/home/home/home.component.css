@@ -1,0 +1,15 @@
+.text-container {
+  font-size: 24px;
+  font-weight: bold;
+  /* text-align: center; */
+  height: 30px;
+  overflow: hidden;
+}
+
+.animated-text {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-out {
+  opacity: 0;
+}

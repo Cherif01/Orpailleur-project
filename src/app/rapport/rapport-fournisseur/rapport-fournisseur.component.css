@@ -1,0 +1,35 @@
+/* ============================
+   EN-TÊTE FACTURE (IMPRESSION)
+   ============================ */
+.entete {
+  display: table;
+  width: 100%;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #c18b3b;
+}
+
+.entete > div {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.entete .text-start {
+  width: 20%;
+  text-align: left;
+}
+
+.entete .text-end {
+  width: 20%;
+  text-align: right;
+}
+
+.entete .facture-header-text {
+  width: 60%;
+  text-align: center;
+}
+
+.entete img {
+  max-height: 70px;
+  width: auto;
+}

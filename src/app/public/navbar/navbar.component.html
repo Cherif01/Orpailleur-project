@@ -1,0 +1,117 @@
+<div class="header">
+  <div class="header-left">
+    <div class="menu-icon dw dw-menu text-white"></div>
+    <div class="search-toggle-icon dw dw-search2 text-white"
+      data-toggle="header_search"></div>
+    <div class="header-search">
+      <!-- <form>
+        <div class="form-group mb-0">
+          <i class="dw dw-search2 search-icon"></i>
+          <input type="text" class="form-control search-input" placeholder="Rechercher ici...">
+          <div class="dropdown">
+            <a class="dropdown-toggle no-arrow" href="#" role="button" data-toggle="dropdown">
+              <i class="ion-arrow-down-c"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <div class="form-group row">
+                <label class="col-sm-12 col-md-2 col-form-label">Libelle</label>
+                <div class="col-sm-12 col-md-10">
+                  <input class="form-control form-control-sm form-control-line" type="text">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-12 col-md-2 col-form-label">DU</label>
+                <div class="col-sm-12 col-md-10">
+                  <input class="form-control form-control-sm form-control-line" type="text">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-12 col-md-2 col-form-label">AU</label>
+                <div class="col-sm-12 col-md-10">
+                  <input class="form-control form-control-sm form-control-line" type="text">
+                </div>
+              </div>
+              <div class="text-right">
+                <button class="" mat-raised-button color="primary">Trouver maintenant</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form> -->
+
+      <div class>
+        <h4 class="fw-bold">
+          <span class="text-light fs-4">
+            Bonjour, {{sessionName}}
+          </span> <br>
+          <!-- <span class="text-light small fs-6">V1.7</span> -->
+        </h4>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="dashboard-setting user-notification">
+      <div class="dropdown">
+        <!-- <a class="dropdown-toggle no-arrow" routerLink="user/help-me/" href="javascript:;">
+          <span class="text-light">D&#233;veloppeur | </span>
+        </a>
+        <a class="dropdown-toggle no-arrow" routerLink="user/help-me/" href="javascript:;">
+          <span class="text-light">A Propos ! </span>
+        </a> -->
+        <!-- <a class="dropdown-toggle no-arrow" routerLink="user/help-me/" href="javascript:;">
+          <span class="text-light">Aide ? </span>
+        </a> -->
+        <!-- <a class="dropdown-toggle no-arrow" href="javascript:;" data-toggle="right-sidebar">
+          <i class="mdi mdi-cog text-light"></i>
+        </a> -->
+      </div>
+
+    </div>
+    <div class="user-notification">
+      <div class="dropdown">
+        <a class="dropdown-toggle no-arrow" href="#" role="button"
+          data-toggle="dropdown">
+          <i class="icon-copy mdi mdi-timeline-clock text-light"></i>
+          <span class="badge notification-active"></span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right">
+          <div class="notification-list mx-h-350 customscroll">
+            <div style="text-align:center;padding:1em 0;">
+              <h4><a style="text-decoration:none;"
+                  href="https://www.zeitverschiebung.net/fr/city/2422465"><span
+                    style="color:gray;">Heure actuelle</span><br />Conakry,
+                  Guinée</a></h4> <iframe
+                src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=fr&size=small&timezone=Africa%2FConakry"
+                width="100%" height="90" frameborder="0" seamless></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="user-info-dropdown">
+      <div class="dropdown">
+        <a class="dropdown-toggle" href="#" role="button"
+          data-toggle="dropdown">
+          <div class="user-icon">
+            <img
+              src="https://t3.ftcdn.net/jpg/02/43/51/48/360_F_243514868_XDIMJHNNJYKLRST05XnnTj0MBpC4hdT5.jpg"
+              alt>
+          </div>
+          <span class="user-name text-light">{{ sessionName }}</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+          <a class="dropdown-item" href="#"
+            routerLink="/user/profile/{{sessionID}}"><i class="dw dw-user1"></i>
+            Mon Compte</a>
+          <a class="dropdown-item text-danger fw-bold"
+            (click)="$event.preventDefault(); logout();"><i
+              class="dw dw-logout"></i>
+            Deconnexion</a>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="github-link">
+      <a href="https://github.com/dropways/deskapp" target="_blank"><img src="vendors/images/github.svg" alt=""></a>
+    </div> -->
+  </div>
+</div>

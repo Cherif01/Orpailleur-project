@@ -1,0 +1,73 @@
+<h1 matDialogTitle class="bg-warning text-uppercase p-2 text-dark fw-bold"
+  id="text">Fixing Client !</h1>
+<mat-dialog-content style="width: 600px;">
+  <form action [formGroup]="fixingClient">
+    <div
+      class="pt-3 pb-3 d-flex justify-content-start flex-wrap align-items-center">
+
+      <!-- Liste des expéditions non validées -->
+      <mat-form-field class="w-100 mb-2" appearance="outline">
+        <mat-label>--- Liste des enregistrements disponible ---</mat-label>
+        <mat-select formControlName="id_InitExpedition"
+          (selectionChange)="onExpeditionChange($event)">
+          <mat-option value>Choisir une expédition</mat-option>
+          <mat-option *ngFor="let data of Tab" [value]="data.id">
+            <strong>Total : </strong>{{ (data.Poids | currency: ' ') + 'g | CM : ' +
+            data.Carrat }}
+            | <strong>Reste : </strong> <span class="text-danger">
+              {{ data.Poids_restant | currency: ' ' }} g
+            </span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Type de vente -->
+      <div class="w-100 mb-2" *ngIf="selectedExpedition">
+        <label class="fw-bold mb-2">Type de vente :</label>
+        <mat-radio-group formControlName="typeVente" class="d-flex gap-3">
+          <mat-radio-button
+            *ngIf="selectedExpedition.Poids === selectedExpedition.Poids_restant"
+            class="me-2" value="global"><span class="text-primary">Global</span></mat-radio-button>
+          <mat-radio-button
+            *ngIf="selectedExpedition.Poids === selectedExpedition.Poids_restant || selectedExpedition.Poids_restant < selectedExpedition.Poids"
+            class="ms-2" value="partiel"><span class="text-primary">Partiel</span></mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <!-- Champs visibles uniquement si "Partiel" est sélectionné -->
+      <div *ngIf="fixingClient.value.typeVente === 'partiel'" class="w-100">
+        <mat-form-field class="w-100 mb-2" appearance="outline">
+          <mat-label>Poids (grammes)</mat-label>
+          <input matInput type="number" formControlName="poids_vendu"
+            placeholder="Exemple : 1000">
+        </mat-form-field>
+
+        <mat-form-field class="w-100 mb-2" appearance="outline">
+          <mat-label>Carrat moyen</mat-label>
+          <input matInput type="number" formControlName="carrat_vendu"
+            placeholder="Exemple : 22.40">
+        </mat-form-field>
+      </div>
+
+      <!-- Bourse -->
+      <mat-form-field class="w-100 mb-2" appearance="outline">
+        <mat-label>Bourse</mat-label>
+        <input matInput type="number" formControlName="fixingBourse" required>
+      </mat-form-field>
+
+      <!-- Discompte -->
+      <mat-form-field class="w-100 mb-2" appearance="outline">
+        <mat-label>Discompte</mat-label>
+        <input matInput type="number" formControlName="discompte" required>
+      </mat-form-field>
+
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary"
+    [disabled]="fixingClient.invalid || fixingClient.value.fixingBourse == 0"
+    (click)="saveData()">Valider</button>
+  <button mat-raised-button color="warn" matDialogClose>Fermer</button>
+</mat-dialog-actions>

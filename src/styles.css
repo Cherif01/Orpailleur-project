@@ -1,0 +1,336 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+@import "animate.css";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu Condensed", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.title {
+  display: inline-block;
+  margin: 0 0.5rem;
+
+  animation: zoomIn;
+  /* referring directly to the animation's @keyframe declaration */
+  animation-duration: 2s;
+  /* don't forget to set a duration! */
+}
+
+/* .accordion-item {
+  animation: zoomIn;
+  animation-duration: 2s;
+} */
+
+/* ::-webkit-scrollbar {
+  display: none;
+} */
+
+.menu-spacer {
+  flex: 1 1 auto;
+}
+
+.separator-25 {
+  margin: 25px;
+}
+
+#text {
+  text-align: center;
+  font-size: 19px;
+  color: rgb(37, 37, 37);
+  /* text-shadow: rgb(123, 123, 123) 2px 2px 2px; */
+}
+
+.dw {
+  color: rgb(2, 2, 0);
+}
+
+.dw-edit2,
+.dw-print {
+  color: white;
+  margin-left: 5px;
+}
+
+.col-btn span {
+  color: white;
+}
+
+table .dw {
+  color: white;
+}
+
+/* MEDIA QUERY */
+@media screen and (max-width: 600px) {
+  /* Styles à appliquer */
+  .mtext {
+    display: none;
+  }
+
+  .img-responsive,
+  #col-none {
+    display: none;
+  }
+
+  #dataTableColumnNone {
+    display: none;
+  }
+
+  .text-long {
+    font-size: 10px;
+  }
+
+  h4 {
+    font-size: 10px;
+  }
+
+  .card-separate {
+    margin-top: 20px;
+  }
+
+  .soldeTitle,
+  #text {
+    font-size: 16px;
+  }
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 30px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: popup-animation 0.5s ease-in-out;
+  width: 400px;
+  text-align: center;
+}
+
+@keyframes popup-animation {
+  from {
+    transform: translate(-50%, -60%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+.popup-header {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+}
+
+.popup-header .warning-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+}
+
+.popup-content {
+  margin-bottom: 30px;
+}
+
+.popup-content p {
+  margin: 0 0 20px 0;
+  color: #4f4d4d;
+  font-weight: bold;
+}
+
+.popup-content .ssl-certificate {
+  width: 150px;
+  height: 150px;
+  animation: shake 0.5s infinite;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.popup-close {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.popup-close:hover {
+  background-color: #c9302c;
+}
+
+/* Styles pour impression A4 */
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  #facture {
+    width: 210mm;
+    max-width: 100%;
+    margin: auto;
+    padding: 20mm;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+  }
+  .table-bordered {
+    border: 1px solid #dee2e6;
+  }
+  .table-bordered th,
+  .table-bordered td {
+    border: 1px solid #dee2e6;
+    font-size: 12px;
+  }
+  .table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    padding: 5px;
+  }
+  .table tbody + tbody {
+    border-top: 2px solid #dee2e6;
+    padding: 5px;
+  }
+}
+
+/* Styles généraux pour les tableaux */
+#maTable {
+  border-collapse: separate;
+  border-spacing: 3px; /* Ajout de l'espace entre les bordures doubles */
+  table-layout: auto;
+  width: 100%; /* S'assure que la table occupe 100% de la largeur disponible */
+  /* border-collapse: collapse; */
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  table-layout: auto; /* Utilisation de auto pour que la table s'ajuste à son contenu */
+  box-sizing: border-box; /* Inclut les bordures dans la largeur totale */
+}
+
+/* Styles pour les en-têtes et cellules */
+#maTable th,
+#maTable td {
+  border: 2px solid #a59b9b; /* Bordure simple de 2px */
+  padding: 5px;
+  text-align: left;
+  font-size: 1em;
+  white-space: nowrap; /* Empêche le texte de passer à la ligne */
+  box-sizing: border-box; /* Assure une bonne gestion de la taille */
+}
+
+/* Style pour les en-têtes */
+#maTable th {
+  background-color: #c18b3b;
+  color: rgb(255, 255, 255);
+  font-weight: 500;
+  text-transform: capitalize;
+  font-size: 1.2em;
+  text-align: left;
+}
+
+/* Gestion du texte long */
+#maTable td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-color: white;
+  text-align: left;
+  color: #333;
+  
+}
+
+/* Styles pour les écrans de taille moyenne */
+@media (max-width: 1200px) {
+  #maTable th,
+  #maTable td {
+    font-size: 0.9em;
+    padding: 6px;
+    text-align: left;
+  }
+  #maTable {
+    table-layout: auto;
+    width: 100vw;
+  }
+}
+
+/* Styles pour les écrans plus petits */
+@media (max-width: 992px) {
+  #maTable {
+    table-layout: auto;
+    width: 100%;
+  }
+  #maTable th,
+  #maTable td {
+    font-size: 0.8em;
+    padding: 4px;
+    text-align: left;
+  }
+}
+
+/* Ajustements pour tablettes */
+@media (max-width: 768px) {
+  #maTable th,
+  #maTable td {
+    font-size: 0.75em;
+    padding: 3px;
+    text-align: left;
+  }
+
+  #maTable {
+    table-layout: auto;
+    border-collapse: separate;
+    display: block;
+    overflow-x: auto; /* Permet le défilement horizontal si nécessaire */
+    width: 100%; /* S'assure que la table prend toute la largeur */
+  }
+}
+
+/* Pour les petits téléphones */
+@media (max-width: 576px) {
+  #maTable {
+    display: block;
+    overflow-x: auto; /* Permet le défilement horizontal */
+    width: 100%; /* S'assure que la table prend toute la largeur */
+  }
+
+  #maTable th,
+  #maTable td {
+    font-size: 0.7em;
+    padding: 2px;
+    text-align: left;
+    white-space: nowrap; /* Empêche le passage à la ligne */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Ajoute des points de suspension si le texte est trop long */
+  }
+}
+
+
+
